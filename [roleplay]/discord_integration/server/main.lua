@@ -56,6 +56,8 @@ end
 
 -- Function to check if a player has the required role
 function CheckPlayerRole(playerId, callback)
+    print('Checking callback type...')
+    print('Type of callback:', type(callback))
     if type(callback) ~= "function" then
         print('[ERROR] Invalid callback type: ' .. type(callback))
         return
