@@ -8,11 +8,11 @@ version '1.0.0'
 
 -- Scripts to be loaded
 client_scripts {
-    'client/main.lua'
+    'client/main.js'
 }
 
 server_scripts {
-    'server/main.lua'
+    'server/main.js'
 }
 
 -- Dependencies
