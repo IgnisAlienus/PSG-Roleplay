@@ -23,26 +23,31 @@ checkConfigValue(REQUIRED_ROLE_ID, 'required_role_id');
 // Function to get Discord roles of a player
 function GetDiscordRoles(discordId, callback) {
   console.log(`[DEBUG] Fetching Discord roles for Discord ID: ${discordId}`);
-  PerformHttpRequest(
-    `https://discord.com/api/guilds/${GUILD_ID}/members/${discordId}`,
-    (err, response, headers) => {
-      console.log(`[DEBUG] HTTP request completed with status code: ${err}`);
-      if (err === 200) {
-        const data = JSON.parse(response);
+
+  // Using HttpRequest instead of PerformHttpRequest
+  HttpRequest(
+    {
+      url: `https://discord.com/api/guilds/${GUILD_ID}/members/${discordId}`,
+      method: 'GET',
+      headers: {
+        Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
+      },
+    },
+    (error, response, body) => {
+      console.log(`[DEBUG] HTTP request completed with status code: ${error}`);
+      if (error === 200) {
+        const data = JSON.parse(body);
         console.log(
           `[DEBUG] Successfully fetched roles for Discord ID: ${discordId}`
         );
         callback(data.roles);
       } else {
         console.log(
-          `[ERROR] Failed to fetch roles for Discord ID: ${discordId} (Error: ${err})`
+          `[ERROR] Failed to fetch roles for Discord ID: ${discordId} (Error: ${error})`
         );
         callback(null);
       }
-    },
-    'GET',
-    '',
-    { Authorization: `Bot ${DISCORD_BOT_TOKEN}` }
+    }
   );
 }
 
@@ -86,7 +91,7 @@ function GetPlayerIdentifiers(player) {
   const numIds = GetNumPlayerIdentifiers(player);
   let identifiers = [];
 
-  for (i = 0; i < numIds; i++) {
+  for (let i = 0; i < numIds; i++) {
     identifiers.push(GetPlayerIdentifier(player, i));
   }
   return identifiers;
