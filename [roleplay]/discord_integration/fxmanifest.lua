@@ -7,7 +7,7 @@ description 'Discord Integration for Roles and Permissions'
 version '1.0.0'
 
 server_scripts {
-    'server/main.js'
+    'server/main.lua'
 }
 server_exports {
     'CheckPlayerRole'
