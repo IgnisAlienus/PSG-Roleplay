@@ -1,7 +1,10 @@
 -- server/main.lua
 
+-- Adjust the package path
+package.path = package.path .. ';./[roleplay]/discord_integration/server/?.lua'
+
 -- Require the discord_integration module
-local discord_integration = require('[roleplay]/discord_integration/server/main')
+local discord_integration = require('main')
 
 -- Hook into the playerConnecting event
 AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
