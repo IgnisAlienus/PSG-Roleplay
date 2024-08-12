@@ -1,5 +1,12 @@
 // client/main.js
 
+let shouldFreezePlayer = false;
+
+// Event to receive role check result
+onNet('civilian:checkRoleResult', (hasRequiredRole) => {
+  shouldFreezePlayer = !hasRequiredRole;
+});
+
 // Event to freeze or unfreeze the player
 onNet('civilian:freezePlayer', (source, shouldFreeze) => {
   console.log(
@@ -8,13 +15,12 @@ onNet('civilian:freezePlayer', (source, shouldFreeze) => {
 
   const player = GetPlayerFromServerId(source);
   if (player) {
-    if (shouldFreeze) {
-      FreezeEntityPosition(player, true);
-      console.log(`[DEBUG] Player ${source} has been frozen.`);
-    } else {
-      FreezeEntityPosition(player, false);
-      console.log(`[DEBUG] Player ${source} has been unfrozen.`);
-    }
+    FreezeEntityPosition(player, shouldFreeze);
+    console.log(
+      `[DEBUG] Player ${source} has been ${
+        shouldFreeze ? 'frozen' : 'unfrozen'
+      }.`
+    );
   } else {
     console.log(`[ERROR] Player ${source} not found.`);
   }
@@ -23,32 +29,37 @@ onNet('civilian:freezePlayer', (source, shouldFreeze) => {
 // Hook into the player spawn event
 on('playerSpawned', (spawn) => {
   const playerPed = PlayerPedId();
-  // Set the player's position to the police station coordinates
   SetEntityCoords(playerPed, 425.1, -979.5, 30.7, 0, 0, 0, false);
   SetEntityHeading(playerPed, 90.0);
+
+  if (shouldFreezePlayer) {
+    FreezeEntityPosition(playerPed, true);
+    console.log(`[DEBUG] Player has been frozen upon spawn.`);
+  }
 });
 
 // Optional: Handle spawn when triggered by the server
 onNet('forcePlayerSpawn', () => {
   const playerPed = PlayerPedId();
-  // Set the player's position to the police station coordinates
   SetEntityCoords(playerPed, 425.1, -979.5, 30.7, 0, 0, 0, false);
   SetEntityHeading(playerPed, 90.0);
+
+  if (shouldFreezePlayer) {
+    FreezeEntityPosition(playerPed, true);
+    console.log(`[DEBUG] Player has been frozen upon forced spawn.`);
+  }
 });
 
 // Overriding spawnmanager's default spawn behavior
 on('onClientMapStart', () => {
-  // Disable auto-spawn to manage it manually
   exports.spawnmanager.setAutoSpawn(false);
-  // Trigger a custom spawn
   setTimeout(() => {
-    // Wait for the map to load fully
     exports.spawnmanager.spawnPlayer({
       x: 425.1,
       y: -979.5,
       z: 30.7,
       heading: 90.0,
-      model: 'mp_m_freemode_01', // Optional: Set default player model
+      model: 'mp_m_freemode_01',
       skipFade: false,
     });
   }, 1000);
