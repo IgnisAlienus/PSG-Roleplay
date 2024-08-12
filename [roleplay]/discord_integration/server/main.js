@@ -82,6 +82,16 @@ on('fivem:fetchDiscordId', (playerId, callback) => {
   callback(null); // Return null if no Discord ID is found
 });
 
+function GetPlayerIdentifiers(player) {
+  const numIds = GetNumPlayerIdentifiers(player);
+  let identifiers = [];
+
+  for (i = 0; i < numIds; i++) {
+    identifiers.push(GetPlayerIdentifier(player, i));
+  }
+  return identifiers;
+}
+
 // Function to check if a player has the required role
 function CheckPlayerRole(playerId, callback) {
   console.log('Checking callback type...');
