@@ -1,15 +1,22 @@
 // client/main.js
 
 // Event to freeze or unfreeze the player
-onNet('civilian:freezePlayer', (freeze) => {
-  const playerPed = PlayerPedId();
-  FreezeEntityPosition(playerPed, freeze);
+onNet('civilian:freezePlayer', (source, shouldFreeze) => {
+  console.log(
+    `[DEBUG] Received freezePlayer event for source: ${source}, shouldFreeze: ${shouldFreeze}`
+  );
 
-  if (freeze) {
-    // Optionally, display a message to the player
-    emit('chat:addMessage', {
-      args: ['You do not have the required permissions to move.'],
-    });
+  const player = GetPlayerFromServerId(source);
+  if (player) {
+    if (shouldFreeze) {
+      FreezeEntityPosition(player, true);
+      console.log(`[DEBUG] Player ${source} has been frozen.`);
+    } else {
+      FreezeEntityPosition(player, false);
+      console.log(`[DEBUG] Player ${source} has been unfrozen.`);
+    }
+  } else {
+    console.log(`[ERROR] Player ${source} not found.`);
   }
 });
 
