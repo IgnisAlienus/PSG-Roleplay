@@ -1,6 +1,6 @@
 // client/main.js
 
-let shouldFreezePlayer = true;
+let shouldFreezePlayer = false;
 
 // Event to receive role check result
 onNet('civilian:checkRoleResult', (hasRequiredRole) => {
@@ -32,9 +32,14 @@ on('playerSpawned', (spawn) => {
   SetEntityCoords(playerPed, 425.1, -979.5, 30.7, 0, 0, 0, false);
   SetEntityHeading(playerPed, 90.0);
 
+  // Request role check from the server
+  emitNet('civilian:requestRoleCheck');
+
   if (shouldFreezePlayer) {
-    FreezeEntityPosition(playerPed, true);
-    console.log(`[DEBUG] Player has been frozen upon spawn.`);
+    setTimeout(() => {
+      FreezeEntityPosition(playerPed, true);
+      console.log(`[DEBUG] Player has been frozen upon spawn.`);
+    }, 1000);
   }
 });
 
@@ -44,9 +49,14 @@ onNet('forcePlayerSpawn', () => {
   SetEntityCoords(playerPed, 425.1, -979.5, 30.7, 0, 0, 0, false);
   SetEntityHeading(playerPed, 90.0);
 
+  // Request role check from the server
+  emitNet('civilian:requestRoleCheck');
+
   if (shouldFreezePlayer) {
-    FreezeEntityPosition(playerPed, true);
-    console.log(`[DEBUG] Player has been frozen upon forced spawn.`);
+    setTimeout(() => {
+      FreezeEntityPosition(playerPed, true);
+      console.log(`[DEBUG] Player has been frozen upon spawn.`);
+    }, 1000);
   }
 });
 
