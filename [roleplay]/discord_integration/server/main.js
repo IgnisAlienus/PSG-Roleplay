@@ -24,19 +24,12 @@ checkConfigValue(REQUIRED_ROLE_ID, 'required_role_id');
 function GetDiscordRoles(discordId, callback) {
   console.log(`[DEBUG] Fetching Discord roles for Discord ID: ${discordId}`);
 
-  // Using HttpRequest instead of PerformHttpRequest
-  HttpRequest(
-    {
-      url: `https://discord.com/api/guilds/${GUILD_ID}/members/${discordId}`,
-      method: 'GET',
-      headers: {
-        Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
-      },
-    },
-    (error, response, body) => {
+  PerformHttpRequest(
+    `https://discord.com/api/guilds/${GUILD_ID}/members/${discordId}`,
+    (error, responseText, headers) => {
       console.log(`[DEBUG] HTTP request completed with status code: ${error}`);
       if (error === 200) {
-        const data = JSON.parse(body);
+        const data = JSON.parse(responseText);
         console.log(
           `[DEBUG] Successfully fetched roles for Discord ID: ${discordId}`
         );
@@ -47,7 +40,10 @@ function GetDiscordRoles(discordId, callback) {
         );
         callback(null);
       }
-    }
+    },
+    'GET',
+    '',
+    { Authorization: `Bot ${DISCORD_BOT_TOKEN}` }
   );
 }
 
