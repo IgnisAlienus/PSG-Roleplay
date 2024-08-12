@@ -93,3 +93,6 @@ local function CheckPlayerRole(playerId, callback)
         callback(false)
     end
 end
+
+-- Export the CheckPlayerRole function
+exports('CheckPlayerRole', CheckPlayerRole)
