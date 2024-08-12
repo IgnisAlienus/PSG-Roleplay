@@ -50,7 +50,7 @@ function GetDiscordId(playerId)
 end
 
 -- Function to check if a player has the required role
-function CheckPlayerRole(playerId, callback)
+local function CheckPlayerRole(playerId, callback)
     print('[DEBUG] Checking role for player ID: ' .. playerId)
     local discordId = GetDiscordId(playerId)
     if discordId then
@@ -73,3 +73,7 @@ function CheckPlayerRole(playerId, callback)
         callback(false)
     end
 end
+
+return {
+    CheckPlayerRole = CheckPlayerRole
+}
