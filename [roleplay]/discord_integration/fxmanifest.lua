@@ -9,7 +9,9 @@ version '1.0.0'
 server_scripts {
     'server/main.lua'
 }
-server_export 'CheckPlayerRole'
+server_exports {
+    'CheckPlayerRole'
+}
 
 client_scripts {
     'client/main.lua'
