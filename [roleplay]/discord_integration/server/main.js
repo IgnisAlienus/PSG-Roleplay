@@ -1,4 +1,5 @@
 // server/main.js
+const axios = require('axios');
 
 // Read configuration values from server.cfg
 const DISCORD_BOT_TOKEN = GetConvar('discord_bot_token', '');
@@ -24,29 +25,20 @@ checkConfigValue(REQUIRED_ROLE_ID, 'required_role_id');
 function GetDiscordRoles(discordId, callback) {
   console.log(`[DEBUG] Fetching Discord roles for Discord ID: ${discordId}`);
 
-  fetch(`https://discord.com/api/guilds/${GUILD_ID}/members/${discordId}`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
-    },
-  })
+  axios
+    .get(`https://discord.com/api/guilds/${GUILD_ID}/members/${discordId}`, {
+      headers: {
+        Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
+      },
+    })
     .then((response) => {
       console.log(
         `[DEBUG] HTTP request completed with status code: ${response.status}`
       );
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error(
-          `Failed to fetch roles for Discord ID: ${discordId} (Status: ${response.status})`
-        );
-      }
-    })
-    .then((data) => {
       console.log(
         `[DEBUG] Successfully fetched roles for Discord ID: ${discordId}`
       );
-      callback(data.roles);
+      callback(response.data.roles);
     })
     .catch((error) => {
       console.log(`[ERROR] ${error.message}`);
