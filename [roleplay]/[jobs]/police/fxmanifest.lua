@@ -1,4 +1,4 @@
--- resources/[roleplay]/police/fxmanifest.lua
+-- resources/[roleplay]/[jobs]/police/fxmanifest.lua
 fx_version 'cerulean'
 game 'gta5'
 
