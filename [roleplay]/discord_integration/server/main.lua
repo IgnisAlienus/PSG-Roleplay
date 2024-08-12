@@ -6,8 +6,10 @@ local REQUIRED_ROLE_ID = GetConvar('required_role_id', '')
 -- Function to log an error and stop the script if a configuration value is missing
 local function checkConfigValue(value, name)
     if value == '' then
-        print('Error: Missing configuration value for ' .. name)
+        print('[ERROR] Missing configuration value for ' .. name)
         StopResource(GetCurrentResourceName())
+    else
+        print('[DEBUG] Configuration value for ' .. name .. ' is set.')
     end
 end
 
@@ -18,11 +20,14 @@ checkConfigValue(REQUIRED_ROLE_ID, 'required_role_id')
 
 -- Function to get Discord roles of a player
 function GetDiscordRoles(discordId, callback)
+    print('[DEBUG] Fetching Discord roles for Discord ID: ' .. discordId)
     PerformHttpRequest("https://discord.com/api/guilds/" .. GUILD_ID .. "/members/" .. discordId, function(err, response, headers)
         if err == 200 then
             local data = json.decode(response)
+            print('[DEBUG] Successfully fetched roles for Discord ID: ' .. discordId)
             callback(data.roles)
         else
+            print('[ERROR] Failed to fetch roles for Discord ID: ' .. discordId .. ' (Error: ' .. err .. ')')
             callback(nil)
         end
     end, 'GET', '', { ["Authorization"] = "Bot " .. DISCORD_BOT_TOKEN })
@@ -30,31 +35,39 @@ end
 
 -- Function to get the Discord ID of a player
 function GetDiscordId(playerId)
+    print('[DEBUG] Fetching Discord ID for player ID: ' .. playerId)
     local identifiers = GetPlayerIdentifiers(playerId)
     for _, id in ipairs(identifiers) do
         if string.find(id, "discord:") then
-            return string.sub(id, 9) -- Remove the "discord:" prefix
+            local discordId = string.sub(id, 9) -- Remove the "discord:" prefix
+            print('[DEBUG] Found Discord ID: ' .. discordId .. ' for player ID: ' .. playerId)
+            return discordId
         end
     end
+    print('[DEBUG] No Discord ID found for player ID: ' .. playerId)
     return nil -- Return nil if no Discord ID is found
 end
 
 -- Function to check if a player has the required role
 function CheckPlayerRole(playerId, callback)
+    print('[DEBUG] Checking role for player ID: ' .. playerId)
     local discordId = GetDiscordId(playerId)
     if discordId then
         GetDiscordRoles(discordId, function(roles)
             if roles then
                 for _, role in ipairs(roles) do
                     if role == REQUIRED_ROLE_ID then
+                        print('[DEBUG] Player ID: ' .. playerId .. ' has the required role.')
                         callback(true)
                         return
                     end
                 end
             end
+            print('[DEBUG] Player ID: ' .. playerId .. ' does not have the required role.')
             callback(false)
         end)
     else
+        print('[DEBUG] No Discord ID found for player ID: ' .. playerId)
         callback(false)
     end
 end
