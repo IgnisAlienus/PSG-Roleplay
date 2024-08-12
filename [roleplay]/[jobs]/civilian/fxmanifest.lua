@@ -1,15 +1,21 @@
--- resources/[roleplay]/[jobs]/civilian/fxmanifest.lua
 fx_version 'cerulean'
 game 'gta5'
 
-author 'Your Name'
-description 'Basic Civilian Roleplay Mod'
+-- Resource metadata
+name 'My Custom FiveM Mod'
+author 'Ignis'
 version '1.0.0'
+
+-- Scripts to be loaded
+client_scripts {
+    'client/main.lua'
+}
 
 server_scripts {
     'server/main.lua'
 }
 
-client_scripts {
-    'client/main.lua'
+-- Dependencies (optional, but useful if you're using spawnmanager)
+dependencies {
+    'spawnmanager'
 }

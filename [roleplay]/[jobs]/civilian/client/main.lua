@@ -1,15 +1,35 @@
-print("Client script is running")
+-- client/main.lua
 
-RegisterNetEvent('civilian:setInitialSpawn')
-AddEventHandler('civilian:setInitialSpawn', function(coords)
-    print("Received event 'civilian:setInitialSpawn' with coordinates: ", coords.x, coords.y, coords.z)
-    -- Spawns the player by passing a table as a spawnpoint
-exports.spawnmanager:spawnPlayer({
-    x = coords.x,
-    y = coords.y,
-    z = coords.z,
-    heading = 0,
-    skipFade = false
-})
-    print("Player spawned at coordinates: ", finalCoords.x, finalCoords.y, finalCoords.z)
+-- Hook into the player spawn event
+AddEventHandler('playerSpawned', function(spawn)
+    local playerPed = PlayerPedId()
+    -- Set the player's position to the police station coordinates
+    SetEntityCoords(playerPed, 425.1, -979.5, 30.7, 0, 0, 0, false)
+    SetEntityHeading(playerPed, 90.0)
+end)
+
+-- Optional: Handle spawn when triggered by the server
+RegisterNetEvent('forcePlayerSpawn')
+AddEventHandler('forcePlayerSpawn', function()
+    local playerPed = PlayerPedId()
+    -- Set the player's position to the police station coordinates
+    SetEntityCoords(playerPed, 425.1, -979.5, 30.7, 0, 0, 0, false)
+    SetEntityHeading(playerPed, 90.0)
+end)
+
+-- Overriding spawnmanager's default spawn behavior
+AddEventHandler('onClientMapStart', function()
+    -- Disable auto-spawn to manage it manually
+    exports.spawnmanager:setAutoSpawn(false)
+
+    -- Trigger a custom spawn
+    Citizen.Wait(1000) -- Wait for the map to load fully
+    exports.spawnmanager:spawnPlayer({
+        x = 425.1,
+        y = -979.5,
+        z = 30.7,
+        heading = 90.0,
+        model = 'mp_m_freemode_01', -- Optional: Set default player model
+        skipFade = false
+    })
 end)

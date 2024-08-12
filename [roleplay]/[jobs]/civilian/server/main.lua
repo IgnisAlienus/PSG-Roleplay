@@ -1,9 +1,9 @@
+-- server/main.lua
+
+-- Hook into the playerConnecting event
 AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
-    local source = source
-    local spawnCoords = vector3(441.84, -982.14, 30.69) -- Coordinates for the downtown police station in Los Santos
-    print("Player connecting: ", name, " with source: ", source)
-    print("Sending initial spawn coordinates: ", spawnCoords.x, spawnCoords.y, spawnCoords.z)
-    
-    -- Additional logging for the sent coordinates
-    TriggerClientEvent('civilian:setInitialSpawn', source, {x = spawnCoords.x, y = spawnCoords.y, z = spawnCoords.z})
+    -- Perform any necessary checks or initialization here
+
+    -- Trigger the client event to force the player to spawn at a specific location
+    TriggerClientEvent('forcePlayerSpawn', source)
 end)
