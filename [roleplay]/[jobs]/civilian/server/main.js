@@ -7,6 +7,7 @@ on('playerConnecting', (name, setKickReason, deferrals) => {
   console.log(`[DEBUG] Player connecting: ${name} (source: ${source})`);
 
   // Perform any necessary checks or initialization here
+  // For example, check if the player has the required role
   exports.discord_integration.CheckPlayerRole(source, (hasRequiredRole) => {
     if (typeof hasRequiredRole !== 'boolean') {
       console.log(
@@ -21,9 +22,9 @@ on('playerConnecting', (name, setKickReason, deferrals) => {
       );
     } else {
       console.log(
-        `[DEBUG] Player ${name} (source: ${source}) does not have the required role.`
+        `[DEBUG] Player ${name} (source: ${source}) does not have the required role. Freezing player.`
       );
-      // Freeze the player during spawn
+      // Trigger the client event to freeze the player
       emitNet('civilian:freezePlayer', source, true);
     }
 
@@ -31,17 +32,5 @@ on('playerConnecting', (name, setKickReason, deferrals) => {
     console.log(
       `[DEBUG] Deferrals done for player: ${name} (source: ${source})`
     );
-  });
-});
-
-// Check role on spawn and handle freezing
-onNet('civilian:checkPlayerRoleOnSpawn', (source) => {
-  exports.discord_integration.CheckPlayerRole(source, (hasRequiredRole) => {
-    if (!hasRequiredRole) {
-      console.log(
-        `[DEBUG] Player (source: ${source}) does not have the required role. Freezing player.`
-      );
-      emitNet('civilian:freezePlayer', source, true);
-    }
   });
 });
