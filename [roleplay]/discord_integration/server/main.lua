@@ -22,6 +22,7 @@ checkConfigValue(REQUIRED_ROLE_ID, 'required_role_id')
 function GetDiscordRoles(discordId, callback)
     print('[DEBUG] Fetching Discord roles for Discord ID: ' .. discordId)
     PerformHttpRequest("https://discord.com/api/guilds/" .. GUILD_ID .. "/members/" .. discordId, function(err, response, headers)
+        print('[DEBUG] HTTP request completed with status code: ' .. err)
         if err == 200 then
             local data = json.decode(response)
             print('[DEBUG] Successfully fetched roles for Discord ID: ' .. discordId)
@@ -55,6 +56,7 @@ function CheckPlayerRole(playerId, callback)
     if discordId then
         GetDiscordRoles(discordId, function(roles)
             if roles then
+                print('[DEBUG] Roles fetched for player ID: ' .. playerId .. ': ' .. table.concat(roles, ', '))
                 for _, role in ipairs(roles) do
                     if role == REQUIRED_ROLE_ID then
                         print('[DEBUG] Player ID: ' .. playerId .. ' has the required role.')
