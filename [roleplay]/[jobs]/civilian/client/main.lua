@@ -8,12 +8,27 @@ AddEventHandler('civilian:setInitialSpawn', function(coords)
         Citizen.Wait(100)
     end
     
-    -- Add a delay before setting the coordinates
+    -- Add a delay to ensure all resources are loaded
     Citizen.Wait(1000)
     
-    -- Additional logging before setting the coordinates
-    print("Attempting to spawn player at: ", coords.x, coords.y, coords.z)
+    -- Ensure collision and load the map area
+    RequestCollisionAtCoord(coords.x, coords.y, coords.z)
+    while not HasCollisionLoadedAroundEntity(playerPed) do
+        Citizen.Wait(100)
+    end
+
+    -- Optionally load a model if necessary
+    local model = GetEntityModel(playerPed)
+    RequestModel(model)
+    while not HasModelLoaded(model) do
+        Citizen.Wait(100)
+    end
+    
+    -- Finally, set the player's position and freeze them briefly to ensure proper placement
     SetEntityCoords(playerPed, coords.x, coords.y, coords.z, false, false, false, true)
+    FreezeEntityPosition(playerPed, true)
+    Citizen.Wait(1000)
+    FreezeEntityPosition(playerPed, false)
     
     -- Confirm the player's coordinates after setting them
     local finalCoords = GetEntityCoords(playerPed)
