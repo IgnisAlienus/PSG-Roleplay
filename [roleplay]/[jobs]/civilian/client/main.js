@@ -28,9 +28,13 @@ on('playerSpawned', (spawn) => {
   SetEntityHeading(playerPed, 90.0);
 });
 
-// Optional: Handle spawn when triggered by the server
+// Check roles and potentially freeze the player during spawn
 onNet('forcePlayerSpawn', () => {
   const playerPed = PlayerPedId();
+
+  // Check the player's roles via server
+  emitNet('civilian:checkPlayerRoleOnSpawn', source);
+
   // Set the player's position to the police station coordinates
   SetEntityCoords(playerPed, 425.1, -979.5, 30.7, 0, 0, 0, false);
   SetEntityHeading(playerPed, 90.0);
