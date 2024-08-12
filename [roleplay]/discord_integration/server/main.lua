@@ -36,6 +36,11 @@ end
 
 -- Function to get the Discord ID of a player
 function GetDiscordId(playerId)
+    if type(playerId) ~= "number" and type(playerId) ~= "string" then
+        print('[ERROR] Invalid playerId type: ' .. type(playerId))
+        return nil
+    end
+
     print('[DEBUG] Fetching Discord ID for player ID: ' .. tostring(playerId))
     local identifiers = GetPlayerIdentifiers(playerId)
     for _, id in ipairs(identifiers) do
@@ -51,6 +56,11 @@ end
 
 -- Function to check if a player has the required role
 function CheckPlayerRole(playerId, callback)
+    if type(callback) ~= "function" then
+        print('[ERROR] Invalid callback type: ' .. type(callback))
+        return
+    end
+
     print('[DEBUG] Checking role for player ID: ' .. tostring(playerId))
     local discordId = GetDiscordId(playerId)
     if discordId then
