@@ -9,9 +9,11 @@ AddEventHandler('civilian:setInitialSpawn', function(coords)
         Citizen.Wait(100)
     end
     
-    -- Add a delay before setting the coordinates
-    Citizen.Wait(1000)
-    
     SetEntityCoords(playerPed, coords.x, coords.y, coords.z, false, false, false, true)
     print("Player spawned at coordinates: ", coords.x, coords.y, coords.z)
 end)
+
+-- Add a command to trigger the event
+RegisterCommand('testspawn', function()
+    TriggerEvent('civilian:setInitialSpawn', {x = 441.83999633789, y = -982.14001464844, z = 30.690000534058})
+end, false)
