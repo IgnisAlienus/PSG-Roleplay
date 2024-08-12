@@ -24,7 +24,7 @@ onNet('civilian:freezePlayer', (source, shouldFreeze) => {
 on('playerSpawned', (spawn) => {
   const playerPed = PlayerPedId();
   // Set the player's position to the police station coordinates
-  SetEntityCoords(playerPed, 100.1, -979.5, 30.7, 0, 0, 0, false);
+  SetEntityCoords(playerPed, 425.1, -979.5, 30.7, 0, 0, 0, false);
   SetEntityHeading(playerPed, 90.0);
 });
 
@@ -32,7 +32,7 @@ on('playerSpawned', (spawn) => {
 onNet('forcePlayerSpawn', () => {
   const playerPed = PlayerPedId();
   // Set the player's position to the police station coordinates
-  SetEntityCoords(playerPed, 100.1, -979.5, 30.7, 0, 0, 0, false);
+  SetEntityCoords(playerPed, 425.1, -979.5, 30.7, 0, 0, 0, false);
   SetEntityHeading(playerPed, 90.0);
 });
 
