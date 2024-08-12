@@ -1,4 +1,3 @@
--- resources/[roleplay]/[jobs]/civilian/client/main.lua
 RegisterNetEvent('civilian:setInitialSpawn')
 AddEventHandler('civilian:setInitialSpawn', function(coords)
     print("Received event 'civilian:setInitialSpawn' with coordinates: ", coords.x, coords.y, coords.z)
@@ -9,11 +8,14 @@ AddEventHandler('civilian:setInitialSpawn', function(coords)
         Citizen.Wait(100)
     end
     
+    -- Add a delay before setting the coordinates
+    Citizen.Wait(1000)
+    
+    -- Additional logging before setting the coordinates
+    print("Attempting to spawn player at: ", coords.x, coords.y, coords.z)
     SetEntityCoords(playerPed, coords.x, coords.y, coords.z, false, false, false, true)
-    print("Player spawned at coordinates: ", coords.x, coords.y, coords.z)
+    
+    -- Confirm the player's coordinates after setting them
+    local finalCoords = GetEntityCoords(playerPed)
+    print("Player spawned at coordinates: ", finalCoords.x, finalCoords.y, finalCoords.z)
 end)
-
--- Add a command to trigger the event
-RegisterCommand('testspawn', function()
-    TriggerEvent('civilian:setInitialSpawn', {x = 441.83999633789, y = -982.14001464844, z = 30.690000534058})
-end, false)
