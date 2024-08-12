@@ -47,26 +47,39 @@ function GetDiscordRoles(discordId, callback) {
 }
 
 // Function to get the Discord ID of a player
-function GetDiscordId(playerId) {
+function GetDiscordId(playerId, callback) {
   if (typeof playerId !== 'number' && typeof playerId !== 'string') {
     console.log(`[ERROR] Invalid playerId type: ${typeof playerId}`);
-    return null;
+    callback(null);
+    return;
   }
 
   console.log(`[DEBUG] Fetching Discord ID for player ID: ${playerId}`);
-  const identifiers = global.GetPlayerIdentifiers(playerId);
-  for (const id of identifiers) {
-    if (id.includes('discord:')) {
-      const discordId = id.substring(8); // Remove the "discord:" prefix
+  emit('fivem:fetchDiscordId', playerId, (discordId) => {
+    if (discordId) {
       console.log(
         `[DEBUG] Found Discord ID: ${discordId} for player ID: ${playerId}`
       );
-      return discordId;
+      callback(discordId);
+    } else {
+      console.log(`[DEBUG] No Discord ID found for player ID: ${playerId}`);
+      callback(null);
+    }
+  });
+}
+
+// Listen for the event on the server side to fetch identifiers
+on('fivem:fetchDiscordId', (playerId, callback) => {
+  const identifiers = GetPlayerIdentifiers(playerId);
+  for (const id of identifiers) {
+    if (id.includes('discord:')) {
+      const discordId = id.substring(8); // Remove the "discord:" prefix
+      callback(discordId);
+      return;
     }
   }
-  console.log(`[DEBUG] No Discord ID found for player ID: ${playerId}`);
-  return null; // Return null if no Discord ID is found
-}
+  callback(null); // Return null if no Discord ID is found
+});
 
 // Function to check if a player has the required role
 function CheckPlayerRole(playerId, callback) {
@@ -78,32 +91,33 @@ function CheckPlayerRole(playerId, callback) {
   }
 
   console.log(`[DEBUG] Checking role for player ID: ${playerId}`);
-  const discordId = GetDiscordId(playerId);
-  if (discordId) {
-    GetDiscordRoles(discordId, (roles) => {
-      if (roles) {
-        console.log(
-          `[DEBUG] Roles fetched for player ID: ${playerId}: ${roles.join(
-            ', '
-          )}`
-        );
-        for (const role of roles) {
-          if (role === REQUIRED_ROLE_ID) {
-            console.log(
-              `[DEBUG] Player ID: ${playerId} has the required role.`
-            );
-            callback(true);
-            return;
+  GetDiscordId(playerId, (discordId) => {
+    if (discordId) {
+      GetDiscordRoles(discordId, (roles) => {
+        if (roles) {
+          console.log(
+            `[DEBUG] Roles fetched for player ID: ${playerId}: ${roles.join(
+              ', '
+            )}`
+          );
+          for (const role of roles) {
+            if (role === REQUIRED_ROLE_ID) {
+              console.log(
+                `[DEBUG] Player ID: ${playerId} has the required role.`
+              );
+              callback(true);
+              return;
+            }
           }
         }
-      }
-      console.log(
-        `[DEBUG] Player ID: ${playerId} does not have the required role.`
-      );
+        console.log(
+          `[DEBUG] Player ID: ${playerId} does not have the required role.`
+        );
+        callback(false);
+      });
+    } else {
+      console.log(`[DEBUG] No Discord ID found for player ID: ${playerId}`);
       callback(false);
-    });
-  } else {
-    console.log(`[DEBUG] No Discord ID found for player ID: ${playerId}`);
-    callback(false);
-  }
+    }
+  });
 }
