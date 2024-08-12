@@ -17,6 +17,6 @@ server_scripts {
 
 -- Dependencies
 dependencies {
-    'spawnmanager'
+    'spawnmanager',
     'discord_integration'
 }
