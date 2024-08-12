@@ -36,40 +36,40 @@ end
 
 -- Function to get the Discord ID of a player
 function GetDiscordId(playerId)
-    print('[DEBUG] Fetching Discord ID for player ID: ' .. playerId)
+    print('[DEBUG] Fetching Discord ID for player ID: ' .. tostring(playerId))
     local identifiers = GetPlayerIdentifiers(playerId)
     for _, id in ipairs(identifiers) do
         if string.find(id, "discord:") then
             local discordId = string.sub(id, 9) -- Remove the "discord:" prefix
-            print('[DEBUG] Found Discord ID: ' .. discordId .. ' for player ID: ' .. playerId)
+            print('[DEBUG] Found Discord ID: ' .. discordId .. ' for player ID: ' .. tostring(playerId))
             return discordId
         end
     end
-    print('[DEBUG] No Discord ID found for player ID: ' .. playerId)
+    print('[DEBUG] No Discord ID found for player ID: ' .. tostring(playerId))
     return nil -- Return nil if no Discord ID is found
 end
 
 -- Function to check if a player has the required role
 function CheckPlayerRole(playerId, callback)
-    print('[DEBUG] Checking role for player ID: ' .. playerId)
+    print('[DEBUG] Checking role for player ID: ' .. tostring(playerId))
     local discordId = GetDiscordId(playerId)
     if discordId then
         GetDiscordRoles(discordId, function(roles)
             if roles then
-                print('[DEBUG] Roles fetched for player ID: ' .. playerId .. ': ' .. table.concat(roles, ', '))
+                print('[DEBUG] Roles fetched for player ID: ' .. tostring(playerId) .. ': ' .. table.concat(roles, ', '))
                 for _, role in ipairs(roles) do
                     if role == REQUIRED_ROLE_ID then
-                        print('[DEBUG] Player ID: ' .. playerId .. ' has the required role.')
+                        print('[DEBUG] Player ID: ' .. tostring(playerId) .. ' has the required role.')
                         callback(true)
                         return
                     end
                 end
             end
-            print('[DEBUG] Player ID: ' .. playerId .. ' does not have the required role.')
+            print('[DEBUG] Player ID: ' .. tostring(playerId) .. ' does not have the required role.')
             callback(false)
         end)
     else
-        print('[DEBUG] No Discord ID found for player ID: ' .. playerId)
+        print('[DEBUG] No Discord ID found for player ID: ' .. tostring(playerId))
         callback(false)
     end
 end
