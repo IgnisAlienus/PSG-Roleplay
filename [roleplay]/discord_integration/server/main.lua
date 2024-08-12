@@ -3,7 +3,6 @@ local DISCORD_BOT_TOKEN = GetConvar('discord_bot_token', '')
 local GUILD_ID = GetConvar('guild_id', '')
 local REQUIRED_ROLE_ID = GetConvar('required_role_id', '')
 
-local M = {}
 -- Function to log an error and stop the script if a configuration value is missing
 local function checkConfigValue(value, name)
     if value == '' then
@@ -51,7 +50,7 @@ function GetDiscordId(playerId)
 end
 
 -- Function to check if a player has the required role
-function M.CheckPlayerRole(playerId, callback)
+function CheckPlayerRole(playerId, callback)
     print('[DEBUG] Checking role for player ID: ' .. playerId)
     local discordId = GetDiscordId(playerId)
     if discordId then
@@ -74,5 +73,3 @@ function M.CheckPlayerRole(playerId, callback)
         callback(false)
     end
 end
-
-return M
