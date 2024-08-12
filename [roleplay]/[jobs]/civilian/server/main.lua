@@ -14,13 +14,12 @@ AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
             deferrals.done("An error occurred while checking your role.")
             return
         end
-
-        if not hasRequiredRole then
+        if hasRequiredRole then
+            print("[DEBUG] Player " .. name .. " (source: " .. source .. ") has the required role.")
+        else
             print("[DEBUG] Player " .. name .. " (source: " .. source .. ") does not have the required role. Freezing player.")
             -- Trigger the client event to freeze the player
             TriggerClientEvent('civilian:freezePlayer', source, true)
-        else
-            print("[DEBUG] Player " .. name .. " (source: " .. source .. ") has the required role.")
         end
         
         deferrals.done()
