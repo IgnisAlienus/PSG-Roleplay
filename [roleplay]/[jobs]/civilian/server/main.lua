@@ -1,7 +1,7 @@
 -- server/main.lua
 
 -- Require the discord_integration module
-local discord_integration = require('resources.[roleplay].discord_integration.server.main')
+local discord_integration = require('[roleplay].discord_integration.server.main')
 
 -- Hook into the playerConnecting event
 AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
