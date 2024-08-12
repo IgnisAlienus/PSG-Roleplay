@@ -1,6 +1,6 @@
 // client/main.js
 
-let shouldFreezePlayer = false;
+let shouldFreezePlayer = true;
 
 // Event to receive role check result
 onNet('civilian:checkRoleResult', (hasRequiredRole) => {
