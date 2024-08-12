@@ -70,6 +70,7 @@ function GetDiscordId(playerId, callback) {
 
 // Listen for the event on the server side to fetch identifiers
 on('fivem:fetchDiscordId', (playerId, callback) => {
+  console.log(`[DEBUG] Fetching identifiers for player ID: ${playerId}`);
   const identifiers = GetPlayerIdentifiers(playerId);
   for (const id of identifiers) {
     if (id.includes('discord:')) {
