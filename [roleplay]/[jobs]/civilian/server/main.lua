@@ -9,6 +9,12 @@ AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
     -- Perform any necessary checks or initialization here
     -- For example, check if the player has the required role
     exports.discord_integration.CheckPlayerRole(source, function(hasRequiredRole)
+        if type(hasRequiredRole) ~= "boolean" then
+            print("[ERROR] Invalid type for hasRequiredRole: " .. type(hasRequiredRole))
+            deferrals.done("An error occurred while checking your role.")
+            return
+        end
+
         if not hasRequiredRole then
             print("[DEBUG] Player " .. name .. " (source: " .. source .. ") does not have the required role. Freezing player.")
             -- Trigger the client event to freeze the player
