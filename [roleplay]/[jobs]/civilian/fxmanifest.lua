@@ -15,7 +15,8 @@ server_scripts {
     'server/main.lua'
 }
 
--- Dependencies (optional, but useful if you're using spawnmanager)
+-- Dependencies
 dependencies {
     'spawnmanager'
+    'discord_integration'
 }
