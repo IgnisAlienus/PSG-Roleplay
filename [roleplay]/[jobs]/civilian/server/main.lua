@@ -8,7 +8,7 @@ AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
 
     -- Debugging: Check the type of `CheckPlayerRole` function reference
     local checkPlayerRole = exports['discord_integration']:CheckPlayerRole
-    print('Type of checkPlayerRole:', type(checkPlayerRole))  -- This should print "function"
+    print(string.format('Type of checkPlayerRole: %s', type(checkPlayerRole)))  -- This should print "function"
 
     -- Call the `CheckPlayerRole` function
     checkPlayerRole(source, function(hasRequiredRole)
