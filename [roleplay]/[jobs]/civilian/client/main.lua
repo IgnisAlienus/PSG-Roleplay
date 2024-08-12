@@ -1,5 +1,19 @@
 -- client/main.lua
 
+-- Event to freeze or unfreeze the player
+RegisterNetEvent('civilian:freezePlayer')
+AddEventHandler('civilian:freezePlayer', function(freeze)
+    local playerPed = PlayerPedId()
+    FreezeEntityPosition(playerPed, freeze)
+    
+    if freeze then
+        -- Optionally, display a message to the player
+        TriggerEvent('chat:addMessage', {
+            args = { 'You do not have the required permissions to move.' }
+        })
+    end
+end)
+
 -- Hook into the player spawn event
 AddEventHandler('playerSpawned', function(spawn)
     local playerPed = PlayerPedId()
@@ -21,7 +35,6 @@ end)
 AddEventHandler('onClientMapStart', function()
     -- Disable auto-spawn to manage it manually
     exports.spawnmanager:setAutoSpawn(false)
-
     -- Trigger a custom spawn
     Citizen.Wait(1000) -- Wait for the map to load fully
     exports.spawnmanager:spawnPlayer({
