@@ -15,6 +15,7 @@ on('playerConnecting', (name, setKickReason, deferrals) => {
       return;
     }
 
+    console.log(`[DEBUG] Emitting civilian:checkRoleResult event`);
     emitNet('civilian:checkRoleResult', source, hasRequiredRole);
 
     deferrals.done();
@@ -28,6 +29,10 @@ on('playerConnecting', (name, setKickReason, deferrals) => {
 onNet('civilian:requestRoleCheck', () => {
   const source = global.source;
 
+  console.log(
+    `[DEBUG] Received civilian:requestRoleCheck event from source: ${source}`
+  );
+
   exports.discord_integration.CheckPlayerRole(source, (hasRequiredRole) => {
     if (typeof hasRequiredRole !== 'boolean') {
       console.log(
@@ -36,6 +41,7 @@ onNet('civilian:requestRoleCheck', () => {
       return;
     }
 
+    console.log(`[DEBUG] Emitting civilian:checkRoleResult event`);
     emitNet('civilian:checkRoleResult', source, hasRequiredRole);
   });
 });

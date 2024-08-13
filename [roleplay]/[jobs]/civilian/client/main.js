@@ -4,6 +4,7 @@ let shouldFreezePlayer = false;
 
 // Event to receive role check result
 onNet('civilian:checkRoleResult', (hasRequiredRole) => {
+  console.log(`[DEBUG] Received role check result: ${hasRequiredRole}`);
   shouldFreezePlayer = !hasRequiredRole;
 });
 
@@ -33,6 +34,7 @@ on('playerSpawned', (spawn) => {
   SetEntityHeading(playerPed, 90.0);
 
   // Request role check from the server
+  console.log(`[DEBUG] Emitting civilian:requestRoleCheck event`);
   emitNet('civilian:requestRoleCheck');
 
   if (shouldFreezePlayer) {
@@ -50,6 +52,7 @@ onNet('forcePlayerSpawn', () => {
   SetEntityHeading(playerPed, 90.0);
 
   // Request role check from the server
+  console.log(`[DEBUG] Emitting civilian:requestRoleCheck event`);
   emitNet('civilian:requestRoleCheck');
 
   if (shouldFreezePlayer) {
