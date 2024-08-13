@@ -46,9 +46,9 @@ onNet('civilian:requestRoleCheck', () => {
   });
 });
 
-onNet('civilian:freezePlayer', (source, shouldFreeze) => {
+onNet('civilian:freezePlayer', (playerId, shouldFreeze) => {
   console.log(
-    `[DEBUG] Received freezePlayer event for source: ${source}, shouldFreeze: ${shouldFreeze}`
+    `[DEBUG] Received freezePlayer event for playerId: ${playerId}, shouldFreeze: ${shouldFreeze}`
   );
-  emitNet('civilian:freezePlayer', source, shouldFreeze);
+  emitNet('civilian:freezePlayer', playerId, shouldFreeze);
 });
