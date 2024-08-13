@@ -6,6 +6,11 @@ let shouldFreezePlayer = false;
 onNet('civilian:checkRoleResult', (hasRequiredRole) => {
   console.log(`[DEBUG] Received role check result: ${hasRequiredRole}`);
   shouldFreezePlayer = !hasRequiredRole;
+  console.log(`[DEBUG] shouldFreezePlayer set to: ${shouldFreezePlayer}`);
+
+  // Emit event to freeze/unfreeze player based on role check result
+  const playerId = GetPlayerServerId(PlayerId());
+  emitNet('civilian:freezePlayer', playerId, shouldFreezePlayer);
 });
 
 // Event to freeze or unfreeze the player
@@ -26,7 +31,6 @@ onNet('civilian:freezePlayer', (source, shouldFreeze) => {
     console.log(`[ERROR] Player ${source} not found.`);
   }
 });
-
 // Hook into the player spawn event
 on('playerSpawned', (spawn) => {
   const playerPed = PlayerPedId();
@@ -36,13 +40,6 @@ on('playerSpawned', (spawn) => {
   // Request role check from the server
   console.log(`[DEBUG] Emitting civilian:requestRoleCheck event`);
   emitNet('civilian:requestRoleCheck');
-
-  if (shouldFreezePlayer) {
-    setTimeout(() => {
-      FreezeEntityPosition(playerPed, true);
-      console.log(`[DEBUG] Player has been frozen upon spawn.`);
-    }, 1000);
-  }
 });
 
 // Optional: Handle spawn when triggered by the server
@@ -54,13 +51,6 @@ onNet('forcePlayerSpawn', () => {
   // Request role check from the server
   console.log(`[DEBUG] Emitting civilian:requestRoleCheck event`);
   emitNet('civilian:requestRoleCheck');
-
-  if (shouldFreezePlayer) {
-    setTimeout(() => {
-      FreezeEntityPosition(playerPed, true);
-      console.log(`[DEBUG] Player has been frozen upon spawn.`);
-    }, 1000);
-  }
 });
 
 // Overriding spawnmanager's default spawn behavior
