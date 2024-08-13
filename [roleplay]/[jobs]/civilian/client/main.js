@@ -23,9 +23,12 @@ onNet('civilian:freezePlayer', (source, shouldFreeze) => {
   );
 
   const player = GetPlayerFromServerId(source);
+  console.log(`[DEBUG] Player entity: ${player}`);
   if (player) {
-    console.log(`[DEBUG] Player entity found: ${player}`);
     FreezeEntityPosition(player, shouldFreeze);
+    console.log(
+      `[DEBUG] FreezeEntityPosition called with player: ${player}, shouldFreeze: ${shouldFreeze}`
+    );
     console.log(
       `[DEBUG] Player ${source} has been ${
         shouldFreeze ? 'frozen' : 'unfrozen'
