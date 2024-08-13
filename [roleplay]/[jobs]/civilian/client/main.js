@@ -10,6 +10,9 @@ onNet('civilian:checkRoleResult', (hasRequiredRole) => {
 
   // Emit event to freeze/unfreeze player based on role check result
   const playerId = GetPlayerServerId(PlayerId());
+  console.log(
+    `[DEBUG] Emitting civilian:freezePlayer event with playerId: ${playerId} and shouldFreezePlayer: ${shouldFreezePlayer}`
+  );
   emitNet('civilian:freezePlayer', playerId, shouldFreezePlayer);
 });
 
@@ -21,6 +24,7 @@ onNet('civilian:freezePlayer', (source, shouldFreeze) => {
 
   const player = GetPlayerFromServerId(source);
   if (player) {
+    console.log(`[DEBUG] Player entity found: ${player}`);
     FreezeEntityPosition(player, shouldFreeze);
     console.log(
       `[DEBUG] Player ${source} has been ${
@@ -31,6 +35,7 @@ onNet('civilian:freezePlayer', (source, shouldFreeze) => {
     console.log(`[ERROR] Player ${source} not found.`);
   }
 });
+
 // Hook into the player spawn event
 on('playerSpawned', (spawn) => {
   const playerPed = PlayerPedId();
