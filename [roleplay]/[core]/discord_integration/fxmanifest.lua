@@ -3,7 +3,7 @@ fx_version 'cerulean'
 game 'gta5'
 
 name 'Discord Integration'
-author 'Ignis
+author 'Ignis'
 description 'Discord Integration for Roles and Permissions'
 version '1.0.0'
 
