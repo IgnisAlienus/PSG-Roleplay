@@ -62,10 +62,17 @@
 
       verifyButton.addEventListener('click', () => {
         messageElement.textContent = 'Verifying roles, please wait...';
+
         fetch('https://cfx-nui-civilian/verifyRoles', {
           method: 'POST',
         })
-          .then((response) => response.json())
+          .then((response) => {
+            // Check if response is empty or not valid JSON
+            if (!response.ok) {
+              throw new Error('Network response was not ok.');
+            }
+            return response.json();
+          })
           .then((data) => {
             console.log('[DEBUG] Response received:', data);
             if (data.success) {

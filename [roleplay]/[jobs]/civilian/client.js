@@ -49,7 +49,7 @@ on('__cfx_nui:verifyRoles', (data, cb) => {
     });
   } else {
     console.log(`[DEBUG] Re-verification attempted too soon.`);
-    cb({ success: false });
+    cb({ success: false }); // Ensure a response is always sent
   }
 });
 
