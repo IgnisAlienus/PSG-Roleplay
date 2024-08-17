@@ -1,6 +1,15 @@
-// ui.js
 const verifyButton = document.getElementById('verify-btn');
 const messageElement = document.getElementById('message');
+
+// Function to show the UI
+function showUI() {
+  document.body.style.display = 'flex'; // Show the UI
+}
+
+// Function to hide the UI
+function hideUI() {
+  document.body.style.display = 'none'; // Hide the UI
+}
 
 verifyButton.addEventListener('click', () => {
   messageElement.textContent = 'Verifying roles, please wait...';
@@ -26,9 +35,8 @@ verifyButton.addEventListener('click', () => {
       if (data.success) {
         messageElement.textContent =
           'Roles verified. You can now access the server.';
-        SetTimeout(() => {
-          // Close the UI after a delay
-          window.focus();
+        setTimeout(() => {
+          hideUI(); // Close the UI after a delay
         }, 3000);
       } else {
         messageElement.textContent =
@@ -42,10 +50,11 @@ verifyButton.addEventListener('click', () => {
     });
 });
 
+// Listen for messages from the client to show or hide the UI
 window.addEventListener('message', (event) => {
   if (event.data.type === 'showUI') {
-    document.body.style.display = 'flex'; // Show the UI
+    showUI();
   } else if (event.data.type === 'hideUI') {
-    document.body.style.display = 'none'; // Hide the UI
+    hideUI();
   }
 });

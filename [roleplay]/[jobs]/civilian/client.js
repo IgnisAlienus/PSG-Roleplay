@@ -1,10 +1,5 @@
-// client.js
-
 let canVerify = true; // Prevent spam by disabling re-verification temporarily
-
-// Initialize UI visibility
-SetNuiFocus(false, false);
-SendNuiMessage(JSON.stringify({ type: 'hideUI' }));
+let roleChecked = false; // Track if role has been checked
 
 // Event to receive role check result
 onNet('civilian:checkRoleResult', (hasRequiredRole) => {
@@ -27,6 +22,9 @@ onNet('civilian:checkRoleResult', (hasRequiredRole) => {
     SetNuiFocus(false, false);
     SendNuiMessage(JSON.stringify({ type: 'hideUI' }));
   }
+
+  // Mark role check as complete
+  roleChecked = true;
 
   // Re-enable verification after a cooldown
   setTimeout(() => {
@@ -62,13 +60,15 @@ on('__cfx_nui:verifyRoles', (data, cb) => {
 
 // Hook into the player spawn event
 on('playerSpawned', () => {
-  const playerPed = PlayerPedId();
-  SetEntityCoords(playerPed, 425.1, -979.5, 29.9, 0, 0, 0, false);
-  SetEntityHeading(playerPed, 90.0);
+  if (!roleChecked) {
+    const playerPed = PlayerPedId();
+    SetEntityCoords(playerPed, 425.1, -979.5, 29.9, 0, 0, 0, false);
+    SetEntityHeading(playerPed, 90.0);
 
-  // Request role check from the server
-  console.log(`[DEBUG] Emitting civilian:requestRoleCheck event`);
-  emitNet('civilian:requestRoleCheck');
+    // Request role check from the server
+    console.log(`[DEBUG] Emitting civilian:requestRoleCheck event`);
+    emitNet('civilian:requestRoleCheck');
+  }
 });
 
 // Overriding spawnmanager's default spawn behavior
