@@ -17,7 +17,7 @@ onNet('civilian:checkRoleResult', (hasRequiredRole) => {
 // Hook into the player spawn event
 on('playerSpawned', () => {
   const playerPed = PlayerPedId();
-  SetEntityCoords(playerPed, 425.1, -979.5, 30.7, 0, 0, 0, false);
+  SetEntityCoords(playerPed, 425.1, -979.5, 30.0, 0, 0, 0, false);
   SetEntityHeading(playerPed, 90.0);
 
   // Request role check from the server
