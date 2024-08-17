@@ -2,6 +2,10 @@
 
 let canVerify = true; // Prevent spam by disabling re-verification temporarily
 
+// Initialize UI visibility
+SetNuiFocus(false, false);
+SendNuiMessage(JSON.stringify({ type: 'hideUI' }));
+
 // Event to receive role check result
 onNet('civilian:checkRoleResult', (hasRequiredRole) => {
   console.log(`[DEBUG] Received role check result: ${hasRequiredRole}`);
