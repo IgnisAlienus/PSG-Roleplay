@@ -69,6 +69,10 @@
           .then((response) => {
             // Check if response is empty or not valid JSON
             if (!response.ok) {
+              console.error(
+                '[ERROR] Network response was not ok. Status:',
+                response.status
+              );
               throw new Error('Network response was not ok.');
             }
             return response.json();
