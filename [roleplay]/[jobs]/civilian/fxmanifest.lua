@@ -2,21 +2,17 @@ fx_version 'cerulean'
 game 'gta5'
 
 -- Resource metadata
-name 'My Custom FiveM Mod'
+name 'Civilian Job'
 author 'Ignis'
+description 'Civilian Job'
 version '1.0.0'
 
 -- Scripts to be loaded
-client_scripts {
-    'client/main.js'
-}
-
-server_scripts {
-    'server/main.js'
-}
+client_script 'client.js'
+server_script 'server.js'
+shared_script 'shared.js'
 
 -- Dependencies
-dependencies {
-    'spawnmanager',
-    'discord_integration'
-}
+dependency 'spawnmanager'
+dependency 'discord_integration'
+

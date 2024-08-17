@@ -2,10 +2,9 @@
 fx_version 'cerulean'
 game 'gta5'
 
-author 'Your Name'
+name 'Dev'
+author 'Ignis'
 description 'Dev'
 version '1.0.0'
 
-client_scripts {
-    'client.lua'
-}
+client_script 'client.lua'

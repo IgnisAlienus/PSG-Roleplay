@@ -2,17 +2,14 @@
 fx_version 'cerulean'
 game 'gta5'
 
-author 'Your Name'
+name 'Discord Integration'
+author 'Ignis
 description 'Discord Integration for Roles and Permissions'
 version '1.0.0'
 
-server_scripts {
-    'server/main.js'
-}
+server_script 'server.js'
 server_exports {
     'CheckPlayerRole'
 }
 
-client_scripts {
-    'client/main.lua'
-}
+client_script 'client.js'

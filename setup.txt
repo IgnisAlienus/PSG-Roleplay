@@ -1,0 +1,12 @@
+[core]
+menus
+cad
+discord
+dev
+
+[jobs]
+civilian
+police
+fire
+ems
+tow

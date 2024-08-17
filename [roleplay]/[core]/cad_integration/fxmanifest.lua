@@ -2,7 +2,8 @@
 fx_version 'cerulean'
 game 'gta5'
 
-author 'Your Name'
+name 'CAD Integration'
+author 'Ignis'
 description 'CAD Integration for Callouts'
 version '1.0.0'
 

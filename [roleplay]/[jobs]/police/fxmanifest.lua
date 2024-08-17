@@ -2,14 +2,11 @@
 fx_version 'cerulean'
 game 'gta5'
 
-author 'Your Name'
-description 'Basic Police Roleplay Mod'
+name 'Police Job'
+author 'Ignis'
+description 'Police Job'
 version '1.0.0'
 
-server_scripts {
-    'server/main.lua'
-}
+server_script 'server.lua'
 
-client_scripts {
-    'client/main.lua'
-}
+client_script 'client.lua'
