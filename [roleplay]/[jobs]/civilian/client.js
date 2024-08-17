@@ -6,7 +6,6 @@ let canVerify = true; // Prevent spam by disabling re-verification temporarily
 onNet('civilian:checkRoleResult', (hasRequiredRole) => {
   console.log(`[DEBUG] Received role check result: ${hasRequiredRole}`);
 
-  // Freeze or unfreeze the player directly
   const playerPed = PlayerPedId();
   const shouldFreeze = !hasRequiredRole;
   FreezeEntityPosition(playerPed, shouldFreeze);
@@ -14,6 +13,7 @@ onNet('civilian:checkRoleResult', (hasRequiredRole) => {
   console.log(
     `[DEBUG] Player has been ${shouldFreeze ? 'frozen' : 'unfrozen'}.`
   );
+
   if (shouldFreeze) {
     // Display the UI if the player is frozen
     SetNuiFocus(true, true);

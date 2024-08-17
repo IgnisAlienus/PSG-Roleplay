@@ -25,8 +25,9 @@ verifyButton.addEventListener('click', () => {
       if (data.success) {
         messageElement.textContent =
           'Roles verified. You can now access the server.';
-        // Optionally, you can trigger a custom event or function here
-        // to notify the client-side script about the success
+        // Hide UI when roles are verified
+        SetNuiFocus(false, false);
+        SendNUIMessage({ action: 'hideUI' });
       } else {
         messageElement.textContent =
           'You still do not have the required roles.';
