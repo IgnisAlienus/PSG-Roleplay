@@ -1,11 +1,9 @@
-// server.js
-
 on('playerConnecting', async (name, setKickReason, deferrals) => {
   deferrals.defer();
 
-  console.log(`[DEBUG] Player connecting: ${name}`);
+  const source = global.source; // This is the correct server-side player ID
 
-  const source = global.source;
+  console.log(`[DEBUG] Player connecting: ${name}, Source ID: ${source}`);
 
   exports.discord_integration.CheckPlayerRole(source, (hasRequiredRole) => {
     if (typeof hasRequiredRole !== 'boolean') {
@@ -20,7 +18,9 @@ on('playerConnecting', async (name, setKickReason, deferrals) => {
     // Proceed with the connection
     deferrals.done();
 
-    console.log(`[DEBUG] Emitting civilian:checkRoleResult event`);
+    console.log(
+      `[DEBUG] Emitting civilian:checkRoleResult event for Source ID: ${source}`
+    );
     emitNet('civilian:checkRoleResult', source, hasRequiredRole);
   });
 });
