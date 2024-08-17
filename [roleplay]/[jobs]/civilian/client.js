@@ -17,15 +17,11 @@ onNet('civilian:checkRoleResult', (hasRequiredRole) => {
   if (shouldFreeze) {
     // Display the UI if the player is frozen
     SetNuiFocus(true, true);
-    SendNUIMessage({
-      action: 'showUI',
-    });
+    SendNUIMessage({ action: 'showUI' });
   } else {
     // Hide the UI if the player is unfrozen
     SetNuiFocus(false, false);
-    SendNUIMessage({
-      action: 'hideUI',
-    });
+    SendNUIMessage({ action: 'hideUI' });
   }
 
   // Re-enable verification after a cooldown

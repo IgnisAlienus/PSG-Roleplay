@@ -26,8 +26,12 @@ verifyButton.addEventListener('click', () => {
         messageElement.textContent =
           'Roles verified. You can now access the server.';
         // Hide UI when roles are verified
-        SetNuiFocus(false, false);
-        SendNUIMessage({ action: 'hideUI' });
+        fetch(`https://${GetParentResourceName()}/hideUI`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+        });
       } else {
         messageElement.textContent =
           'You still do not have the required roles.';
