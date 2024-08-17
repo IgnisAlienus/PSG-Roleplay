@@ -11,7 +11,6 @@ verifyButton.addEventListener('click', () => {
     },
   })
     .then((response) => {
-      console.log(response);
       if (!response.ok) {
         console.error(
           '[ERROR] Network response was not ok. Status:',
@@ -26,8 +25,8 @@ verifyButton.addEventListener('click', () => {
       if (data.success) {
         messageElement.textContent =
           'Roles verified. You can now access the server.';
-        SetNuiFocus(false, false);
-        SendNUIMessage({ action: 'hideUI' });
+        // Optionally, you can trigger a custom event or function here
+        // to notify the client-side script about the success
       } else {
         messageElement.textContent =
           'You still do not have the required roles.';
