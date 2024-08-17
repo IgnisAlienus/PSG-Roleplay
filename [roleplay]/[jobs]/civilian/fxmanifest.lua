@@ -11,6 +11,13 @@ version '1.0.0'
 client_script 'client.js'
 server_script 'server.js'
 
+-- UI Files
+ui_page 'ui.html'
+
+files {
+    'ui.html'
+}
+
 -- Dependencies
 dependency 'spawnmanager'
 dependency 'discord_integration'
