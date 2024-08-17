@@ -1,4 +1,4 @@
-// client/main.js
+// client.js
 
 let shouldFreezePlayer = false;
 

@@ -1,28 +1,15 @@
-// server/main.js
+// server.js
 
 on('playerConnecting', (name, setKickReason, deferrals) => {
-  const source = global.source;
   deferrals.defer();
 
-  console.log(`[DEBUG] Player connecting: ${name} (source: ${source})`);
+  console.log(`[DEBUG] Player connecting: ${name}`);
 
-  exports.discord_integration.CheckPlayerRole(source, (hasRequiredRole) => {
-    if (typeof hasRequiredRole !== 'boolean') {
-      console.log(
-        `[ERROR] Invalid type for hasRequiredRole: ${typeof hasRequiredRole}`
-      );
-      deferrals.done('An error occurred while checking your role.');
-      return;
-    }
+  // Emit RoleCheck event to the client
+  emitNet('civilian:requestRoleCheck');
 
-    console.log(`[DEBUG] Emitting civilian:checkRoleResult event`);
-    emitNet('civilian:checkRoleResult', source, hasRequiredRole);
-
-    deferrals.done();
-    console.log(
-      `[DEBUG] Deferrals done for player: ${name} (source: ${source})`
-    );
-  });
+  deferrals.done();
+  console.log(`[DEBUG] Deferrals done for player: ${name}`);
 });
 
 // Handle role check request from the client
