@@ -4,8 +4,11 @@ const messageElement = document.getElementById('message');
 verifyButton.addEventListener('click', () => {
   messageElement.textContent = 'Verifying roles, please wait...';
 
-  fetch('/verifyRoles', {
+  fetch(`https://${GetParentResourceName()}/verifyRoles`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
   })
     .then((response) => {
       console.log(response);
