@@ -29,6 +29,19 @@
         color: #61dafb;
         text-decoration: none;
       }
+      #verify-btn {
+        margin-top: 15px;
+        padding: 10px 20px;
+        background-color: #61dafb;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        color: #222;
+      }
+      #message {
+        margin-top: 10px;
+        font-size: 14px;
+      }
     </style>
   </head>
   <body>
@@ -40,6 +53,35 @@
         <a href="https://discord.gg/yourdiscordlink" target="_blank">Discord</a>
         to get the required roles.
       </p>
+      <button id="verify-btn">Re-verify Roles</button>
+      <p id="message"></p>
     </div>
+    <script>
+      const verifyButton = document.getElementById('verify-btn');
+      const messageElement = document.getElementById('message');
+
+      verifyButton.addEventListener('click', () => {
+        messageElement.textContent = 'Verifying roles, please wait...';
+        fetch('https://cfx-nui-civilian/verifyRoles', {
+          method: 'POST',
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              messageElement.textContent =
+                'Roles verified. You can now access the server.';
+              SetNuiFocus(false, false);
+              SendNUIMessage({ action: 'hideUI' });
+            } else {
+              messageElement.textContent =
+                'You still do not have the required roles.';
+            }
+          })
+          .catch((error) => {
+            messageElement.textContent =
+              'An error occurred while verifying roles. Please try again later.';
+          });
+      });
+    </script>
   </body>
 </html>

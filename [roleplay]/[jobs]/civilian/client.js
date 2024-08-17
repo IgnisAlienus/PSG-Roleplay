@@ -1,5 +1,7 @@
 // client.js
 
+let canVerify = true; // Prevent spam by disabling re-verification temporarily
+
 // Event to receive role check result
 onNet('civilian:checkRoleResult', (hasRequiredRole) => {
   console.log(`[DEBUG] Received role check result: ${hasRequiredRole}`);
@@ -25,12 +27,35 @@ onNet('civilian:checkRoleResult', (hasRequiredRole) => {
       action: 'hideUI',
     });
   }
+
+  // Re-enable verification after a cooldown
+  setTimeout(() => {
+    canVerify = true;
+  }, 3000); // 3-second cooldown
+});
+
+// NUI callback to verify roles
+RegisterNuiCallbackType('verifyRoles');
+on('__cfx_nui:verifyRoles', (data, cb) => {
+  if (canVerify) {
+    console.log(`[DEBUG] Re-verifying roles for the player.`);
+    canVerify = false;
+
+    emitNet('civilian:requestRoleCheck');
+
+    onNet('civilian:checkRoleResult', (hasRequiredRole) => {
+      cb({ success: hasRequiredRole });
+    });
+  } else {
+    console.log(`[DEBUG] Re-verification attempted too soon.`);
+    cb({ success: false });
+  }
 });
 
 // Hook into the player spawn event
 on('playerSpawned', () => {
   const playerPed = PlayerPedId();
-  SetEntityCoords(playerPed, 425.1, -979.5, 29.8, 0, 0, 0, false);
+  SetEntityCoords(playerPed, 425.1, -979.5, 29.9, 0, 0, 0, false);
   SetEntityHeading(playerPed, 90.0);
 
   // Request role check from the server
