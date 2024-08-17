@@ -4,7 +4,7 @@ const messageElement = document.getElementById('message');
 verifyButton.addEventListener('click', () => {
   messageElement.textContent = 'Verifying roles, please wait...';
 
-  fetch('https://cfx-nui-civilian/verifyRoles', {
+  fetch('/verifyRoles', {
     method: 'POST',
   })
     .then((response) => {
