@@ -1,3 +1,4 @@
+// ui.js
 const verifyButton = document.getElementById('verify-btn');
 const messageElement = document.getElementById('message');
 
@@ -25,13 +26,10 @@ verifyButton.addEventListener('click', () => {
       if (data.success) {
         messageElement.textContent =
           'Roles verified. You can now access the server.';
-        // Hide UI when roles are verified
-        fetch(`https://${GetParentResourceName()}/hideUI`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-        });
+        SetTimeout(() => {
+          // Close the UI after a delay
+          window.focus();
+        }, 3000);
       } else {
         messageElement.textContent =
           'You still do not have the required roles.';
@@ -42,4 +40,12 @@ verifyButton.addEventListener('click', () => {
       messageElement.textContent =
         'An error occurred while verifying roles. Please try again later.';
     });
+});
+
+window.addEventListener('message', (event) => {
+  if (event.data.type === 'showUI') {
+    document.body.style.display = 'flex'; // Show the UI
+  } else if (event.data.type === 'hideUI') {
+    document.body.style.display = 'none'; // Hide the UI
+  }
 });

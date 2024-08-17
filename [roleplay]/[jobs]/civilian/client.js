@@ -17,11 +17,11 @@ onNet('civilian:checkRoleResult', (hasRequiredRole) => {
   if (shouldFreeze) {
     // Display the UI if the player is frozen
     SetNuiFocus(true, true);
-    SendNUIMessage({ action: 'showUI' });
+    SendNuiMessage(JSON.stringify({ type: 'showUI' }));
   } else {
     // Hide the UI if the player is unfrozen
     SetNuiFocus(false, false);
-    SendNUIMessage({ action: 'hideUI' });
+    SendNuiMessage(JSON.stringify({ type: 'hideUI' }));
   }
 
   // Re-enable verification after a cooldown
@@ -40,8 +40,14 @@ on('__cfx_nui:verifyRoles', (data, cb) => {
 
     emitNet('civilian:requestRoleCheck');
 
+    // Wait for role check result
     onNet('civilian:checkRoleResult', (hasRequiredRole) => {
       console.log(`[DEBUG] Role re-check result: ${hasRequiredRole}`);
+      if (hasRequiredRole) {
+        // Hide the UI if the role is verified
+        SetNuiFocus(false, false);
+        SendNuiMessage(JSON.stringify({ type: 'hideUI' }));
+      }
       cb({ success: hasRequiredRole });
     });
   } else {
