@@ -37,6 +37,7 @@ onNet('civilian:checkRoleResult', (hasRequiredRole) => {
 // NUI callback to verify roles
 RegisterNuiCallbackType('verifyRoles');
 on('__cfx_nui:verifyRoles', (data, cb) => {
+  console.log(`[DEBUG] Received verifyRoles NUI callback.`);
   if (canVerify) {
     console.log(`[DEBUG] Re-verifying roles for the player.`);
     canVerify = false;
