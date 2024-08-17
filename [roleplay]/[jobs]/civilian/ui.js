@@ -8,6 +8,7 @@ verifyButton.addEventListener('click', () => {
     method: 'POST',
   })
     .then((response) => {
+      console.log(response);
       if (!response.ok) {
         console.error(
           '[ERROR] Network response was not ok. Status:',
