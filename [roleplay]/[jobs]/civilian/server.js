@@ -5,18 +5,24 @@ on('playerConnecting', async (name, setKickReason, deferrals) => {
 
   console.log(`[DEBUG] Player connecting: ${name}, Source ID: ${source}`);
 
+  // Proceed with the connection
+  deferrals.done();
+});
+
+onNet('civilian:requestRoleCheck', () => {
+  const source = global.source; // Get the server-side player ID
+
+  console.log(
+    `[DEBUG] Received civilian:requestRoleCheck event from Source ID: ${source}`
+  );
+
   exports.discord_integration.CheckPlayerRole(source, (hasRequiredRole) => {
     if (typeof hasRequiredRole !== 'boolean') {
       console.log(
         `[ERROR] Invalid type for hasRequiredRole: ${typeof hasRequiredRole}`
       );
-      setKickReason('Role check failed');
-      deferrals.done('Role check failed');
       return;
     }
-
-    // Proceed with the connection
-    deferrals.done();
 
     console.log(
       `[DEBUG] Emitting civilian:checkRoleResult event for Source ID: ${source}`
