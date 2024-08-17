@@ -15,7 +15,8 @@ server_script 'server.js'
 ui_page 'ui.html'
 
 files {
-    'ui.html'
+    'ui.html',
+    'ui.js',
 }
 
 -- Dependencies
