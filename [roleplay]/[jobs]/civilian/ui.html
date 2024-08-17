@@ -67,6 +67,7 @@
         })
           .then((response) => response.json())
           .then((data) => {
+            console.log('[DEBUG] Response received:', data);
             if (data.success) {
               messageElement.textContent =
                 'Roles verified. You can now access the server.';
@@ -78,6 +79,7 @@
             }
           })
           .catch((error) => {
+            console.error('[ERROR] Error during role verification:', error);
             messageElement.textContent =
               'An error occurred while verifying roles. Please try again later.';
           });

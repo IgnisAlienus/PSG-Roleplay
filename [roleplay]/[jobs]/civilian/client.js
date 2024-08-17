@@ -44,6 +44,7 @@ on('__cfx_nui:verifyRoles', (data, cb) => {
     emitNet('civilian:requestRoleCheck');
 
     onNet('civilian:checkRoleResult', (hasRequiredRole) => {
+      console.log(`[DEBUG] Role re-check result: ${hasRequiredRole}`);
       cb({ success: hasRequiredRole });
     });
   } else {
