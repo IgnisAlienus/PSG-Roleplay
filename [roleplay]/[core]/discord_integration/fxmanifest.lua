@@ -12,4 +12,4 @@ server_exports {
     'CheckPlayerRole'
 }
 
-client_script 'client.js'
+client_script 'client.lua'
