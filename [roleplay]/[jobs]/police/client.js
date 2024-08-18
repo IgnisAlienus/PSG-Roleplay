@@ -70,7 +70,7 @@ setTick(() => {
     }
   }
 
-  if (onDutyAsPolice) {
+  /*   if (onDutyAsPolice) {
     const playerId = PlayerId();
 
     // Constantly clear wanted level
@@ -81,7 +81,7 @@ setTick(() => {
 
     // Ensure AI police are ignoring the player
     SetPoliceIgnorePlayer(playerPed, true);
-  }
+  } */
 });
 
 // Handle setting police ignore state
@@ -92,6 +92,7 @@ onNet('police:setPoliceIgnore', (ignore) => {
   // Set wanted level to 0
   SetPlayerWantedLevel(PlayerId(), 0, false);
   SetPlayerWantedLevelNow(PlayerId(), false);
+  SetMaxWantedLevel(0);
 
   // Ignore or stop ignoring the player by AI police
   SetPoliceIgnorePlayer(playerPed, ignore);
