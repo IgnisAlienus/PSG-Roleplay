@@ -38,6 +38,9 @@ onNet('fire:enterJobMode', () => {
 
       // Give fire weapon loadout
       emitNet('fire:giveWeaponLoadout', source);
+
+      // Set Firefighter Status
+      emitNet('fire:setFireStatus', source, true);
     }
   );
 });

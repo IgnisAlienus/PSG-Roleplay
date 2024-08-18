@@ -1,3 +1,10 @@
+let isFirefighter = false;
+
+// Set this flag if the player is a firefighter
+onNet('fire:setFireStatus', (status) => {
+  isFirefighter = status;
+});
+
 // Handle changing the player model
 onNet('fire:changePlayerModel', (modelName) => {
   // Load the model

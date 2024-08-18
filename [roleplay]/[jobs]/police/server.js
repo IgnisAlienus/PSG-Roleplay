@@ -64,6 +64,9 @@ onNet('police:enterJobMode', () => {
 
       // Give police weapon loadout
       emitNet('police:giveWeaponLoadout', source);
+
+      // Set Cop Status
+      emitNet('police:setCopStatus', source, true);
     }
   );
 });
