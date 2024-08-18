@@ -91,6 +91,7 @@ onNet('police:giveWeaponLoadout', () => {
   console.log('Giving police weapon loadout');
 
   const playerPed = PlayerPedId();
+  console.log(`Player Ped ID: ${playerPed}`);
 
   // Remove all weapons
   RemoveAllPedWeapons(playerPed, true);
