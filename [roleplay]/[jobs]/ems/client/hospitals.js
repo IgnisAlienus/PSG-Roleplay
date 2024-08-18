@@ -13,10 +13,16 @@ function createHospitalBlip(x, y, z, name) {
 
 // Array of hospital stations with coordinates and names
 const hopitals = [
-  { x: 300.0, y: -1396.0, z: 32.0, name: 'Central Los Santos Hospital' },
+  {
+    x: 338.68,
+    y: -1394.77,
+    z: 32.43,
+    name: 'Central Los Santos Medical Center',
+  },
   { x: -874.0, y: -307.0, z: 39.0, name: 'Pillbox Hill Medical Center' },
   { x: 1839.0, y: 3672.0, z: 34.0, name: 'Sandy Shores Medical Center' },
   { x: -246.0, y: 6330.0, z: 32.0, name: 'Paleto Bay Medical Center' },
+  { x: 1151.95, y: -1526.76, z: 34.76, name: 'St. Fiacre Hospital' },
 ];
 
 // Create blips for hospital stations

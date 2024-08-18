@@ -14,7 +14,12 @@ function createEMSBlip(x, y, z, name) {
 // Array of ems stations with coordinates and names
 const emsStations = [
   // Ambulance stations
-  { x: 305.0, y: -1396.0, z: 32.0, name: 'Central Los Santos Hospital' },
+  {
+    x: 295.38,
+    y: -1447.42,
+    z: 29.9,
+    name: 'Central Los Santos Medical Center',
+  },
 ];
 
 // Create blips for ems stations

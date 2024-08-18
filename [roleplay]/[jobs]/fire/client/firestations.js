@@ -17,7 +17,7 @@ const fireStations = [
   { x: 1832.7, y: 3689.5, z: 34.3, name: 'Sandy Shores Fire Station' },
   { x: -1144.7, y: -1991.1, z: 13.2, name: 'LSIA Fire Station' },
   { x: 215.3, y: -1659.9, z: 29.3, name: 'Davis Fire Station' },
-  { x: 1200.7, y: -1461.1, z: 34.7, name: 'El Burro Heights Fire Station' },
+  { x: 1185.85, y: -1461.32, z: 34.8, name: 'LSCoFD Station 7' },
   { x: -2347.3, y: 3249.8, z: 32.8, name: 'Fort Zancudo Fire Station' },
   { x: -633.5, y: -123.9, z: 39.0, name: 'Rockford Hills Fire Station' },
 ];
