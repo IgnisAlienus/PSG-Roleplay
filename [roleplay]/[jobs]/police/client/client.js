@@ -101,7 +101,7 @@ RegisterCommand(
 );
 
 // Handle giving the police weapon loadout
-onNet('police:giveWeaponLoadout', async () => {
+onNet('police:giveWeaponLoadout', () => {
   console.log('Giving police weapon loadout');
 
   const playerPed = PlayerPedId();
@@ -109,9 +109,6 @@ onNet('police:giveWeaponLoadout', async () => {
   // Remove all weapons
   RemoveAllPedWeapons(playerPed, true);
   console.log('All weapons removed');
-
-  // Wait for a moment before giving weapons
-  await new Promise((resolve) => setTimeout(resolve, 500));
 
   // Weapons to be given
   const weapons = [
