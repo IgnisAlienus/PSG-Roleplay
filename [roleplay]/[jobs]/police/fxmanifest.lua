@@ -7,6 +7,6 @@ author 'Ignis'
 description 'Police Job'
 version '1.0.0'
 
-server_script 'server.lua'
+server_script 'server.js'
 
-client_script 'client.lua'
+client_script 'client.js'
