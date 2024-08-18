@@ -104,21 +104,25 @@ onNet('police:giveWeaponLoadout', () => {
 
   // Weapons to be given
   const weapons = [
-    { name: 'WEAPON_NIGHTSTICK', hash: 0x678b81b1, ammo: 1 },
-    { name: 'WEAPON_COMBATPISTOL', hash: 0x5ef9fec4, ammo: 100 },
-    { name: 'WEAPON_STUNGUN', hash: 0x3656c8c1, ammo: 1 },
-    { name: 'WEAPON_PUMPSHOTGUN', hash: 0x1d073a89, ammo: 100 },
-    { name: 'WEAPON_CARBINERIFLE', hash: 0x83bf0278, ammo: 100 },
-    { name: 'WEAPON_FLASHLIGHT', hash: 0x8bb05fd7, ammo: 1 },
-    { name: 'WEAPON_FIREEXTINGUISHER', hash: 0x60ec506, ammo: 100 },
-    { name: 'WEAPON_FLARE', hash: 0x497facc3, ammo: 5 },
+    { name: 'WEAPON_NIGHTSTICK', ammo: 1 },
+    { name: 'WEAPON_COMBATPISTOL', ammo: 100 },
+    { name: 'WEAPON_STUNGUN', ammo: 1 },
+    { name: 'WEAPON_PUMPSHOTGUN', ammo: 100 },
+    { name: 'WEAPON_CARBINERIFLE', ammo: 100 },
+    { name: 'WEAPON_FLASHLIGHT', ammo: 1 },
+    { name: 'WEAPON_FIREEXTINGUISHER', ammo: 100 },
+    { name: 'WEAPON_FLARE', ammo: 5 },
   ];
 
   // Give the police weapon loadout
   weapons.forEach((weapon) => {
     const weaponHash = GetHashKey(weapon.name);
-    GiveWeaponToPed(playerPed, weaponHash, weapon.ammo, false, false);
-    console.log(`Given ${weapon.name} with ${weapon.ammo} ammo`);
+    if (weaponHash !== null) {
+      GiveWeaponToPed(playerPed, weaponHash, weapon.ammo, false, false);
+      console.log(`Given ${weapon.name} with ${weapon.ammo} ammo`);
+    } else {
+      console.log(`Invalid weapon hash for ${weapon.name}`);
+    }
   });
 
   console.log('Police weapon loadout given');
