@@ -92,6 +92,14 @@ onNet('police:changePlayerModel', (modelName) => {
   }, 500);
 });
 
+RegisterCommand(
+  'givepoliceweapons',
+  () => {
+    emitNet('police:giveWeaponLoadout');
+  },
+  false
+);
+
 // Handle giving the police weapon loadout
 onNet('police:giveWeaponLoadout', async () => {
   console.log('Giving police weapon loadout');
