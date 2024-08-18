@@ -14,7 +14,6 @@ function createPoliceBlip(x, y, z, name) {
 // Array of police stations with coordinates and names
 const policeStations = [
   { x: 441.84, y: -982.14, z: 30.69, name: 'Los Santos Police Station' },
-  { x: 1844.3, y: 3685.7, z: 34.2, name: 'Rockford Hills Police Station' },
   { x: -1631.9, y: -1014.4, z: 13.1, name: 'Del Perro Police Station' },
   { x: 1853.9, y: 3689.6, z: 34.2, name: 'Sandy Shores Police Station' },
   { x: -447.1, y: 6010.4, z: 31.7, name: 'Paleto Bay Police Station' },
@@ -24,6 +23,7 @@ const policeStations = [
   { x: 374.2, y: -1607.5, z: 29.3, name: 'Davis Sheriff Station' },
   { x: 642.6, y: 1.6, z: 82.8, name: 'Vinewood Police Station' },
   { x: 818.3, y: -1290.2, z: 26.3, name: 'La Mesa Police Station' },
+  { x: -561.0, y: -132.0, z: 37.0, name: 'Rockford Hills Police Station' },
 ];
 
 // Create blips for police stations
