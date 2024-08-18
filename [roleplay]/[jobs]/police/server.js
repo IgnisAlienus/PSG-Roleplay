@@ -13,6 +13,9 @@ onNet('police:enterJobMode', () => {
         console.log(
           `[ERROR] Invalid type for hasRequiredRole: ${typeof hasRequiredRole}`
         );
+        emitNet('chat:addMessage', source, {
+          args: ['You do not have permission to be a police officer'],
+        });
         return;
       }
 
