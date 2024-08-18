@@ -67,7 +67,7 @@ onNet('police:enterJobMode', () => {
 
       // Add a delay before giving weapons
       setTimeout(() => {
-        emitNet('police:giveWeaponLoadout');
+        emitNet('police:giveWeaponLoadout', source);
       }, 5000);
     }
   );
@@ -76,7 +76,8 @@ onNet('police:enterJobMode', () => {
 RegisterCommand(
   'givepoliceweapons',
   () => {
-    emitNet('police:giveWeaponLoadout');
+    const source = global.source;
+    emitNet('police:giveWeaponLoadout', source);
   },
   false
 );
