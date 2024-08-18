@@ -7,24 +7,38 @@ onNet('police:requestRoleCheck', () => {
     `[DEBUG] Received police:requestRoleCheck event from Source ID: ${source}`
   );
 
-  exports.discord_integration.CheckPlayerRole(
-    source,
-    'police',
-    (hasRequiredRole) => {
-      if (typeof hasRequiredRole !== 'boolean') {
-        console.log(
-          `[ERROR] Invalid type for hasRequiredRole: ${typeof hasRequiredRole}`
-        );
-        emitNet('police:checkRoleResult', source, false);
-        return;
-      }
+  // Return a promise that resolves with the role check result
+  const checkPlayerRole = () => {
+    return new Promise((resolve, reject) => {
+      exports.discord_integration.CheckPlayerRole(
+        source,
+        'police',
+        (hasRequiredRole) => {
+          if (typeof hasRequiredRole !== 'boolean') {
+            console.log(
+              `[ERROR] Invalid type for hasRequiredRole: ${typeof hasRequiredRole}`
+            );
+            return reject(new Error('Invalid role check result'));
+          }
 
-      console.log(
-        `[DEBUG] Emitting police:checkRoleResult event for Source ID: ${source}`
+          console.log(
+            `[DEBUG] Role check completed for Source ID: ${source}, Result: ${hasRequiredRole}`
+          );
+          resolve(hasRequiredRole);
+        }
       );
+    });
+  };
+
+  // Handle the promise and send the result back to the client
+  checkPlayerRole()
+    .then((hasRequiredRole) => {
       emitNet('police:checkRoleResult', source, hasRequiredRole);
-    }
-  );
+    })
+    .catch((error) => {
+      console.log(`[ERROR] Role check failed: ${error.message}`);
+      emitNet('police:checkRoleResult', source, false);
+    });
 });
 
 // Register the event for entering police job mode
