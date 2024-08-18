@@ -35,7 +35,7 @@ onNet('police:addWantedBlip', (wantedPlayerId, coords) => {
   if (isCop && !playerBlips[wantedPlayerId]) {
     // Create a blip at the wanted player's location
     const blip = AddBlipForCoord(coords[0], coords[1], coords[2]);
-    SetBlipSprite(blip, 1); // Standard blip icon
+    SetBlipSprite(blip, 58); // Standard blip icon
     SetBlipColour(blip, 1); // Red color for wanted player
     SetBlipScale(blip, 1.0);
     SetBlipAsShortRange(blip, false); // Blip is visible from any distance
