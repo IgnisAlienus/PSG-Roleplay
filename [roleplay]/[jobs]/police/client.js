@@ -1,4 +1,5 @@
 // resources/[roleplay]/[jobs]/police/client/main.js
+let onDutyAsPolice = false;
 
 // Create the blip for the police station
 const blip = AddBlipForCoord(441.84, -982.14, 30.69); // Coordinates for the downtown police station in Los Santos
@@ -14,7 +15,7 @@ EndTextCommandSetBlipName(blip);
 // Coordinates for the circle hologram
 const hologramCoords = [441.84, -982.14, 30.69];
 
-// Check if player is near the blip to enter police job mode
+// Unified setTick function
 setTick(() => {
   const playerPed = PlayerPedId();
   const coords = GetEntityCoords(playerPed);
@@ -68,10 +69,25 @@ setTick(() => {
       emitNet('police:enterJobMode');
     }
   }
+
+  if (onDutyAsPolice) {
+    const playerId = PlayerId();
+
+    // Constantly clear wanted level
+    if (GetPlayerWantedLevel(playerId) > 0) {
+      SetPlayerWantedLevel(playerId, 0, false);
+      SetPlayerWantedLevelNow(playerId, false);
+    }
+
+    // Ensure AI police are ignoring the player
+    SetPoliceIgnorePlayer(playerPed, true);
+  }
 });
 
+// Handle setting police ignore state
 onNet('police:setPoliceIgnore', (ignore) => {
   const playerPed = PlayerPedId();
+  onDutyAsPolice = ignore;
 
   // Set wanted level to 0
   SetPlayerWantedLevel(PlayerId(), 0, false);

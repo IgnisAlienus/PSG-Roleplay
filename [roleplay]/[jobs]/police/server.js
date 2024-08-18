@@ -4,7 +4,6 @@
 onNet('police:enterJobMode', () => {
   const source = global.source;
 
-  // Check if player has role with discord_integration
   exports.discord_integration.CheckPlayerRole(
     source,
     'police',
@@ -25,7 +24,8 @@ onNet('police:enterJobMode', () => {
       emitNet('chat:addMessage', source, {
         args: ['You are now on duty as a police officer'],
       });
-      // Prevent player from becoming wanted by AI police
+
+      // Notify client to prevent being wanted by AI police
       emitNet('police:setPoliceIgnore', source, true);
     }
   );
