@@ -22,24 +22,27 @@ onNet('fire:changePlayerModel', (modelName) => {
 
 // Handle giving the fire weapon loadout
 onNet('fire:giveWeaponLoadout', () => {
+  console.log('Giving fire weapon loadout');
+
+  const playerPed = PlayerPedId();
+
   // Remove all weapons
-  RemoveAllPedWeapons(PlayerPedId(), true);
+  RemoveAllPedWeapons(playerPed, true);
+  console.log('All weapons removed');
+
+  // Weapons to be given
+  const weapons = [
+    { name: 'WEAPON_FLASHLIGHT', ammo: 1 },
+    { name: 'WEAPON_FIREEXTINGUISHER', ammo: 100 },
+    { name: 'WEAPON_HOSE', ammo: 100 },
+  ];
 
   // Give the fire weapon loadout
-  GiveWeaponToPed(
-    PlayerPedId(),
-    GetHashKey('WEAPON_FIREEXTINGUISHER'),
-    1,
-    false,
-    true
-  );
-  GiveWeaponToPed(PlayerPedId(), GetHashKey('WEAPON_HOSE'), 1, false, true);
-  GiveWeaponToPed(
-    PlayerPedId(),
-    GetHashKey('WEAPON_FLASHLIGHT'),
-    1,
-    false,
-    true
-  );
-  GiveWeaponToPed(PlayerPedId(), GetHashKey('WEAPON_FLARE'), 1, false, true);
+  weapons.forEach((weapon) => {
+    const weaponHash = GetHashKey(weapon.name);
+    GiveWeaponToPed(playerPed, weaponHash, weapon.ammo, false, true);
+    console.log(`Given ${weapon.name} with ${weapon.ammo} ammo`);
+  });
+
+  console.log('Fire weapon loadout given');
 });

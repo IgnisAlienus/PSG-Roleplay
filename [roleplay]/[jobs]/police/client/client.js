@@ -89,46 +89,30 @@ onNet('police:changePlayerModel', (modelName) => {
 // Handle giving the police weapon loadout
 onNet('police:giveWeaponLoadout', () => {
   console.log('Giving police weapon loadout');
+
+  const playerPed = PlayerPedId();
+
   // Remove all weapons
-  RemoveAllPedWeapons(PlayerPedId(), true);
+  RemoveAllPedWeapons(playerPed, true);
+  console.log('All weapons removed');
+
+  // Weapons to be given
+  const weapons = [
+    { name: 'WEAPON_NIGHTSTICK', ammo: 1 },
+    { name: 'WEAPON_COMBATPISTOL', ammo: 100 },
+    { name: 'WEAPON_STUNGUN', ammo: 1 },
+    { name: 'WEAPON_PUMPSHOTGUN', ammo: 100 },
+    { name: 'WEAPON_CARBINERIFLE', ammo: 100 },
+    { name: 'WEAPON_FLASHLIGHT', ammo: 1 },
+  ];
 
   // Give the police weapon loadout
-  GiveWeaponToPed(
-    PlayerPedId(),
-    GetHashKey('WEAPON_NIGHTSTICK'),
-    1,
-    false,
-    true
-  );
-  GiveWeaponToPed(
-    PlayerPedId(),
-    GetHashKey('WEAPON_COMBATPISTOL'),
-    100,
-    false,
-    true
-  );
-  GiveWeaponToPed(PlayerPedId(), GetHashKey('WEAPON_STUNGUN'), 1, false, true);
-  GiveWeaponToPed(
-    PlayerPedId(),
-    GetHashKey('WEAPON_PUMPSHOTGUN'),
-    100,
-    false,
-    true
-  );
-  GiveWeaponToPed(
-    PlayerPedId(),
-    GetHashKey('WEAPON_CARBINERIFLE'),
-    100,
-    false,
-    true
-  );
-  GiveWeaponToPed(
-    PlayerPedId(),
-    GetHashKey('WEAPON_FLASHLIGHT'),
-    1,
-    false,
-    true
-  );
+  weapons.forEach((weapon) => {
+    const weaponHash = GetHashKey(weapon.name);
+    GiveWeaponToPed(playerPed, weaponHash, weapon.ammo, false, true);
+    console.log(`Given ${weapon.name} with ${weapon.ammo} ammo`);
+  });
+
   console.log('Police weapon loadout given');
 });
 
