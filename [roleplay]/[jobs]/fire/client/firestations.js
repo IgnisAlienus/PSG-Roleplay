@@ -17,9 +17,9 @@ const fireStations = [
   { x: 203.9, y: 183.6, z: 104.7, name: 'Sandy Shores Fire Station' },
   { x: -1144.7, y: -1991.1, z: 13.2, name: 'LSIA Fire Station' },
   { x: 215.3, y: -1659.9, z: 29.3, name: 'Davis Fire Station' },
-  { x: -556.1, y: -128.6, z: 37.5, name: 'Rockford Hills Fire Station' },
   { x: 1200.7, y: -1461.1, z: 34.7, name: 'El Burro Heights Fire Station' },
   { x: -2347.3, y: 3249.8, z: 32.8, name: 'Fort Zancudo Fire Station' },
+  { x: -633.5, y: -123.9, z: 39.0, name: 'Rockford Hills Fire Station' },
 ];
 
 // Create blips for police stations
@@ -48,9 +48,9 @@ function drawHologram(x, y, z) {
     1.5,
     1.5,
     0.5, // Scale (X, Y, Z)
-    0,
-    0,
     255,
+    165,
+    0,
     100, // Color (R, G, B, Alpha)
     false, // Bob up and down
     false, // Face camera
