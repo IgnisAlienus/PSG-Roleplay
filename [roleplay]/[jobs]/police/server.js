@@ -27,6 +27,16 @@ onNet('police:enterJobMode', () => {
 
       // Notify client to prevent being wanted by AI police
       emitNet('police:setPoliceIgnore', source, true);
+
+      // Define an array with male and female cop models
+      const copModels = ['s_m_y_cop_01', 's_f_y_cop_01'];
+
+      // Randomly select a model
+      const randomModel =
+        copModels[Math.floor(Math.random() * copModels.length)];
+
+      // Change the player model to the randomly selected cop model
+      emitNet('police:changePlayerModel', source, randomModel);
     }
   );
 });

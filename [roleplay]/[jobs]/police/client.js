@@ -83,6 +83,21 @@ onNet('police:setPoliceIgnore', (ignore) => {
   SetPoliceIgnorePlayer(playerPed, true);
 });
 
+// Handle changing the player model
+onNet('police:changePlayerModel', (modelName) => {
+  // Load the model
+  RequestModel(modelName);
+  const interval = setInterval(() => {
+    if (HasModelLoaded(modelName)) {
+      clearInterval(interval);
+
+      // Set the player model
+      SetPlayerModel(PlayerId(), modelName);
+      SetModelAsNoLongerNeeded(modelName);
+    }
+  }, 500);
+});
+
 // Handle vehicle spawning
 onNet('police:spawnVehicle', (vehicleName) => {
   const playerPed = PlayerPedId();
