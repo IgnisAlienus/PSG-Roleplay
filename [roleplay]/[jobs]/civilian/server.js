@@ -10,25 +10,29 @@ on('playerConnecting', async (name, setKickReason, deferrals) => {
 });
 
 onNet('civilian:requestRoleCheck', () => {
-  const source = global.source; // Get the server-side player ID
+  const source = global.source;
 
   console.log(
     `[DEBUG] Received civilian:requestRoleCheck event from Source ID: ${source}`
   );
 
-  exports.discord_integration.CheckPlayerRole(source, (hasRequiredRole) => {
-    if (typeof hasRequiredRole !== 'boolean') {
-      console.log(
-        `[ERROR] Invalid type for hasRequiredRole: ${typeof hasRequiredRole}`
-      );
-      return;
-    }
+  exports.discord_integration.CheckPlayerRole(
+    source,
+    'main',
+    (hasRequiredRole) => {
+      if (typeof hasRequiredRole !== 'boolean') {
+        console.log(
+          `[ERROR] Invalid type for hasRequiredRole: ${typeof hasRequiredRole}`
+        );
+        return;
+      }
 
-    console.log(
-      `[DEBUG] Emitting civilian:checkRoleResult event for Source ID: ${source}`
-    );
-    emitNet('civilian:checkRoleResult', source, hasRequiredRole);
-  });
+      console.log(
+        `[DEBUG] Emitting civilian:checkRoleResult event for Source ID: ${source}`
+      );
+      emitNet('civilian:checkRoleResult', source, hasRequiredRole);
+    }
+  );
 });
 
 onNet('civilian:freezePlayer', (playerId, shouldFreeze) => {

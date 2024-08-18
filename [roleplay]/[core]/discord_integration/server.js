@@ -5,6 +5,9 @@ const axios = require('axios');
 const DISCORD_BOT_TOKEN = GetConvar('discord_bot_token', '');
 const GUILD_ID = GetConvar('guild_id', '');
 const REQUIRED_ROLE_ID = GetConvar('required_role_id', '');
+const POLICE_ROLE_ID = GetConvar('police_role_id', '');
+const FIRE_ROLE_ID = GetConvar('fire_role_id', '');
+const EMS_ROLE_ID = GetConvar('ems_role_id', '');
 
 // Function to log an error and stop the script if a configuration value is missing
 function checkConfigValue(value, name) {
@@ -20,6 +23,9 @@ function checkConfigValue(value, name) {
 checkConfigValue(DISCORD_BOT_TOKEN, 'discord_bot_token');
 checkConfigValue(GUILD_ID, 'guild_id');
 checkConfigValue(REQUIRED_ROLE_ID, 'required_role_id');
+checkConfigValue(POLICE_ROLE_ID, 'police_role_id');
+checkConfigValue(FIRE_ROLE_ID, 'fire_role_id');
+checkConfigValue(EMS_ROLE_ID, 'ems_role_id');
 
 // Function to get Discord roles of a player
 function GetDiscordRoles(discordId, callback) {
@@ -93,12 +99,33 @@ function GetPlayerIdentifiers(player) {
 }
 
 // Function to check if a player has the required role
-function CheckPlayerRole(playerId, callback) {
+function CheckPlayerRole(playerId, role, callback) {
   console.log('Checking callback type...');
   console.log('Type of callback:', typeof callback);
   if (typeof callback !== 'function') {
     console.log(`[ERROR] Invalid callback type: ${typeof callback}`);
     return;
+  }
+
+  let roleId;
+
+  switch (role) {
+    case 'main':
+      roleId = REQUIRED_ROLE_ID;
+      break;
+    case 'police':
+      roleId = POLICE_ROLE_ID;
+      break;
+    case 'fire':
+      roleId = FIRE_ROLE_ID;
+      break;
+    case 'ems':
+      roleId = EMS_ROLE_ID;
+      break;
+    default:
+      console.log(`[ERROR] Invalid role: ${role}`);
+      callback(false);
+      return;
   }
 
   console.log(`[DEBUG] Checking role for player ID: ${playerId}`);
@@ -112,7 +139,7 @@ function CheckPlayerRole(playerId, callback) {
             )}`
           );
           for (const role of roles) {
-            if (role === REQUIRED_ROLE_ID) {
+            if (role === roleId) {
               console.log(
                 `[DEBUG] Player ID: ${playerId} has the required role.`
               );
