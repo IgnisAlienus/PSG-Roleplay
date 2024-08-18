@@ -21,7 +21,7 @@ onNet('fire:changePlayerModel', (modelName) => {
 });
 
 // Handle giving the fire weapon loadout
-onNet('fire:giveWeaponLoadout', () => {
+onNet('fire:giveWeaponLoadout', async () => {
   console.log('Giving fire weapon loadout');
 
   const playerPed = PlayerPedId();
@@ -29,6 +29,9 @@ onNet('fire:giveWeaponLoadout', () => {
   // Remove all weapons
   RemoveAllPedWeapons(playerPed, true);
   console.log('All weapons removed');
+
+  // Wait for a moment before giving weapons
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
   // Weapons to be given
   const weapons = [
