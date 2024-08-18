@@ -1,4 +1,11 @@
 // resources/[roleplay]/[jobs]/police/client/main.js
+let isCop = false;
+let playerBlips = {};
+
+// Set this flag if the player is a cop
+onNet('police:setCopStatus', (status) => {
+  isCop = status;
+});
 
 // Create the blip for the police station
 const blip = AddBlipForCoord(441.84, -982.14, 30.69); // Coordinates for the downtown police station in Los Santos
@@ -67,6 +74,46 @@ setTick(() => {
       // E key
       emitNet('police:enterJobMode');
     }
+  }
+
+  if (!isCop) {
+    const playerId = PlayerId();
+    const wantedLevel = GetPlayerWantedLevel(playerId);
+
+    if (wantedLevel > 0 && !playerBlips[GetPlayerServerId(playerId)]) {
+      // Emit an event to the server to notify that this non-cop player is wanted
+      emitNet('police:playerWanted', GetPlayerServerId(playerId));
+    } else if (wantedLevel === 0 && playerBlips[GetPlayerServerId(playerId)]) {
+      // Emit an event to the server to notify that this non-cop player is no longer wanted
+      emitNet('police:playerNotWanted', GetPlayerServerId(playerId));
+    }
+  }
+});
+
+// Add a blip on the map for wanted players
+onNet('police:addWantedBlip', (wantedPlayerId, coords) => {
+  if (isCop && !playerBlips[wantedPlayerId]) {
+    // Create a blip at the wanted player's location
+    const blip = AddBlipForCoord(coords[0], coords[1], coords[2]);
+    SetBlipSprite(blip, 1); // Standard blip icon
+    SetBlipColour(blip, 1); // Red color for wanted player
+    SetBlipScale(blip, 1.0);
+    SetBlipAsShortRange(blip, false); // Blip is visible from any distance
+    BeginTextCommandSetBlipName('STRING');
+    AddTextComponentString('Wanted Player');
+    EndTextCommandSetBlipName(blip);
+
+    // Store the blip for later removal
+    playerBlips[wantedPlayerId] = blip;
+  }
+});
+
+// Remove the blip when the player is no longer wanted
+onNet('police:removeWantedBlip', (wantedPlayerId) => {
+  if (isCop && playerBlips[wantedPlayerId]) {
+    // Remove the blip from the map
+    RemoveBlip(playerBlips[wantedPlayerId]);
+    delete playerBlips[wantedPlayerId];
   }
 });
 

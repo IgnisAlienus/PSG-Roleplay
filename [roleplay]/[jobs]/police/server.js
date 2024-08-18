@@ -1,4 +1,28 @@
 // resources/[roleplay]/[jobs]/police/server/main.js
+const wantedPlayers = {};
+
+// Handle the event when a non-cop player becomes wanted
+onNet('police:playerWanted', (playerId) => {
+  if (!wantedPlayers[playerId]) {
+    // Store the player as wanted
+    wantedPlayers[playerId] = true;
+
+    // Get the player's coordinates and notify all cops
+    const playerCoords = GetEntityCoords(GetPlayerPed(playerId));
+    emitNet('police:addWantedBlip', -1, playerId, playerCoords);
+  }
+});
+
+// Handle the event when a non-cop player is no longer wanted
+onNet('police:playerNotWanted', (playerId) => {
+  if (wantedPlayers[playerId]) {
+    // Remove the player from the wanted list
+    delete wantedPlayers[playerId];
+
+    // Notify all cops to remove the blip
+    emitNet('police:removeWantedBlip', -1, playerId);
+  }
+});
 
 // Register the event for entering police job mode
 onNet('police:enterJobMode', () => {
