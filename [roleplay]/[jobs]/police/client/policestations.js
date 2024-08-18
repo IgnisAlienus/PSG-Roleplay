@@ -20,7 +20,6 @@ const policeStations = [
   { x: -447.1, y: 6010.4, z: 31.7, name: 'Paleto Bay Police Station' },
   { x: -1097.6, y: -850.9, z: 4.9, name: 'Vespucci Police Station' },
   { x: -1133.7, y: -1437.3, z: 4.9, name: 'Vespucci Beach Police Station' },
-  { x: 825.3, y: -1290.8, z: 28.2, name: 'Mission Row Police Station' },
   { x: -448.7, y: 6010.4, z: 31.7, name: 'Beaver Bush Ranger Station' },
   { x: 374.2, y: -1607.5, z: 29.3, name: 'Davis Sheriff Station' },
   { x: 642.6, y: 1.6, z: 82.8, name: 'Vinewood Police Station' },
