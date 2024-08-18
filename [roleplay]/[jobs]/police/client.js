@@ -16,7 +16,6 @@ const hologramCoords = [441.84, -982.14, 30.69];
 
 // Check if player is near the blip to enter police job mode
 setTick(() => {
-  console.log('setTick is running');
   const playerPed = PlayerPedId();
   const coords = GetEntityCoords(playerPed);
   const distance = Vdist(
@@ -69,6 +68,17 @@ setTick(() => {
       emitNet('police:enterJobMode');
     }
   }
+});
+
+onNet('police:setPoliceIgnore', (ignore) => {
+  const playerPed = PlayerPedId();
+
+  // Set wanted level to 0
+  SetPlayerWantedLevel(PlayerId(), 0, false);
+  SetPlayerWantedLevelNow(PlayerId(), false);
+
+  // Ignore or stop ignoring the player by AI police
+  SetPoliceIgnorePlayer(playerPed, ignore);
 });
 
 // Handle vehicle spawning

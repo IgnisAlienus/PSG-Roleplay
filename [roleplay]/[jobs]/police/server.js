@@ -9,9 +9,9 @@ onNet('police:enterJobMode', () => {
     source,
     'police',
     (hasRequiredRole) => {
-      if (typeof hasRequiredRole !== 'boolean') {
+      if (typeof hasRequiredRole !== 'boolean' || !hasRequiredRole) {
         console.log(
-          `[ERROR] Invalid type for hasRequiredRole: ${typeof hasRequiredRole}`
+          `[ERROR] Invalid type or role check failed for player ${source}`
         );
         emitNet('chat:addMessage', source, {
           args: ['You do not have permission to be a police officer'],
@@ -20,11 +20,13 @@ onNet('police:enterJobMode', () => {
       }
 
       console.log(
-        `[DEBUG] Emitting civilian:checkRoleResult event for Source ID: ${source}`
+        `[DEBUG] Player ${source} has the police role, entering duty mode.`
       );
       emitNet('chat:addMessage', source, {
         args: ['You are now on duty as a police officer'],
       });
+      // Prevent player from becoming wanted by AI police
+      emitNet('police:setPoliceIgnore', source, true);
     }
   );
 });
