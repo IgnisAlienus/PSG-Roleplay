@@ -1,5 +1,4 @@
 // resources/[roleplay]/[jobs]/police/client/main.js
-let onDutyAsPolice = false;
 
 // Create the blip for the police station
 const blip = AddBlipForCoord(441.84, -982.14, 30.69); // Coordinates for the downtown police station in Los Santos
@@ -69,25 +68,11 @@ setTick(() => {
       emitNet('police:enterJobMode');
     }
   }
-
-  /*   if (onDutyAsPolice) {
-    const playerId = PlayerId();
-
-    // Constantly clear wanted level
-    if (GetPlayerWantedLevel(playerId) > 0) {
-      SetPlayerWantedLevel(playerId, 0, false);
-      SetPlayerWantedLevelNow(playerId, false);
-    }
-
-    // Ensure AI police are ignoring the player
-    SetPoliceIgnorePlayer(playerPed, true);
-  } */
 });
 
 // Handle setting police ignore state
 onNet('police:setPoliceIgnore', (ignore) => {
   const playerPed = PlayerPedId();
-  onDutyAsPolice = ignore;
 
   // Set wanted level to 0
   SetPlayerWantedLevel(PlayerId(), 0, false);
@@ -95,7 +80,7 @@ onNet('police:setPoliceIgnore', (ignore) => {
   SetMaxWantedLevel(0);
 
   // Ignore or stop ignoring the player by AI police
-  SetPoliceIgnorePlayer(playerPed, ignore);
+  SetPoliceIgnorePlayer(playerPed, true);
 });
 
 // Handle vehicle spawning
