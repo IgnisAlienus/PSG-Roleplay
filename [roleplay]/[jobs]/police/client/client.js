@@ -83,11 +83,6 @@ onNet('police:changePlayerModel', (modelName) => {
       SetPlayerModel(PlayerId(), modelName);
       SetModelAsNoLongerNeeded(modelName);
       console.log(`Model ${modelName} set`);
-
-      // Add a delay before giving weapons
-      setTimeout(() => {
-        emitNet('police:giveWeaponLoadout');
-      }, 2000);
     }
   }, 500);
 });

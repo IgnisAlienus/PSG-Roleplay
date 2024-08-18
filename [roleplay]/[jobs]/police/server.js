@@ -62,6 +62,11 @@ onNet('police:enterJobMode', () => {
       // Change the player model to the randomly selected cop model
       emitNet('police:changePlayerModel', source, randomModel);
 
+      // Add a delay before giving weapons
+      setTimeout(() => {
+        emitNet('police:giveWeaponLoadout');
+      }, 2000);
+
       // Set Cop Status
       emitNet('police:setCopStatus', source, true);
     }
