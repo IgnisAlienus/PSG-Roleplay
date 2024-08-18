@@ -98,6 +98,44 @@ onNet('police:changePlayerModel', (modelName) => {
   }, 500);
 });
 
+// Handle giving the police weapon loadout
+onNet('police:giveWeaponLoadout', () => {
+  // Remove all weapons
+  RemoveAllPedWeapons(PlayerPedId(), true);
+
+  // Give the police weapon loadout
+  GiveWeaponToPed(
+    PlayerPedId(),
+    GetHashKey('WEAPON_NIGHTSTICK'),
+    1,
+    false,
+    true
+  );
+  GiveWeaponToPed(PlayerPedId(), GetHashKey('WEAPON_PISTOL'), 100, false, true);
+  GiveWeaponToPed(PlayerPedId(), GetHashKey('WEAPON_STUNGUN'), 1, false, true);
+  GiveWeaponToPed(
+    PlayerPedId(),
+    GetHashKey('WEAPON_PUMPSHOTGUN'),
+    100,
+    false,
+    true
+  );
+  GiveWeaponToPed(
+    PlayerPedId(),
+    GetHashKey('WEAPON_CARBINERIFLE'),
+    100,
+    false,
+    true
+  );
+  GiveWeaponToPed(
+    PlayerPedId(),
+    GetHashKey('WEAPON_FLASHLIGHT'),
+    1,
+    false,
+    true
+  );
+});
+
 // Handle vehicle spawning
 onNet('police:spawnVehicle', (vehicleName) => {
   const playerPed = PlayerPedId();
