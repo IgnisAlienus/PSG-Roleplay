@@ -1,30 +1,27 @@
-// Function to create a fire blip
-function createFireBlip(x, y, z, name) {
+// Function to create a hospital blip
+function createHospitalBlip(x, y, z, name) {
   const blip = AddBlipForCoord(x, y, z);
-  SetBlipSprite(blip, 436);
+  SetBlipSprite(blip, 80);
   SetBlipDisplay(blip, 4);
   SetBlipScale(blip, 1.0);
-  SetBlipColour(blip, 17);
+  SetBlipColour(blip, 1);
   SetBlipAsShortRange(blip, true);
   BeginTextCommandSetBlipName('STRING');
   AddTextComponentString(name);
   EndTextCommandSetBlipName(blip);
 }
 
-// Array of fire stations with coordinates and names
-const fireStations = [
-  { x: -368.2, y: 6118.8, z: 31.5, name: 'Paleto Bay Fire Station' },
-  { x: 1832.7, y: 3689.5, z: 34.3, name: 'Sandy Shores Fire Station' },
-  { x: -1144.7, y: -1991.1, z: 13.2, name: 'LSIA Fire Station' },
-  { x: 215.3, y: -1659.9, z: 29.3, name: 'Davis Fire Station' },
-  { x: 1200.7, y: -1461.1, z: 34.7, name: 'El Burro Heights Fire Station' },
-  { x: -2347.3, y: 3249.8, z: 32.8, name: 'Fort Zancudo Fire Station' },
-  { x: -633.5, y: -123.9, z: 39.0, name: 'Rockford Hills Fire Station' },
+// Array of hospital stations with coordinates and names
+const hopitals = [
+  { x: 300.0, y: -1396.0, z: 32.0, name: 'Central Los Santos Hospital' },
+  { x: -874.0, y: -307.0, z: 39.0, name: 'Pillbox Hill Medical Center' },
+  { x: 1839.0, y: 3672.0, z: 34.0, name: 'Sandy Shores Medical Center' },
+  { x: -246.0, y: 6330.0, z: 32.0, name: 'Paleto Bay Medical Center' },
 ];
 
-// Create blips for fire stations
-fireStations.forEach((station) => {
-  createFireBlip(station.x, station.y, station.z, station.name);
+// Create blips for hospital stations
+hopitals.forEach((station) => {
+  createHospitalBlip(station.x, station.y, station.z, station.name);
 });
 
 // Function to draw a hologram at the specified coordinates
@@ -49,7 +46,7 @@ function drawHologram(x, y, z) {
     1.5,
     0.5, // Scale (X, Y, Z)
     255,
-    165,
+    0,
     0,
     100, // Color (R, G, B, Alpha)
     false, // Bob up and down
@@ -65,20 +62,20 @@ function drawHologram(x, y, z) {
     // Display help notification
     BeginTextCommandDisplayHelp('STRING');
     AddTextComponentSubstringPlayerName(
-      'Press ~INPUT_CONTEXT~ to go on duty as a Firefighter'
+      'Press ~INPUT_CONTEXT~ to heal yourself.'
     );
     EndTextCommandDisplayHelp(0, false, true, -1);
 
     if (IsControlJustReleased(0, 38)) {
       // E key
-      emitNet('fire:enterJobMode');
+      // Heal the player
     }
   }
 }
 
-// Unified setTick function to draw holograms for all fire stations
+// Unified setTick function to draw holograms for all hopitals stations
 setTick(() => {
-  fireStations.forEach((station) => {
+  hopitals.forEach((station) => {
     drawHologram(station.x, station.y, station.z);
   });
 });
