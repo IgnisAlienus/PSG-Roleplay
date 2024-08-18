@@ -1,5 +1,32 @@
 // resources/[roleplay]/[jobs]/police/server/main.js
 
+onNet('police:requestRoleCheck', () => {
+  const source = global.source;
+
+  console.log(
+    `[DEBUG] Received police:requestRoleCheck event from Source ID: ${source}`
+  );
+
+  exports.discord_integration.CheckPlayerRole(
+    source,
+    'police',
+    (hasRequiredRole) => {
+      if (typeof hasRequiredRole !== 'boolean') {
+        console.log(
+          `[ERROR] Invalid type for hasRequiredRole: ${typeof hasRequiredRole}`
+        );
+        emitNet('police:checkRoleResult', source, false);
+        return;
+      }
+
+      console.log(
+        `[DEBUG] Emitting police:checkRoleResult event for Source ID: ${source}`
+      );
+      emitNet('police:checkRoleResult', source, hasRequiredRole);
+    }
+  );
+});
+
 // Register the event for entering police job mode
 onNet('police:enterJobMode', () => {
   const source = global.source;

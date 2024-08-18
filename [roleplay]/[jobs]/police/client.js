@@ -15,7 +15,7 @@ EndTextCommandSetBlipName(blip);
 const hologramCoords = [441.84, -982.14, 30.69];
 
 // Check if player is near the blip to enter police job mode
-setTick(() => {
+setTick(async () => {
   const playerPed = PlayerPedId();
   const coords = GetEntityCoords(playerPed);
   const distance = Vdist(
@@ -56,16 +56,32 @@ setTick(() => {
   );
 
   if (distance < 1.0) {
-    // Display help notification
-    BeginTextCommandDisplayHelp('STRING');
-    AddTextComponentSubstringPlayerName(
-      'Press ~INPUT_CONTEXT~ to enter police job mode'
-    );
-    EndTextCommandDisplayHelp(0, false, true, -1);
+    // Request Role Check and await the response
+    const hasPoliceRole = await new Promise((resolve) => {
+      emitNet('police:requestRoleCheck', (result) => {
+        resolve(result);
+      });
+    });
 
-    if (IsControlJustReleased(0, 38)) {
-      // E key
-      emitNet('police:enterJobMode');
+    if (hasPoliceRole) {
+      // Display help notification
+      BeginTextCommandDisplayHelp('STRING');
+      AddTextComponentSubstringPlayerName(
+        'Press ~INPUT_CONTEXT~ to enter police job mode'
+      );
+      EndTextCommandDisplayHelp(0, false, true, -1);
+
+      if (IsControlJustReleased(0, 38)) {
+        // E key
+        emitNet('police:enterJobMode');
+      }
+    } else {
+      // Notify player they don't have the police role
+      emitNet('chat:addMessage', -1, {
+        args: [
+          'You do not have the police role and cannot interact with this blip.',
+        ],
+      });
     }
   }
 });
