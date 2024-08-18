@@ -73,15 +73,6 @@ onNet('police:enterJobMode', () => {
   );
 });
 
-RegisterCommand(
-  'givepoliceweapons',
-  () => {
-    const source = global.source;
-    emitNet('police:giveWeaponLoadout', source);
-  },
-  false
-);
-
 // Register the command for spawning a police car
 RegisterCommand(
   'spawnpolicecar',

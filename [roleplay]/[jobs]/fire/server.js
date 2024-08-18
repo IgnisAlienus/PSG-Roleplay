@@ -38,6 +38,11 @@ onNet('fire:enterJobMode', () => {
 
       // Set Firefighter Status
       emitNet('fire:setFireStatus', source, true);
+
+      // Add a delay before giving weapons
+      setTimeout(() => {
+        emitNet('fire:giveWeaponLoadout', source);
+      }, 5000);
     }
   );
 });

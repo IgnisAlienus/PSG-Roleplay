@@ -17,11 +17,6 @@ onNet('fire:changePlayerModel', (modelName) => {
       SetPlayerModel(PlayerId(), modelName);
       SetModelAsNoLongerNeeded(modelName);
       console.log(`Model ${modelName} set`);
-
-      // Add a delay before giving weapons
-      setTimeout(() => {
-        emitNet('fire:giveWeaponLoadout');
-      }, 1000);
     }
   }, 500);
 });
@@ -41,15 +36,15 @@ onNet('fire:giveWeaponLoadout', async () => {
 
   // Weapons to be given
   const weapons = [
-    { name: 'WEAPON_FLASHLIGHT', hash: 0x8bb05fd7, ammo: 1 },
-    { name: 'WEAPON_FIREEXTINGUISHER', hash: 0x60ec506, ammo: 100 },
-    { name: 'WEAPON_FLARE', hash: 0x497facc3, ammo: 5 },
+    { name: 'WEAPON_FLASHLIGHT', ammo: 1 },
+    { name: 'WEAPON_FLARE', ammo: 5 },
+    { name: 'WEAPON_FIREEXTINGUISHER', ammo: 100 },
   ];
 
   // Give the fire weapon loadout
   weapons.forEach((weapon) => {
     const weaponHash = GetHashKey(weapon.name);
-    GiveWeaponToPed(playerPed, weapon.hash, weapon.ammo, false, true);
+    GiveWeaponToPed(playerPed, weaponHash, weapon.ammo, false, true);
     console.log(`Given ${weapon.name} with ${weapon.ammo} ammo`);
   });
 

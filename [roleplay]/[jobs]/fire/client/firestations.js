@@ -4,7 +4,7 @@ function createFireBlip(x, y, z, name) {
   SetBlipSprite(blip, 436);
   SetBlipDisplay(blip, 4);
   SetBlipScale(blip, 1.0);
-  SetBlipColour(blip, 29);
+  SetBlipColour(blip, 17);
   SetBlipAsShortRange(blip, true);
   BeginTextCommandSetBlipName('STRING');
   AddTextComponentString(name);

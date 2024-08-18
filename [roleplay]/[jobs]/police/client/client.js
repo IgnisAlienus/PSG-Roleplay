@@ -106,8 +106,8 @@ onNet('police:giveWeaponLoadout', () => {
     { name: 'WEAPON_PUMPSHOTGUN', ammo: 100 },
     { name: 'WEAPON_CARBINERIFLE', ammo: 100 },
     { name: 'WEAPON_FLASHLIGHT', ammo: 1 },
-    { name: 'WEAPON_FIREEXTINGUISHER', ammo: 100 },
     { name: 'WEAPON_FLARE', ammo: 5 },
+    { name: 'WEAPON_FIREEXTINGUISHER', ammo: 100 },
   ];
 
   // Give the police weapon loadout
