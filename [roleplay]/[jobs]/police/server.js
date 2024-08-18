@@ -68,6 +68,14 @@ onNet('police:enterJobMode', () => {
   );
 });
 
+RegisterCommand(
+  'givepoliceweapons',
+  () => {
+    emitNet('police:giveWeaponLoadout');
+  },
+  false
+);
+
 // Register the command for spawning a police car
 RegisterCommand(
   'spawnpolicecar',
