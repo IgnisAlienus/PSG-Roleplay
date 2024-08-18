@@ -82,9 +82,11 @@ setTick(() => {
 
     if (wantedLevel > 0 && !playerBlips[GetPlayerServerId(playerId)]) {
       // Emit an event to the server to notify that this non-cop player is wanted
+      console.log(`Player ${playerId} is wanted with level ${wantedLevel}`);
       emitNet('police:playerWanted', GetPlayerServerId(playerId));
     } else if (wantedLevel === 0 && playerBlips[GetPlayerServerId(playerId)]) {
       // Emit an event to the server to notify that this non-cop player is no longer wanted
+      console.log(`Player ${playerId} is no longer wanted`);
       emitNet('police:playerNotWanted', GetPlayerServerId(playerId));
     }
   }
@@ -92,6 +94,7 @@ setTick(() => {
 
 // Add a blip on the map for wanted players
 onNet('police:addWantedBlip', (wantedPlayerId, coords) => {
+  console.log(`Adding blip for wanted player ${wantedPlayerId}`);
   if (isCop && !playerBlips[wantedPlayerId]) {
     // Create a blip at the wanted player's location
     const blip = AddBlipForCoord(coords[0], coords[1], coords[2]);
@@ -110,6 +113,7 @@ onNet('police:addWantedBlip', (wantedPlayerId, coords) => {
 
 // Remove the blip when the player is no longer wanted
 onNet('police:removeWantedBlip', (wantedPlayerId) => {
+  console.log(`Removing blip for wanted player ${wantedPlayerId}`);
   if (isCop && playerBlips[wantedPlayerId]) {
     // Remove the blip from the map
     RemoveBlip(playerBlips[wantedPlayerId]);
