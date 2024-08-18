@@ -5,6 +5,7 @@ let currentlyWantedPlayers = new Set(); // Set to track currently wanted players
 
 // Set this flag if the player is a cop
 onNet('police:setCopStatus', (status) => {
+  console.log(`Setting cop status to ${status}`);
   isCop = status;
 });
 
