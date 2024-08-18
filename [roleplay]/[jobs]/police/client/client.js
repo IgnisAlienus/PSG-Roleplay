@@ -92,12 +92,12 @@ onNet('police:giveWeaponLoadout', async () => {
 
   const playerPed = PlayerPedId();
 
-  // Remove all weapons
+  /*   // Remove all weapons
   RemoveAllPedWeapons(playerPed, true);
   console.log('All weapons removed');
 
   // Wait for a moment before giving weapons
-  await new Promise((resolve) => setTimeout(resolve, 500));
+  await new Promise((resolve) => setTimeout(resolve, 500)); */
 
   // Weapons to be given
   const weapons = [
