@@ -7,7 +7,7 @@ onNet('fire:setFireStatus', (status) => {
 
 // Handle changing the player model
 onNet('fire:changePlayerModel', (modelName) => {
-  // Load the model
+  console.log(`Requesting model ${modelName}`);
   RequestModel(modelName);
   const interval = setInterval(() => {
     if (HasModelLoaded(modelName)) {
@@ -16,6 +16,12 @@ onNet('fire:changePlayerModel', (modelName) => {
       // Set the player model
       SetPlayerModel(PlayerId(), modelName);
       SetModelAsNoLongerNeeded(modelName);
+      console.log(`Model ${modelName} set`);
+
+      // Add a delay before giving weapons
+      setTimeout(() => {
+        emitNet('fire:giveWeaponLoadout');
+      }, 1000);
     }
   }, 500);
 });

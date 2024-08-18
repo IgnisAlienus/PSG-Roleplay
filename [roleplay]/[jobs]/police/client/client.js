@@ -73,7 +73,7 @@ onNet('police:setPoliceIgnore', (ignore) => {
 
 // Handle changing the player model
 onNet('police:changePlayerModel', (modelName) => {
-  // Load the model
+  console.log(`Requesting model ${modelName}`);
   RequestModel(modelName);
   const interval = setInterval(() => {
     if (HasModelLoaded(modelName)) {
@@ -82,6 +82,12 @@ onNet('police:changePlayerModel', (modelName) => {
       // Set the player model
       SetPlayerModel(PlayerId(), modelName);
       SetModelAsNoLongerNeeded(modelName);
+      console.log(`Model ${modelName} set`);
+
+      // Add a delay before giving weapons
+      setTimeout(() => {
+        emitNet('police:giveWeaponLoadout');
+      }, 1000);
     }
   }, 500);
 });
@@ -92,12 +98,12 @@ onNet('police:giveWeaponLoadout', async () => {
 
   const playerPed = PlayerPedId();
 
-  /*   // Remove all weapons
+  // Remove all weapons
   RemoveAllPedWeapons(playerPed, true);
   console.log('All weapons removed');
 
   // Wait for a moment before giving weapons
-  await new Promise((resolve) => setTimeout(resolve, 500)); */
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
   // Weapons to be given
   const weapons = [
@@ -114,7 +120,7 @@ onNet('police:giveWeaponLoadout', async () => {
   // Give the police weapon loadout
   weapons.forEach((weapon) => {
     const weaponHash = GetHashKey(weapon.name);
-    GiveWeaponToPed(playerPed, weapon.hash, weapon.ammo, false, false);
+    GiveWeaponToPed(playerPed, weaponHash, weapon.ammo, false, false);
     console.log(`Given ${weapon.name} with ${weapon.ammo} ammo`);
   });
 

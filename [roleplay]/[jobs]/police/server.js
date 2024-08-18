@@ -62,9 +62,6 @@ onNet('police:enterJobMode', () => {
       // Change the player model to the randomly selected cop model
       emitNet('police:changePlayerModel', source, randomModel);
 
-      // Give police weapon loadout
-      emitNet('police:giveWeaponLoadout', source);
-
       // Set Cop Status
       emitNet('police:setCopStatus', source, true);
     }

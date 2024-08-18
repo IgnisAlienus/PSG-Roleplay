@@ -36,9 +36,6 @@ onNet('fire:enterJobMode', () => {
       // Change the player model to the randomly selected fire model
       emitNet('fire:changePlayerModel', source, randomModel);
 
-      // Give fire weapon loadout
-      emitNet('fire:giveWeaponLoadout', source);
-
       // Set Firefighter Status
       emitNet('fire:setFireStatus', source, true);
     }
