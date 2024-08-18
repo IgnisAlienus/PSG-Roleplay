@@ -37,16 +37,16 @@ onNet('police:enterJobMode', () => {
           `[ERROR] Invalid type or role check failed for player ${source}`
         );
         emitNet('chat:addMessage', source, {
-          args: ['You do not have permission to be a police officer'],
+          args: ['You do not have permission to be a Police Officer'],
         });
         return;
       }
 
       console.log(
-        `[DEBUG] Player ${source} has the police role, entering duty mode.`
+        `[DEBUG] Player ${source} has the Police Role, entering duty mode.`
       );
       emitNet('chat:addMessage', source, {
-        args: ['You are now on duty as a police officer'],
+        args: ['You are now on duty as a Police Officer'],
       });
 
       // Notify client to prevent being wanted by AI police
