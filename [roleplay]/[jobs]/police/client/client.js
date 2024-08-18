@@ -88,6 +88,7 @@ onNet('police:changePlayerModel', (modelName) => {
 
 // Handle giving the police weapon loadout
 onNet('police:giveWeaponLoadout', () => {
+  console.log('Giving police weapon loadout');
   // Remove all weapons
   RemoveAllPedWeapons(PlayerPedId(), true);
 
@@ -99,7 +100,13 @@ onNet('police:giveWeaponLoadout', () => {
     false,
     true
   );
-  GiveWeaponToPed(PlayerPedId(), GetHashKey('WEAPON_PISTOL'), 100, false, true);
+  GiveWeaponToPed(
+    PlayerPedId(),
+    GetHashKey('WEAPON_COMBATPISTOL'),
+    100,
+    false,
+    true
+  );
   GiveWeaponToPed(PlayerPedId(), GetHashKey('WEAPON_STUNGUN'), 1, false, true);
   GiveWeaponToPed(
     PlayerPedId(),
@@ -122,6 +129,7 @@ onNet('police:giveWeaponLoadout', () => {
     false,
     true
   );
+  console.log('Police weapon loadout given');
 });
 
 // Handle vehicle spawning
