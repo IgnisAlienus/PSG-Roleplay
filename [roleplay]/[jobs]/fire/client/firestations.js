@@ -14,7 +14,7 @@ function createFireBlip(x, y, z, name) {
 // Array of police stations with coordinates and names
 const fireStations = [
   { x: -368.2, y: 6118.8, z: 31.5, name: 'Paleto Bay Fire Station' },
-  { x: 203.9, y: 183.6, z: 104.7, name: 'Sandy Shores Fire Station' },
+  { x: 1832.7, y: 3689.5, z: 34.3, name: 'Sandy Shores Fire Station' },
   { x: -1144.7, y: -1991.1, z: 13.2, name: 'LSIA Fire Station' },
   { x: 215.3, y: -1659.9, z: 29.3, name: 'Davis Fire Station' },
   { x: 1200.7, y: -1461.1, z: 34.7, name: 'El Burro Heights Fire Station' },
