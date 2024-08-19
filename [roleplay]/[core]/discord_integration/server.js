@@ -23,6 +23,8 @@ function checkConfigValue(value, name) {
 checkConfigValue(DISCORD_BOT_TOKEN, 'discord_bot_token');
 checkConfigValue(GUILD_ID, 'guild_id');
 checkConfigValue(REQUIRED_ROLE_ID, 'required_role_id');
+checkConfigValue(DEV_ROLE_ID, 'dev_role_id');
+checkConfigValue(ADMIN_ROLE_ID, 'admin_role_id');
 checkConfigValue(POLICE_ROLE_ID, 'police_role_id');
 checkConfigValue(FIRE_ROLE_ID, 'fire_role_id');
 checkConfigValue(EMS_ROLE_ID, 'ems_role_id');
@@ -112,6 +114,12 @@ function CheckPlayerRole(playerId, role, callback) {
   switch (role) {
     case 'main':
       roleId = REQUIRED_ROLE_ID;
+      break;
+    case 'dev':
+      roleId = DEV_ROLE_ID;
+      break;
+    case 'admin':
+      roleId = ADMIN_ROLE_ID;
       break;
     case 'police':
       roleId = POLICE_ROLE_ID;

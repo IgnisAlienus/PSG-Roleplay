@@ -1,10 +1,10 @@
--- resources/dev/fxmanifest.lua
+-- resources/admin/fxmanifest.lua
 fx_version 'cerulean'
 game 'gta5'
 
-name 'Dev'
+name 'Admin'
 author 'Ignis'
-description 'Dev'
+description 'Admin'
 version '1.0.0'
 
 client_script 'client.js'
