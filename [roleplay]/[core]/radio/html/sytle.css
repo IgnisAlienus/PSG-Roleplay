@@ -1,0 +1,35 @@
+body {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+#radio-container {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+button {
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: #555;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #777;
+}
+
+#channel-display, #scan-display {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
