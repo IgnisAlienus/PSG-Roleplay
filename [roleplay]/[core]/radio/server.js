@@ -41,7 +41,7 @@ function sendToWebServer(playerId, channel, voiceData) {
   const axios = require('axios');
 
   axios
-    .post('https://your-webserver.com/api/voice', {
+    .post('http://72.177.37.116/api/voice', {
       playerId,
       channel,
       voiceData,
