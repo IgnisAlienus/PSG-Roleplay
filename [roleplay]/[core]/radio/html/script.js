@@ -19,6 +19,7 @@ document.getElementById('scan-toggle').addEventListener('click', () => {
 });
 
 document.getElementById('close-radio').addEventListener('click', () => {
+  document.getElementById('radio-container').style.display = 'none';
   fetch(`https://${GetParentResourceName()}/closeRadio`, {
     method: 'POST',
   });
@@ -30,5 +31,27 @@ window.addEventListener('message', (event) => {
     document.getElementById('scan-display').innerText = `Scanning: ${
       event.data.scan ? 'On' : 'Off'
     }`;
+  }
+});
+
+// Toggle radio UI visibility with a keybind
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'F1') {
+    // Replace 'F1' with the desired key
+    const radioContainer = document.getElementById('radio-container');
+    if (
+      radioContainer.style.display === 'none' ||
+      radioContainer.style.display === ''
+    ) {
+      radioContainer.style.display = 'block';
+      fetch(`https://${GetParentResourceName()}/openRadio`, {
+        method: 'POST',
+      });
+    } else {
+      radioContainer.style.display = 'none';
+      fetch(`https://${GetParentResourceName()}/closeRadio`, {
+        method: 'POST',
+      });
+    }
   }
 });

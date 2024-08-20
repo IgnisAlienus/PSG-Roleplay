@@ -62,6 +62,11 @@ RegisterNUICallback('closeRadio', () => {
   scanMode = false;
 });
 
+RegisterNUICallback('openRadio', () => {
+  SetNuiFocus(true, true);
+  updateRadioUI();
+});
+
 function startTransmission() {
   if (!isTalking) {
     isTalking = true;
