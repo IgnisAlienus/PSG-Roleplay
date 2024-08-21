@@ -32,7 +32,6 @@ function scanChannels() {
 RegisterCommand(
   'toggleRadio',
   () => {
-    SetNuiFocus(true, true);
     SendNUIMessage({
       type: 'toggleRadio',
     });
@@ -78,7 +77,6 @@ RegisterNuiCallbackType('closeRadio', (data, cb) => {
 });
 
 RegisterCommand('radio', () => {
-  SetNuiFocus(true, true);
   updateRadioUI();
 });
 
@@ -107,12 +105,10 @@ RegisterNuiCallbackType('toggleScan', () => {
 });
 
 RegisterNuiCallbackType('closeRadio', () => {
-  SetNuiFocus(false, false);
   scanMode = false;
 });
 
 RegisterNuiCallbackType('openRadio', () => {
-  SetNuiFocus(true, true);
   updateRadioUI();
 });
 
