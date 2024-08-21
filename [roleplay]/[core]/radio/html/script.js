@@ -55,3 +55,22 @@ document.addEventListener('keydown', (event) => {
     }
   }
 });
+
+// Add these lines to script.js
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'N') {
+    // Replace 'N' with the desired key for push-to-talk
+    fetch(`https://${GetParentResourceName()}/startTransmission`, {
+      method: 'POST',
+    });
+  }
+});
+
+document.addEventListener('keyup', (event) => {
+  if (event.key === 'N') {
+    // Replace 'N' with the desired key for push-to-talk
+    fetch(`https://${GetParentResourceName()}/stopTransmission`, {
+      method: 'POST',
+    });
+  }
+});

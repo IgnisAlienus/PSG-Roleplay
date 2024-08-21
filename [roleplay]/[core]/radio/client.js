@@ -81,22 +81,6 @@ function stopTransmission() {
   }
 }
 
-// Listen for key press to start transmission
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'N') {
-    // Replace 'N' with the desired key for push-to-talk
-    startTransmission();
-  }
-});
-
-// Listen for key release to stop transmission
-document.addEventListener('keyup', (event) => {
-  if (event.key === 'N') {
-    // Replace 'N' with the desired key for push-to-talk
-    stopTransmission();
-  }
-});
-
 // Use an event listener to receive voice data from the server
 onNet('radio:receive', (data) => {
   // Logic to play received voice data goes here
