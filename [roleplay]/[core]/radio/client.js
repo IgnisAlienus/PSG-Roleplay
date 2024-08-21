@@ -67,12 +67,12 @@ RegisterKeyMapping('startTransmission', 'Start Transmission', 'keyboard', 'N');
 RegisterKeyMapping('stopTransmission', 'Stop Transmission', 'keyboard', 'N');
 
 // Handle NUI callbacks
-RegisterNUICallback('openRadio', (data, cb) => {
+RegisterNuiCallbackType('openRadio', (data, cb) => {
   // Handle opening the radio
   cb('ok');
 });
 
-RegisterNUICallback('closeRadio', (data, cb) => {
+RegisterNuiCallbackType('closeRadio', (data, cb) => {
   // Handle closing the radio
   cb('ok');
 });
