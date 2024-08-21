@@ -33,12 +33,7 @@ RegisterCommand('radio', () => {
   updateRadioUI();
 });
 
-// Register the callback types
-RegisterNuiCallbackType('changeChannel');
-RegisterNuiCallbackType('toggleScan');
-RegisterNuiCallbackType('closeRadio');
-
-RegisterNUICallback('changeChannel', (data) => {
+RegisterNuiCallbackType('changeChannel', (data) => {
   let previousChannel = radioChannels[currentChannelIndex];
   currentChannelIndex =
     data.direction === 'next'
@@ -52,7 +47,7 @@ RegisterNUICallback('changeChannel', (data) => {
   emitNet('radio:changeChannel', previousChannel, newChannel);
 });
 
-RegisterNUICallback('toggleScan', () => {
+RegisterNuiCallbackType('toggleScan', () => {
   scanMode = !scanMode;
   if (scanMode) {
     scanChannels();
@@ -62,12 +57,12 @@ RegisterNUICallback('toggleScan', () => {
   updateRadioUI();
 });
 
-RegisterNUICallback('closeRadio', () => {
+RegisterNuiCallbackType('closeRadio', () => {
   SetNuiFocus(false, false);
   scanMode = false;
 });
 
-RegisterNUICallback('openRadio', () => {
+RegisterNuiCallbackType('openRadio', () => {
   SetNuiFocus(true, true);
   updateRadioUI();
 });
