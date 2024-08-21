@@ -116,6 +116,9 @@ function startTransmission() {
   if (!isTalking) {
     isTalking = true;
     emitNet('radio:startTransmission', radioChannels[currentChannelIndex]);
+    SendNUIMessage({
+      type: 'transmissionStart',
+    });
   }
 }
 
@@ -123,6 +126,9 @@ function stopTransmission() {
   if (isTalking) {
     isTalking = false;
     emitNet('radio:endTransmission');
+    SendNUIMessage({
+      type: 'transmissionEnd',
+    });
   }
 }
 
@@ -130,4 +136,12 @@ function stopTransmission() {
 onNet('radio:receive', (data) => {
   // Logic to play received voice data goes here
   console.log(`Receiving transmission from channel ${data.channel}`);
+  SendNUIMessage({
+    type: 'transmissionStart',
+  });
+  setTimeout(() => {
+    SendNUIMessage({
+      type: 'transmissionEnd',
+    });
+  }, data.duration || 1000); // Assuming data.duration is the duration of the transmission
 });

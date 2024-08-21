@@ -31,11 +31,7 @@ window.addEventListener('message', (event) => {
     document.getElementById('scan-display').innerText = `Scanning: ${
       event.data.scan ? 'On' : 'Off'
     }`;
-  }
-});
-
-window.addEventListener('message', (event) => {
-  if (event.data.type === 'toggleRadio') {
+  } else if (event.data.type === 'toggleRadio') {
     const radioContainer = document.getElementById('radio-container');
     if (
       radioContainer.style.display === 'none' ||
@@ -55,9 +51,19 @@ window.addEventListener('message', (event) => {
     fetch(`https://${GetParentResourceName()}/startTransmission`, {
       method: 'POST',
     });
+    document.getElementById('transmission-status').style.backgroundColor =
+      'green';
   } else if (event.data.type === 'stopTransmission') {
     fetch(`https://${GetParentResourceName()}/stopTransmission`, {
       method: 'POST',
     });
+    document.getElementById('transmission-status').style.backgroundColor =
+      'transparent';
+  } else if (event.data.type === 'transmissionStart') {
+    document.getElementById('transmission-status').style.backgroundColor =
+      'red';
+  } else if (event.data.type === 'transmissionEnd') {
+    document.getElementById('transmission-status').style.backgroundColor =
+      'transparent';
   }
 });
