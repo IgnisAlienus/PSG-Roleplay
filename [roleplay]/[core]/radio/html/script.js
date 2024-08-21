@@ -34,10 +34,8 @@ window.addEventListener('message', (event) => {
   }
 });
 
-// Toggle radio UI visibility with a keybind
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'F1') {
-    // Replace 'F1' with the desired key
+window.addEventListener('message', (event) => {
+  if (event.data.type === 'toggleRadio') {
     const radioContainer = document.getElementById('radio-container');
     if (
       radioContainer.style.display === 'none' ||
@@ -53,22 +51,11 @@ document.addEventListener('keydown', (event) => {
         method: 'POST',
       });
     }
-  }
-});
-
-// Add these lines to script.js
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'N') {
-    // Replace 'N' with the desired key for push-to-talk
+  } else if (event.data.type === 'startTransmission') {
     fetch(`https://${GetParentResourceName()}/startTransmission`, {
       method: 'POST',
     });
-  }
-});
-
-document.addEventListener('keyup', (event) => {
-  if (event.key === 'N') {
-    // Replace 'N' with the desired key for push-to-talk
+  } else if (event.data.type === 'stopTransmission') {
     fetch(`https://${GetParentResourceName()}/stopTransmission`, {
       method: 'POST',
     });

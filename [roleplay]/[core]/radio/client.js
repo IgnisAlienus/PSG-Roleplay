@@ -28,6 +28,55 @@ function scanChannels() {
   }, 1000);
 }
 
+// Register the F1 keybind to toggle the radio UI
+RegisterCommand(
+  'toggleRadio',
+  () => {
+    SetNuiFocus(true, true);
+    SendNUIMessage({
+      type: 'toggleRadio',
+    });
+  },
+  false
+);
+
+RegisterKeyMapping('toggleRadio', 'Toggle Radio', 'keyboard', 'F1');
+
+// Register the N keybind for push-to-talk
+RegisterCommand(
+  'startTransmission',
+  () => {
+    SendNUIMessage({
+      type: 'startTransmission',
+    });
+  },
+  false
+);
+
+RegisterCommand(
+  'stopTransmission',
+  () => {
+    SendNUIMessage({
+      type: 'stopTransmission',
+    });
+  },
+  false
+);
+
+RegisterKeyMapping('startTransmission', 'Start Transmission', 'keyboard', 'N');
+RegisterKeyMapping('stopTransmission', 'Stop Transmission', 'keyboard', 'N');
+
+// Handle NUI callbacks
+RegisterNUICallback('openRadio', (data, cb) => {
+  // Handle opening the radio
+  cb('ok');
+});
+
+RegisterNUICallback('closeRadio', (data, cb) => {
+  // Handle closing the radio
+  cb('ok');
+});
+
 RegisterCommand('radio', () => {
   SetNuiFocus(true, true);
   updateRadioUI();
