@@ -40,6 +40,8 @@ RegisterCommand(
 );
 
 RegisterKeyMapping('toggleRadio', 'Toggle Radio', 'keyboard', 'F1');
+RegisterKeyMapping('startTransmission', 'Start Transmission', 'keyboard', 'N');
+RegisterKeyMapping('stopTransmission', 'Stop Transmission', 'keyboard', 'N');
 
 // Register the N keybind for push-to-talk
 RegisterCommand(
@@ -61,9 +63,6 @@ RegisterCommand(
   },
   false
 );
-
-RegisterKeyMapping('startTransmission', 'Start Transmission', 'keyboard', 'N');
-RegisterKeyMapping('stopTransmission', 'Stop Transmission', 'keyboard', 'N');
 
 // Handle NUI callbacks
 RegisterNuiCallbackType('openRadio', (data, cb) => {
