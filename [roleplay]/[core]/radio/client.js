@@ -124,16 +124,3 @@ onNet('radio:receive', (data) => {
     });
   }, data.duration || 1000); // Assuming data.duration is the duration of the transmission
 });
-
-// Add event listeners for keydown and keyup events
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'N' && !event.repeat) {
-    startTransmission();
-  }
-});
-
-document.addEventListener('keyup', (event) => {
-  if (event.key === 'N') {
-    stopTransmission();
-  }
-});
