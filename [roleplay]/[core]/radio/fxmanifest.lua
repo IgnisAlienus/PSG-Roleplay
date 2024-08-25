@@ -6,13 +6,16 @@ author 'Ignis'
 description 'Emergency Services Radio'
 version '1.0.0'
 
-server_script 'server.js'
-client_script 'client.js'
+client_scripts {
+    'client/main.js'
+}
 
-ui_page 'html/radio.html'
+server_scripts {
+    'server/main.js'
+}
 
 files {
-    'html/radio.html',
-    'html/style.css',
-    'html/script.js',
+    'client/index.html'
 }
+
+ui_page 'client/index.html'
