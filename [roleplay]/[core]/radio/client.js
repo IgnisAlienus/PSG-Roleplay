@@ -47,6 +47,7 @@ RegisterKeyMapping('stopTransmission', 'Stop Transmission', 'keyboard', 'N');
 RegisterCommand(
   'startTransmission',
   () => {
+    console.log('Starting transmission...');
     SendNUIMessage({
       type: 'startTransmission',
     });
@@ -57,6 +58,7 @@ RegisterCommand(
 RegisterCommand(
   'stopTransmission',
   () => {
+    console.log('Stopping transmission...');
     SendNUIMessage({
       type: 'stopTransmission',
     });
