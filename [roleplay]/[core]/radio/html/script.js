@@ -25,23 +25,6 @@ document.getElementById('close-radio').addEventListener('click', () => {
   });
 });
 
-// Add event listeners for keydown and keyup events
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'N' && !event.repeat) {
-    fetch(`https://${GetParentResourceName()}/startTransmission`, {
-      method: 'POST',
-    });
-  }
-});
-
-document.addEventListener('keyup', (event) => {
-  if (event.key === 'N') {
-    fetch(`https://${GetParentResourceName()}/stopTransmission`, {
-      method: 'POST',
-    });
-  }
-});
-
 window.addEventListener('message', (event) => {
   if (event.data.type === 'updateRadio') {
     document.getElementById('channel-display').innerText = event.data.channel;

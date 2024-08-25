@@ -41,8 +41,17 @@ RegisterCommand(
 
 RegisterKeyMapping('toggleRadio', 'Toggle Radio', 'keyboard', 'F1');
 
-// Register the N keybind for push-to-talk
-RegisterKeyMapping('startTransmission', 'Start Transmission', 'keyboard', 'N');
+// Detect N key press and release for transmission
+setTick(() => {
+  if (IsControlJustPressed(0, 249)) {
+    // 249 is the control code for the N key
+    console.log('Starting transmission...');
+    startTransmission();
+  } else if (IsControlJustReleased(0, 249)) {
+    console.log('Stopping transmission...');
+    stopTransmission();
+  }
+});
 
 // Handle NUI callbacks
 RegisterNuiCallbackType('openRadio', (data, cb) => {
