@@ -40,27 +40,9 @@ RegisterCommand(
 );
 
 RegisterKeyMapping('toggleRadio', 'Toggle Radio', 'keyboard', 'F1');
-RegisterKeyMapping('startTransmission', 'Start Transmission', 'keyboard', 'N');
-RegisterKeyMapping('stopTransmission', 'Stop Transmission', 'keyboard', 'N');
 
 // Register the N keybind for push-to-talk
-RegisterCommand(
-  'startTransmission',
-  () => {
-    console.log('Starting transmission...');
-    startTransmission();
-  },
-  false
-);
-
-RegisterCommand(
-  'stopTransmission',
-  () => {
-    console.log('Stopping transmission...');
-    stopTransmission();
-  },
-  false
-);
+RegisterKeyMapping('startTransmission', 'Start Transmission', 'keyboard', 'N');
 
 // Handle NUI callbacks
 RegisterNuiCallbackType('openRadio', (data, cb) => {
@@ -141,4 +123,17 @@ onNet('radio:receive', (data) => {
       type: 'transmissionEnd',
     });
   }, data.duration || 1000); // Assuming data.duration is the duration of the transmission
+});
+
+// Add event listeners for keydown and keyup events
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'N' && !event.repeat) {
+    startTransmission();
+  }
+});
+
+document.addEventListener('keyup', (event) => {
+  if (event.key === 'N') {
+    stopTransmission();
+  }
 });
