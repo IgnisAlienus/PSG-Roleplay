@@ -49,12 +49,19 @@ onNet('radio:transmit', (channel, voiceData) => {
 function sendToWebServer(playerId, channel, voiceData) {
   const axios = require('axios');
 
+  console.log('Sending voice data to web server:', {
+    playerId,
+    channel,
+    voiceData,
+  });
+
   axios
     .post('http://72.177.37.116/api/voice', {
       playerId,
       channel,
       voiceData,
     })
+    .then(() => console.log('Voice data sent successfully'))
     .catch((err) =>
       console.error('Error sending voice data to web server:', err)
     );
