@@ -48,9 +48,7 @@ RegisterCommand(
   'startTransmission',
   () => {
     console.log('Starting transmission...');
-    SendNUIMessage({
-      type: 'startTransmission',
-    });
+    startTransmission();
   },
   false
 );
@@ -59,9 +57,7 @@ RegisterCommand(
   'stopTransmission',
   () => {
     console.log('Stopping transmission...');
-    SendNUIMessage({
-      type: 'stopTransmission',
-    });
+    stopTransmission();
   },
   false
 );

@@ -1,14 +1,8 @@
-let playersInChannels = {};
+const playersInChannels = {};
 
-onNet('radio:changeChannel', (previousChannel, newChannel) => {
+// Existing code to handle player joining a channel
+onNet('radio:joinChannel', (newChannel) => {
   let playerId = source;
-
-  // Remove player from the previous channel
-  if (previousChannel && playersInChannels[previousChannel]) {
-    playersInChannels[previousChannel] = playersInChannels[
-      previousChannel
-    ].filter((id) => id !== playerId);
-  }
 
   // Add player to the new channel
   if (!playersInChannels[newChannel]) {
@@ -17,6 +11,21 @@ onNet('radio:changeChannel', (previousChannel, newChannel) => {
   playersInChannels[newChannel].push(playerId);
 });
 
+// Handle start of transmission
+onNet('radio:startTransmission', (channel) => {
+  let playerId = source;
+  // Logic to handle the start of transmission
+  console.log(`Player ${playerId} started transmitting on ${channel}`);
+});
+
+// Handle end of transmission
+onNet('radio:endTransmission', () => {
+  let playerId = source;
+  // Logic to handle the end of transmission
+  console.log(`Player ${playerId} stopped transmitting`);
+});
+
+// Handle voice data transmission
 onNet('radio:transmit', (channel, voiceData) => {
   let playerId = source;
 
