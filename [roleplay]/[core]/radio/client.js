@@ -38,7 +38,16 @@ setTick(() => {
   if (currentChannel !== null && IsControlJustPressed(0, 249)) {
     // Push-to-talk key (N by default)
     const playerName = GetPlayerName(PlayerId());
-    const message = `${playerName}: ${Math.random().toString(36).substring(7)}`; // Replace with actual voice data
-    emitNet('radio:sendMessage', currentChannel, message);
+    const voiceChannel = `radio_channel_${currentChannel}`;
+
+    // Start transmitting voice data
+    NetworkSetVoiceChannel(voiceChannel);
+    NetworkSetTalkerProximity(0.0); // Set to 0.0 to transmit to all players in the channel
+
+    console.log(`${playerName} is talking on channel ${currentChannel}`);
+  } else if (currentChannel !== null && IsControlJustReleased(0, 249)) {
+    // Stop transmitting voice data
+    NetworkClearVoiceChannel();
+    console.log(`Stopped talking on channel ${currentChannel}`);
   }
 });
