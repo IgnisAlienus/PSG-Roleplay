@@ -1,55 +1,44 @@
-let currentChannel = 1;
-let isPTTActive = false;
+let currentChannel = null;
 
-// Set up the radio channels and UI
-function setupRadio() {
-  // Create an event listener for the PTT button
-  document.addEventListener('keydown', (event) => {
-    if (event.code === 'KeyN') {
-      isPTTActive = true;
-      emitRadioUpdate(); // Notify other players that you're talking
+RegisterCommand(
+  'radio',
+  (source, args) => {
+    const channel = parseInt(args[0]);
+    if (isNaN(channel)) {
+      console.log('Invalid channel');
+      return;
     }
-  });
 
-  document.addEventListener('keyup', (event) => {
-    if (event.code === 'KeyN') {
-      isPTTActive = false;
-      emitRadioUpdate(); // Notify other players that you're not talking
+    currentChannel = channel;
+    emitNet('radio:joinChannel', channel);
+    console.log(`Joined radio channel ${channel}`);
+  },
+  false
+);
+
+RegisterCommand(
+  'leaveradio',
+  () => {
+    if (currentChannel !== null) {
+      emitNet('radio:leaveChannel', currentChannel);
+      console.log(`Left radio channel ${currentChannel}`);
+      currentChannel = null;
+    } else {
+      console.log('Not in any radio channel');
     }
-  });
+  },
+  false
+);
 
-  // Add code to update UI
-  updateUI();
-}
-
-function emitRadioUpdate() {
-  // Emit an event to the server to update the radio status
-  emitNet('radio:update', {
-    channel: currentChannel,
-    talking: isPTTActive,
-  });
-}
-
-function updateUI() {
-  // Example data object to be sent to the UI
-  const uiData = {
-    channel: currentChannel,
-    talking: isPTTActive,
-  };
-
-  // Send data to the UI via `SendNUIMessage`
-  SendNuiMessage(
-    JSON.stringify({
-      type: 'radio:update',
-      ...uiData,
-    })
-  );
-}
-
-// Event handler for receiving radio updates
-onNet('radio:update', (data) => {
-  updateUIWithData(data); // Update the UI with the new data
+onNet('radio:receiveMessage', (message) => {
+  console.log(`Radio message: ${message}`);
 });
 
-// Call setup on resource start
-setupRadio();
+setTick(() => {
+  if (currentChannel !== null && IsControlJustPressed(0, 249)) {
+    // Push-to-talk key (N by default)
+    const playerName = GetPlayerName(PlayerId());
+    const message = `${playerName}: ${Math.random().toString(36).substring(7)}`; // Replace with actual voice data
+    emitNet('radio:sendMessage', currentChannel, message);
+  }
+});
