@@ -19,7 +19,3 @@ files {
     'html/ui.js',
     'html/ui.css'
 }
-
-dependencies {
-    'screenshot-basic',  -- For capturing UI screenshots (if needed)
-}
