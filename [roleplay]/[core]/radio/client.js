@@ -31,8 +31,19 @@ function emitRadioUpdate() {
 }
 
 function updateUI() {
-  // Function to update the radio UI
-  // This would involve sending data to the UI HTML
+  // Example data object to be sent to the UI
+  const uiData = {
+    channel: currentChannel,
+    talking: isPTTActive,
+  };
+
+  // Send data to the UI via `SendNUIMessage`
+  SendNuiMessage(
+    JSON.stringify({
+      type: 'radio:update',
+      ...uiData,
+    })
+  );
 }
 
 // Event handler for receiving radio updates
