@@ -1,21 +1,22 @@
 fx_version 'cerulean'
 game 'gta5'
 
-author 'Andrew Hunt'
-description 'Police Radio System with Real-Time Communications'
+author 'Your Name'
+description 'Police Radio System'
+version '1.0.0'
 
 client_scripts {
-    'client.js'
+    'client/client.js'
 }
 
 server_scripts {
-    'server.js'
+    'server/server.js'
 }
 
-ui_page 'html/ui.html'
+ui_page 'client/ui.html'
 
 files {
-    'html/ui.html',
-    'html/ui.js',
-    'html/ui.css'
+    'client/ui.html',
+    'client/ui.css',
+    'client/ui.js'
 }

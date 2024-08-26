@@ -1,0 +1,10 @@
+#radio-display {
+    position: absolute;
+    bottom: 10%;
+    left: 5%;
+    width: 90%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
