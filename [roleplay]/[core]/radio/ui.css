@@ -1,0 +1,18 @@
+#radio-ui {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#radio-ui h1 {
+    margin: 0;
+    font-size: 16px;
+}
+
+#channel-info, #status-info {
+    margin: 5px 0;
+}

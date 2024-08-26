@@ -1,22 +1,23 @@
 fx_version 'cerulean'
 game 'gta5'
 
-author 'Your Name'
-description 'Police Radio System'
+-- Resource metadata
+name 'Radio'
+author 'Ignis'
+description 'Radio'
 version '1.0.0'
 
-client_scripts {
-    'client/client.js'
-}
+-- Scripts to be loaded
+client_script 'client.js'
+server_script 'server.js'
 
-server_scripts {
-    'server/server.js'
-}
-
-ui_page 'client/ui.html'
+-- UI Files
+ui_page 'ui.html'
 
 files {
-    'client/ui.html',
-    'client/ui.css',
-    'client/ui.js'
+    'ui.html',
+    'ui.js',
+    'ui.css'
 }
+
+
