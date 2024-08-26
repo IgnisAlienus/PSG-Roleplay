@@ -1,21 +1,25 @@
 fx_version 'cerulean'
 game 'gta5'
 
-name 'Radio'
-author 'Ignis'
-description 'Emergency Services Radio'
-version '1.0.0'
+author 'Andrew Hunt'
+description 'Police Radio System with Real-Time Communications'
 
 client_scripts {
-    'client/main.js'
+    'client.js'
 }
 
 server_scripts {
-    'server/main.js'
+    'server.js'
 }
+
+ui_page 'html/ui.html'
 
 files {
-    'client/index.html'
+    'html/ui.html',
+    'html/ui.js',
+    'html/ui.css'
 }
 
-ui_page 'client/index.html'
+dependencies {
+    'screenshot-basic',  -- For capturing UI screenshots (if needed)
+}
