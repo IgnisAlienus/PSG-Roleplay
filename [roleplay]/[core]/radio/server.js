@@ -15,10 +15,10 @@ function broadcastVoiceChange(source, channelIdx, state) {
         channelIdx,
         state
       );
-      if (state === 'joined') {
-        emitNet('rxStatus', clientInChannel, true); // Show RX indicator
-      } else if (state === 'left') {
-        emitNet('rxStatus', clientInChannel, false); // Hide RX indicator
+      if (state === 'joined' && clientInChannel !== source) {
+        emitNet('rxStatus', clientInChannel, true); // Show RX indicator for other clients
+      } else if (state === 'left' && clientInChannel !== source) {
+        emitNet('rxStatus', clientInChannel, false); // Hide RX indicator for other clients
       }
     });
   }
