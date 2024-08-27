@@ -1,4 +1,5 @@
 const verifyButton = document.getElementById('verify-btn');
+const leaveButton = document.getElementById('leave-btn');
 const messageElement = document.getElementById('message');
 
 // Function to show the UI
@@ -47,6 +48,28 @@ verifyButton.addEventListener('click', () => {
       console.error('[ERROR] Error during role verification:', error);
       messageElement.textContent =
         'An error occurred while verifying roles. Please try again later.';
+    });
+});
+
+leaveButton.addEventListener('click', () => {
+  fetch(`https://${GetParentResourceName()}/leaveServer`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+  })
+    .then(() => {
+      console.log('[DEBUG] Player requested to leave the server.');
+      messageElement.textContent = 'You have left the server.';
+      setTimeout(() => {
+        hideUI();
+        window.location.href = 'about:blank';
+      }, 1000);
+    })
+    .catch((error) => {
+      console.error('[ERROR] Error during leave server request:', error);
+      messageElement.textContent =
+        'An error occurred while leaving the server. Please try again later.';
     });
 });
 
