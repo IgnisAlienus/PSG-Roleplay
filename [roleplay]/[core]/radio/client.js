@@ -1,4 +1,5 @@
 let currentChannel = null;
+let isTransmitting = false;
 
 RegisterCommand(
   'radio',
@@ -45,7 +46,11 @@ onNet('radio:playback', (message) => {
 });
 
 setTick(() => {
-  if (currentChannel !== null && IsControlJustPressed(0, 249)) {
+  if (
+    currentChannel !== null &&
+    IsControlJustPressed(0, 249) &&
+    !isTransmitting
+  ) {
     // Push-to-talk key (N by default)
     const playerName = GetPlayerName(PlayerId());
     const voiceChannel = `radio_channel_${currentChannel}`;
@@ -61,7 +66,12 @@ setTick(() => {
 
     // Emit start transmission message to the server
     emitNet('radio:startTransmission', currentChannel, playerName);
-  } else if (currentChannel !== null && IsControlJustReleased(0, 249)) {
+    isTransmitting = true;
+  } else if (
+    currentChannel !== null &&
+    IsControlJustReleased(0, 249) &&
+    isTransmitting
+  ) {
     // Stop transmitting voice data
     NetworkClearVoiceChannel();
     console.log(`Stopped talking on channel ${currentChannel}`);
@@ -71,5 +81,6 @@ setTick(() => {
 
     // Emit stop transmission message to the server
     emitNet('radio:stopTransmission', currentChannel);
+    isTransmitting = false;
   }
 });
