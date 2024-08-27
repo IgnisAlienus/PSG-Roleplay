@@ -9,8 +9,14 @@ RequestScriptAudioBank('sounds/radio_sounds', false);
 function playCustomSound(soundName) {
   console.log(`Attempting to play sound: ${soundName}`);
   const soundId = GetSoundId();
+  if (soundId === -1) {
+    console.error('Failed to get sound ID');
+    return;
+  }
+  console.log(`Playing sound with ID: ${soundId}`);
   PlaySoundFrontend(soundId, soundName, 'radio_sounds', true);
   ReleaseSoundId(soundId);
+  console.log(`Sound ${soundName} played and released`);
 }
 
 // Define the panic action
