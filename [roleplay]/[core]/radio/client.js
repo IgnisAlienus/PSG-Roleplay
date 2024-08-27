@@ -7,7 +7,10 @@ RequestScriptAudioBank('sounds/radio_sounds', false);
 
 // Example of playing a custom sound
 function playCustomSound(soundName) {
-  PlaySoundFrontend(-1, soundName, 'radio_sounds', true);
+  console.log(`Attempting to play sound: ${soundName}`);
+  const soundId = GetSoundId();
+  PlaySoundFrontend(soundId, soundName, 'radio_sounds', true);
+  ReleaseSoundId(soundId);
 }
 
 // Define the panic action
