@@ -40,20 +40,22 @@ let currentBank = 1;
 const maxChannel = 10; // Define maximum channel number
 const maxBank = 5; // Define maximum bank number
 
-function switchChannel(direction) {
-  currentChannel += direction;
-  if (currentChannel < 1) currentChannel = 1;
-  if (currentChannel > maxChannel) currentChannel = maxChannel; // Enforce maximum channel number
-  emitNet('switchChannel', currentChannel);
-  PlaySoundFrontend(-1, 'NAV_UP_DOWN', 'HUD_FRONTEND_DEFAULT_SOUNDSET', true); // Play channel switch sound effect
-}
-
 function switchBank(direction) {
   currentBank += direction;
   if (currentBank < 1) currentBank = 1;
   if (currentBank > maxBank) currentBank = maxBank; // Enforce maximum bank number
   emitNet('switchBank', currentBank);
   PlaySoundFrontend(-1, 'NAV_UP_DOWN', 'HUD_FRONTEND_DEFAULT_SOUNDSET', true); // Play bank switch sound effect
+  updateRadioUI(); // Update the radio UI
+}
+
+function switchChannel(direction) {
+  currentChannel += direction;
+  if (currentChannel < 1) currentChannel = 1;
+  if (currentChannel > maxChannel) currentChannel = maxChannel; // Enforce maximum channel number
+  emitNet('switchChannel', currentChannel);
+  PlaySoundFrontend(-1, 'NAV_UP_DOWN', 'HUD_FRONTEND_DEFAULT_SOUNDSET', true); // Play channel switch sound effect
+  updateRadioUI(); // Update the radio UI
 }
 
 RegisterCommand('switchChannelLeft', () => switchChannel(-1), false);
