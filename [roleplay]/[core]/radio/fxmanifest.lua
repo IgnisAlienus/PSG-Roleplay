@@ -6,9 +6,9 @@ description 'Police Radio for FiveM'
 version '1.0.0'
 
 client_scripts {
-    'client.js'
+    'client.lua'
 }
 
 server_scripts {
-    'server.js'
+    'server.lua'
 }
