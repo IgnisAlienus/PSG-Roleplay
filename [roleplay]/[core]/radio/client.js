@@ -3,16 +3,6 @@ let panicPressCount = 0;
 let panicTimer = null;
 let pttPressStartTime = null;
 
-console.log('Requesting sound bank: sounds');
-const soundBankLoaded = RequestScriptAudioBank('sounds', false);
-console.log(`Sound bank loaded: ${soundBankLoaded}`);
-if (!soundBankLoaded) {
-  console.error('Failed to load sound bank: sounds');
-} else {
-  console.log('Sound bank loaded successfully: sounds');
-}
-
-// Example of playing a custom sound
 function playCustomSound(soundName) {
   console.log(`Attempting to play sound: ${soundName}`);
   const soundId = GetSoundId();
@@ -21,7 +11,7 @@ function playCustomSound(soundName) {
     return;
   }
   console.log(`Playing sound with ID: ${soundId}`);
-  PlaySoundFrontend(soundId, soundName, 'sounds', true);
+  PlaySoundFrontend(soundId, soundName, '', true);
   ReleaseSoundId(soundId);
   console.log(`Sound ${soundName} played and released`);
 }
