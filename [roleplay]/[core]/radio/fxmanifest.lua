@@ -12,5 +12,6 @@ server_scripts {
 ui_page 'radio.html'
 
 files {
-    'radio.html'
+    'radio.html',
+    'sounds/*.wav'
 }

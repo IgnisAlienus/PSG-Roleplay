@@ -1,4 +1,21 @@
 let isPttPressed = false;
+let panicPressCount = 0;
+let panicTimer = null;
+
+// Load custom sound bank
+RequestScriptAudioBank('sounds/radio_sounds', false);
+
+// Example of playing a custom sound
+function playCustomSound(soundName) {
+  PlaySoundFrontend(-1, soundName, 'radio_sounds', true);
+}
+
+// Define the panic action
+function triggerPanic() {
+  console.log('Panic button activated!');
+  // Add any additional panic actions here, e.g., notify other players, send an alert, etc.
+  emitNet('playSoundForAll', 'panic');
+}
 
 // Register event listener for "onPlayerChangeVoiceChannels"
 onNet('onPlayerChangeVoiceChannels', (clients, channel, state) => {
@@ -45,7 +62,7 @@ function switchBank(direction) {
   if (currentBank < 1) currentBank = 1;
   if (currentBank > maxBank) currentBank = maxBank; // Enforce maximum bank number
   emitNet('switchBank', currentBank);
-  PlaySoundFrontend(-1, 'NAV_UP_DOWN', 'HUD_FRONTEND_DEFAULT_SOUNDSET', true); // Play bank switch sound effect
+  playCustomSound('button');
   updateRadioUI(); // Update the radio UI
 }
 
@@ -54,7 +71,7 @@ function switchChannel(direction) {
   if (currentChannel < 1) currentChannel = 1;
   if (currentChannel > maxChannel) currentChannel = maxChannel; // Enforce maximum channel number
   emitNet('switchChannel', currentChannel);
-  PlaySoundFrontend(-1, 'NAV_UP_DOWN', 'HUD_FRONTEND_DEFAULT_SOUNDSET', true); // Play channel switch sound effect
+  playCustomSound('button');
   updateRadioUI(); // Update the radio UI
 }
 
@@ -83,16 +100,31 @@ setTick(() => {
   if (IsControlPressed(0, 249)) {
     if (!isPttPressed) {
       isPttPressed = true;
-      PlaySoundFrontend(-1, 'Start_Squelch', 'CB_RADIO_SFX', true); // Play keyup sound effect
+      playCustomSound('keyup'); // Play custom keyup sound effect
       NetworkSetTalkerProximity(0.0); // Set to 0.0 to talk to all players in the channel
       SendNUIMessage({ type: 'txStatus', status: true }); // Show TX indicator
     }
   } else {
     if (isPttPressed) {
       isPttPressed = false;
-      PlaySoundFrontend(-1, 'End_Squelch', 'CB_RADIO_SFX', true); // Play tx finished sound effect
+      playCustomSound('outro'); // Play custom tx finished sound effect
       NetworkSetTalkerProximity(-1.0); // Set to -1.0 to disable talking
       SendNUIMessage({ type: 'txStatus', status: false }); // Hide TX indicator
+    }
+  }
+
+  // Panic button logic
+  if (IsControlJustPressed(0, 249)) {
+    // N key
+    panicPressCount++;
+    if (panicPressCount === 1) {
+      panicTimer = setTimeout(() => {
+        panicPressCount = 0;
+      }, 1000); // Reset counter after 1 second
+    } else if (panicPressCount === 3) {
+      clearTimeout(panicTimer);
+      panicPressCount = 0;
+      triggerPanic(); // Trigger panic action
     }
   }
 });
