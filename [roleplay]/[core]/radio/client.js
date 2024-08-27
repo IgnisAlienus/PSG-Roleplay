@@ -3,10 +3,13 @@ let panicPressCount = 0;
 let panicTimer = null;
 let pttPressStartTime = null;
 
-// Load custom sound bank
+console.log('Requesting sound bank: sounds');
 const soundBankLoaded = RequestScriptAudioBank('sounds', false);
+console.log(`Sound bank loaded: ${soundBankLoaded}`);
 if (!soundBankLoaded) {
   console.error('Failed to load sound bank: sounds');
+} else {
+  console.log('Sound bank loaded successfully: sounds');
 }
 
 // Example of playing a custom sound
