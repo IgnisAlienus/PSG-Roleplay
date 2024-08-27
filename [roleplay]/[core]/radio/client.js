@@ -38,6 +38,10 @@ onNet('radio:playback', (message) => {
   console.log(`Playback message: ${message}`);
   // Play the sound locally
   PlaySoundFrontend(-1, 'Start_Squelch', 'CB_RADIO_SFX', true);
+  // Simulate voice playback for testing
+  emit('chat:addMessage', {
+    args: [message],
+  });
 });
 
 setTick(() => {
