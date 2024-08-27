@@ -4,7 +4,10 @@ let panicTimer = null;
 let pttPressStartTime = null;
 
 // Load custom sound bank
-RequestScriptAudioBank('sounds/radio_sounds', false);
+const soundBankLoaded = RequestScriptAudioBank('sounds', false);
+if (!soundBankLoaded) {
+  console.error('Failed to load sound bank: sounds');
+}
 
 // Example of playing a custom sound
 function playCustomSound(soundName) {
@@ -15,7 +18,7 @@ function playCustomSound(soundName) {
     return;
   }
   console.log(`Playing sound with ID: ${soundId}`);
-  PlaySoundFrontend(soundId, soundName, 'radio_sounds', true);
+  PlaySoundFrontend(soundId, soundName, 'sounds', true);
   ReleaseSoundId(soundId);
   console.log(`Sound ${soundName} played and released`);
 }
@@ -111,7 +114,7 @@ setTick(() => {
     if (!isPttPressed) {
       if (!pttPressStartTime) {
         pttPressStartTime = Date.now();
-      } else if (Date.now() - pttPressStartTime >= 1000) {
+      } else if (Date.now() - pttPressStartTime >= 500) {
         isPttPressed = true;
         playCustomSound('keyup'); // Play custom keyup sound effect
         NetworkSetTalkerProximity(0.0); // Set to 0.0 to talk to all players in the channel
