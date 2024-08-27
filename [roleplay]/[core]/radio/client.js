@@ -3,7 +3,6 @@ let panicPressCount = 0;
 let panicTimer = null;
 let pttPressStartTime = null;
 
-// Example of playing a custom sound
 function playCustomSound(soundName) {
   console.log(`Attempting to play sound: ${soundName}`);
   const soundId = GetSoundId();
@@ -12,7 +11,10 @@ function playCustomSound(soundName) {
     return;
   }
   console.log(`Playing sound with ID: ${soundId}`);
-  PlaySoundFrontend(-1, soundName, 'sounds', true);
+
+  // Play the sound, referencing the sound name directly
+  PlaySoundFrontend(-1, soundName, '', true); // The third parameter is empty for direct .wav usage
+
   ReleaseSoundId(soundId);
   console.log(`Sound ${soundName} played and released`);
 }
