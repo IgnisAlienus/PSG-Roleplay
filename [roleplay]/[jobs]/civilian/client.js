@@ -58,6 +58,15 @@ on('__cfx_nui:verifyRoles', (data, cb) => {
   }
 });
 
+RegisterNuiCallbackType('leaveServer');
+on('__cfx_nui:leaveServer', (data, cb) => {
+  console.log(`[DEBUG] Received leaveServer NUI callback.`);
+  cb({ success: true });
+  setTimeout(() => {
+    emit('playerDropped', 'Player requested to leave the server.');
+  }, 1000);
+});
+
 // Hook into the player spawn event
 on('playerSpawned', () => {
   if (!roleChecked) {
