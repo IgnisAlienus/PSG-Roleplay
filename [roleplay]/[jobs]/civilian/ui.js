@@ -3,12 +3,12 @@ const messageElement = document.getElementById('message');
 
 // Function to show the UI
 function showUI() {
-  document.body.style.display = 'flex'; // Show the UI
+  document.body.style.display = 'flex';
 }
 
 // Function to hide the UI
 function hideUI() {
-  document.body.style.display = 'none'; // Hide the UI
+  document.body.style.display = 'none';
 }
 
 verifyButton.addEventListener('click', () => {
