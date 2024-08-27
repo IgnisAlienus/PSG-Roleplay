@@ -1,14 +1,16 @@
 fx_version 'cerulean'
 game 'gta5'
-
 author 'Your Name'
 description 'Police Radio for FiveM'
 version '1.0.0'
-
 client_scripts {
-    'client.lua'
+    'client.js'
 }
-
 server_scripts {
-    'server.lua'
+    'server.js'
+}
+ui_page 'radio.html'
+
+files {
+    'radio.html'
 }
