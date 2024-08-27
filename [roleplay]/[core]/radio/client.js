@@ -1,3 +1,5 @@
+let isPttPressed = false;
+
 // Register event listener for "onPlayerChangeVoiceChannels"
 onNet('onPlayerChangeVoiceChannels', (clients, channel, state) => {
   // Join the channel
@@ -77,20 +79,17 @@ RegisterKeyMapping('switchBankDown', 'Switch Bank Down', 'keyboard', 'NUMPAD2');
 // PTT (Push-To-Talk) Implementation
 setTick(() => {
   if (IsControlPressed(0, 249)) {
-    // 249 is the control ID for 'N'
-    // Enable voice transmission
-    NetworkSetTalkerProximity(0.0); // Set to 0.0 to talk to all players in the channel
+    if (!isPttPressed) {
+      isPttPressed = true;
+      PlaySoundFrontend(-1, 'Start_Squelch', 'CB_RADIO_SFX', true); // Play keyup sound effect
+      NetworkSetTalkerProximity(0.0); // Set to 0.0 to talk to all players in the channel
+    }
   } else {
-    // Disable voice transmission
-    NetworkSetTalkerProximity(-1.0); // Set to -1.0 to disable talking
-    PlaySoundFrontend(-1, 'End_Squelch', 'CB_RADIO_SFX', true); // Play tx finished sound effect
-  }
-});
-
-// Keyup sound effect
-setTick(() => {
-  if (IsControlJustReleased(0, 249)) {
-    PlaySoundFrontend(-1, 'Start_Squelch', 'CB_RADIO_SFX', true); // Play keyup sound effect
+    if (isPttPressed) {
+      isPttPressed = false;
+      PlaySoundFrontend(-1, 'End_Squelch', 'CB_RADIO_SFX', true); // Play tx finished sound effect
+      NetworkSetTalkerProximity(-1.0); // Set to -1.0 to disable talking
+    }
   }
 });
 
