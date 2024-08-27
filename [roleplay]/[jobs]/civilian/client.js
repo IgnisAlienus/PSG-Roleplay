@@ -15,7 +15,7 @@ onNet('civilian:checkRoleResult', (hasRequiredRole) => {
 
   if (shouldFreeze) {
     // Display the UI if the player is frozen
-    SetNuiFocus(true, false);
+    SetNuiFocus(true, true);
     SendNuiMessage(JSON.stringify({ type: 'showUI' }));
   } else {
     // Hide the UI if the player is unfrozen
