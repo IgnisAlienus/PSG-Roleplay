@@ -36,7 +36,7 @@ verifyButton.addEventListener('click', () => {
         messageElement.textContent =
           'Roles verified. You can now access the server.';
         setTimeout(() => {
-          hideUI(); // Close the UI after a delay
+          hideUI();
         }, 3000);
       } else {
         messageElement.textContent =

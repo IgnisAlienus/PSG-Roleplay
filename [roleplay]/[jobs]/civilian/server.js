@@ -1,7 +1,7 @@
 on('playerConnecting', async (name, setKickReason, deferrals) => {
   deferrals.defer();
 
-  const source = global.source; // This is the correct server-side player ID
+  const source = global.source;
 
   console.log(`[DEBUG] Player connecting: ${name}, Source ID: ${source}`);
 

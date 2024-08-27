@@ -1,5 +1,5 @@
-let canVerify = true; // Prevent spam by disabling re-verification temporarily
-let roleChecked = false; // Track if role has been checked
+let canVerify = true;
+let roleChecked = false;
 
 // Event to receive role check result
 onNet('civilian:checkRoleResult', (hasRequiredRole) => {
