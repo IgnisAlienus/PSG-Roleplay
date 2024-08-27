@@ -43,6 +43,7 @@ function switchChannel(direction) {
   if (currentChannel < 1) currentChannel = 1;
   if (currentChannel > maxChannel) currentChannel = maxChannel; // Enforce maximum channel number
   emitNet('switchChannel', currentChannel);
+  PlaySoundFrontend(-1, 'NAV_UP_DOWN', 'HUD_FRONTEND_DEFAULT_SOUNDSET', true); // Play channel switch sound effect
 }
 
 function switchBank(direction) {
@@ -50,6 +51,7 @@ function switchBank(direction) {
   if (currentBank < 1) currentBank = 1;
   if (currentBank > maxBank) currentBank = maxBank; // Enforce maximum bank number
   emitNet('switchBank', currentBank);
+  PlaySoundFrontend(-1, 'NAV_UP_DOWN', 'HUD_FRONTEND_DEFAULT_SOUNDSET', true); // Play bank switch sound effect
 }
 
 RegisterCommand('switchChannelLeft', () => switchChannel(-1), false);
@@ -81,6 +83,14 @@ setTick(() => {
   } else {
     // Disable voice transmission
     NetworkSetTalkerProximity(-1.0); // Set to -1.0 to disable talking
+    PlaySoundFrontend(-1, 'End_Squelch', 'CB_RADIO_SFX', true); // Play tx finished sound effect
+  }
+});
+
+// Keyup sound effect
+setTick(() => {
+  if (IsControlJustReleased(0, 249)) {
+    PlaySoundFrontend(-1, 'Start_Squelch', 'CB_RADIO_SFX', true); // Play keyup sound effect
   }
 });
 
