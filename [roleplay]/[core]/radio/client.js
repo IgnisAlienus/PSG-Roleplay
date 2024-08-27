@@ -85,12 +85,14 @@ setTick(() => {
       isPttPressed = true;
       PlaySoundFrontend(-1, 'Start_Squelch', 'CB_RADIO_SFX', true); // Play keyup sound effect
       NetworkSetTalkerProximity(0.0); // Set to 0.0 to talk to all players in the channel
+      SendNUIMessage({ type: 'txStatus', status: true }); // Show TX indicator
     }
   } else {
     if (isPttPressed) {
       isPttPressed = false;
       PlaySoundFrontend(-1, 'End_Squelch', 'CB_RADIO_SFX', true); // Play tx finished sound effect
       NetworkSetTalkerProximity(-1.0); // Set to -1.0 to disable talking
+      SendNUIMessage({ type: 'txStatus', status: false }); // Hide TX indicator
     }
   }
 });
@@ -113,4 +115,9 @@ onNet('switchChannel', (channel) => {
 onNet('switchBank', (bank) => {
   currentBank = bank;
   updateRadioUI();
+});
+
+// Event listener for RX status
+onNet('rxStatus', (status) => {
+  SendNUIMessage({ type: 'rxStatus', status: status });
 });
