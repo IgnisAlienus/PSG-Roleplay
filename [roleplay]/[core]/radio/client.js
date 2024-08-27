@@ -1,6 +1,7 @@
 let isPttPressed = false;
 let panicPressCount = 0;
 let panicTimer = null;
+let pttPressStartTime = null;
 
 // Load custom sound bank
 RequestScriptAudioBank('sounds/radio_sounds', false);
@@ -108,10 +109,14 @@ RegisterKeyMapping('switchBankDown', 'Switch Bank Down', 'keyboard', 'NUMPAD2');
 setTick(() => {
   if (IsControlPressed(0, 249)) {
     if (!isPttPressed) {
-      isPttPressed = true;
-      playCustomSound('keyup'); // Play custom keyup sound effect
-      NetworkSetTalkerProximity(0.0); // Set to 0.0 to talk to all players in the channel
-      SendNUIMessage({ type: 'txStatus', status: true }); // Show TX indicator
+      if (!pttPressStartTime) {
+        pttPressStartTime = Date.now();
+      } else if (Date.now() - pttPressStartTime >= 1000) {
+        isPttPressed = true;
+        playCustomSound('keyup'); // Play custom keyup sound effect
+        NetworkSetTalkerProximity(0.0); // Set to 0.0 to talk to all players in the channel
+        SendNUIMessage({ type: 'txStatus', status: true }); // Show TX indicator
+      }
     }
   } else {
     if (isPttPressed) {
@@ -120,6 +125,7 @@ setTick(() => {
       NetworkSetTalkerProximity(-1.0); // Set to -1.0 to disable talking
       SendNUIMessage({ type: 'txStatus', status: false }); // Hide TX indicator
     }
+    pttPressStartTime = null;
   }
 
   // Panic button logic
