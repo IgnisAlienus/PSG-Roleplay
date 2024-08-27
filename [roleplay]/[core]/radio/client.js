@@ -34,6 +34,12 @@ onNet('radio:receiveMessage', (message) => {
   console.log(`Radio message: ${message}`);
 });
 
+onNet('radio:playback', (message) => {
+  console.log(`Playback message: ${message}`);
+  // Play the sound locally
+  PlaySoundFrontend(-1, 'Start_Squelch', 'CB_RADIO_SFX', true);
+});
+
 setTick(() => {
   if (currentChannel !== null && IsControlJustPressed(0, 249)) {
     // Push-to-talk key (N by default)
@@ -49,8 +55,8 @@ setTick(() => {
       args: [`You are now talking on channel ${currentChannel}`],
     });
 
-    // Play start transmission sound
-    PlaySoundFrontend(-1, 'Start_Squelch', 'CB_RADIO_SFX', true);
+    // Emit start transmission message to the server
+    emitNet('radio:startTransmission', currentChannel, playerName);
   } else if (currentChannel !== null && IsControlJustReleased(0, 249)) {
     // Stop transmitting voice data
     NetworkClearVoiceChannel();
@@ -59,7 +65,7 @@ setTick(() => {
       args: [`You stopped talking on channel ${currentChannel}`],
     });
 
-    // Play stop transmission sound
-    PlaySoundFrontend(-1, 'End_Squelch', 'CB_RADIO_SFX', true);
+    // Emit stop transmission message to the server
+    emitNet('radio:stopTransmission', currentChannel);
   }
 });

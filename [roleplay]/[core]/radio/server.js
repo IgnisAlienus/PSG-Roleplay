@@ -31,6 +31,28 @@ onNet('radio:sendMessage', (channel, message) => {
   }
 });
 
+onNet('radio:startTransmission', (channel, playerName) => {
+  const playerId = source;
+  console.log(
+    `Player ${playerName} started transmitting on channel ${channel}`
+  );
+  emitNet(
+    'radio:playback',
+    playerId,
+    `You are now talking on channel ${channel}`
+  );
+});
+
+onNet('radio:stopTransmission', (channel) => {
+  const playerId = source;
+  console.log(`Player ${playerId} stopped transmitting on channel ${channel}`);
+  emitNet(
+    'radio:playback',
+    playerId,
+    `You stopped talking on channel ${channel}`
+  );
+});
+
 on('playerDropped', () => {
   const playerId = source;
   for (const channel in channels) {
