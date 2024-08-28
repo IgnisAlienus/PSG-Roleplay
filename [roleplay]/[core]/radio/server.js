@@ -1,11 +1,8 @@
-let clientsInChannel = {}; // Will be used to define a list of clients per channel
-let playerBanks = {}; // Will be used to track the current bank of each player
+let clientsInChannel = {}; // Track clients per channel
+let playerBanks = {}; // Track current bank of each player
+let activeTalkers = {}; // Track active talkers per channel
 
 function broadcastVoiceChange(source, channelIdx, state) {
-  // source is the client that changed channels, broadcasting to other clients
-  // Let any other clients in this channel know that we changed
-  // Also send the list of clients, passed as the second argument at onPlayerChangeVoiceChannels
-  // to assign their volume and targets
   if (clientsInChannel[channelIdx]) {
     clientsInChannel[channelIdx].forEach((clientInChannel) => {
       emitNet(
@@ -30,7 +27,7 @@ onNet('panicPressed', () => {
   emitNet('playPanicForAll', -1);
 });
 
-on('playerDropped', (reason) => {
+onNet('playerDropped', (reason) => {
   leaveAnyOldChannels(global.source);
 });
 
@@ -48,20 +45,20 @@ function leaveAnyOldChannels(source) {
 function removeClientFromChannel(source, clientKey, channelIdx) {
   broadcastVoiceChange(source, channelIdx, 'left');
   clientsInChannel[channelIdx].splice(clientKey, 1);
+  if (activeTalkers[channelIdx] === source) {
+    delete activeTalkers[channelIdx]; // Remove as active talker
+  }
 }
 
 RegisterCommand(
   'joinchannel',
   (source, args, rawCommand) => {
     let channelIdx = parseInt(args[0]);
-    // Create the channel if it doesn't exist
     if (!clientsInChannel[channelIdx]) {
       clientsInChannel[channelIdx] = [];
     }
 
     leaveAnyOldChannels(source);
-
-    // Join the channel
     clientsInChannel[channelIdx].push(source);
     broadcastVoiceChange(source, channelIdx, 'joined');
   },
@@ -81,7 +78,26 @@ onNet('switchChannel', (channel) => {
 onNet('switchBank', (bank) => {
   let source = global.source;
   playerBanks[source] = bank;
-  // Handle any additional logic for bank switching if needed
-  // For example, you might want to notify the client about the bank change
   emitNet('onBankSwitched', source, bank);
+});
+
+// Handle PTT press request
+onNet('requestTalk', (channel) => {
+  let source = global.source;
+  if (activeTalkers[channel]) {
+    // Channel is busy, notify the client
+    emitNet('playBusySound', source);
+  } else {
+    // Allow the player to talk
+    activeTalkers[channel] = source;
+    emitNet('startTalking', source, channel);
+  }
+});
+
+// Handle end of PTT
+onNet('stopTalking', (channel) => {
+  let source = global.source;
+  if (activeTalkers[channel] === source) {
+    delete activeTalkers[channel];
+  }
 });

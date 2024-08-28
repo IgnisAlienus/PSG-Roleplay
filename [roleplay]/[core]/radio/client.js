@@ -11,6 +11,7 @@ on('onClientResourceStart', (resourceName) => {
     RequestScriptAudioBank('sounds/keyup.wav', false);
     RequestScriptAudioBank('sounds/outro.wav', false);
     RequestScriptAudioBank('sounds/panic.wav', false);
+    RequestScriptAudioBank('sounds/busy.wav', false);
   }
 });
 
@@ -21,9 +22,21 @@ function playCustomSound(soundName) {
   });
 }
 
+// Listen for the server event to play the "busy" sound
+onNet('playBusySound', () => {
+  playCustomSound('busy');
+});
+
 // Listen for the server event to play the sound
 onNet('playPanicForAll', () => {
   playCustomSound('panic');
+});
+
+// Listen for server confirmation to start talking
+onNet('startTalking', (channel) => {
+  playCustomSound('keyup');
+  NetworkSetTalkerProximity(0.0); // Set to 0.0 to talk to all players in the channel
+  SendNUIMessage({ type: 'txStatus', status: true }); // Show TX indicator
 });
 
 // Define the panic action
@@ -114,20 +127,20 @@ RegisterKeyMapping('switchBankDown', 'Switch Bank Down', 'keyboard', 'NUMPAD2');
 // PTT (Push-To-Talk) Implementation
 setTick(() => {
   if (IsControlPressed(0, 249)) {
+    // N key for PTT
     if (!isPttPressed) {
       if (!pttPressStartTime) {
         pttPressStartTime = Date.now();
       } else if (Date.now() - pttPressStartTime >= 500) {
         isPttPressed = true;
-        playCustomSound('keyup'); // Play custom keyup sound effect
-        NetworkSetTalkerProximity(0.0); // Set to 0.0 to talk to all players in the channel
-        SendNUIMessage({ type: 'txStatus', status: true }); // Show TX indicator
+        emitNet('requestTalk', currentChannel); // Request to talk on the current channel
       }
     }
   } else {
     if (isPttPressed) {
       isPttPressed = false;
-      playCustomSound('outro'); // Play custom tx finished sound effect
+      playCustomSound('outro');
+      emitNet('stopTalking', currentChannel); // Notify the server that the player stopped talking
       NetworkSetTalkerProximity(-1.0); // Set to -1.0 to disable talking
       SendNUIMessage({ type: 'txStatus', status: false }); // Hide TX indicator
     }
