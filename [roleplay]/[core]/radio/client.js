@@ -3,10 +3,10 @@ let panicPressCount = 0;
 let panicTimer = null;
 let pttPressStartTime = null;
 
-// Load the sound file when the resource starts
+// Load the sound files when the resource starts
 on('onClientResourceStart', (resourceName) => {
   if (GetCurrentResourceName() === resourceName) {
-    // Preload the sound file
+    // Preload the sound files
     RequestScriptAudioBank('sounds/button.wav', false);
     RequestScriptAudioBank('sounds/keyup.wav', false);
     RequestScriptAudioBank('sounds/outro.wav', false);
@@ -27,7 +27,7 @@ onNet('playBusySound', () => {
   playCustomSound('busy');
 });
 
-// Listen for the server event to play the sound
+// Listen for the server event to play the panic sound
 onNet('playPanicForAll', () => {
   playCustomSound('panic');
 });
@@ -39,11 +39,27 @@ onNet('startTalking', (channel) => {
   SendNUIMessage({ type: 'txStatus', status: true }); // Show TX indicator
 });
 
+// Listen for the panic activation to open mic
+onNet('openMicForPanic', () => {
+  playCustomSound('panic'); // Play the panic sound
+  openMicForDuration(30); // Open the mic for 30 seconds
+});
+
+// Function to open mic for a specified duration
+function openMicForDuration(seconds) {
+  NetworkSetTalkerProximity(0.0); // Open mic to talk to all players
+  SendNUIMessage({ type: 'txStatus', status: true }); // Show TX indicator
+
+  setTimeout(() => {
+    NetworkSetTalkerProximity(-1.0); // Close the mic after the duration
+    SendNUIMessage({ type: 'txStatus', status: false }); // Hide TX indicator
+  }, seconds * 1000);
+}
+
 // Define the panic action
 function triggerPanic() {
   console.log('Panic button activated!');
-  // Add any additional panic actions here, e.g., notify other players, send an alert, etc.
-  emitNet('panicPressed', 'panic');
+  emitNet('panicPressed', 'panic'); // Notify the server of the panic event
 }
 
 // Register event listener for "onPlayerChangeVoiceChannels"
@@ -53,20 +69,17 @@ onNet('onPlayerChangeVoiceChannels', (clients, channel, state) => {
     MumbleSetVoiceChannel(channel);
   }
 
-  // Go through the list of clients we received from the given channel
+  // Sync other clients' states in the channel
   clients.forEach((client) => {
-    // We only want to know about other clients
     if (client !== GetPlayerServerId(PlayerId())) {
       console.log(`Syncing client: ${client} to channel (${state})`);
     }
 
-    // Go through the states
     if (state === 'joined') {
       MumbleSetVolumeOverrideByServerId(client, 1.0);
     } else if (state === 'left') {
       if (client !== GetPlayerServerId(PlayerId())) {
-        // No point in handling this for ourselves
-        MumbleSetVolumeOverrideByServerId(client, -1.0); // Reset their volume levels back to normal
+        MumbleSetVolumeOverrideByServerId(client, -1.0); // Reset volume
       }
     }
   });
@@ -83,25 +96,25 @@ RegisterCommand(
 
 let currentChannel = 1;
 let currentBank = 1;
-const maxChannel = 10; // Define maximum channel number
-const maxBank = 5; // Define maximum bank number
+const maxChannel = 10;
+const maxBank = 5;
 
 function switchBank(direction) {
   currentBank += direction;
   if (currentBank < 1) currentBank = 1;
-  if (currentBank > maxBank) currentBank = maxBank; // Enforce maximum bank number
+  if (currentBank > maxBank) currentBank = maxBank; // Enforce max bank number
   emitNet('switchBank', currentBank);
   playCustomSound('button');
-  updateRadioUI(); // Update the radio UI
+  updateRadioUI();
 }
 
 function switchChannel(direction) {
   currentChannel += direction;
   if (currentChannel < 1) currentChannel = 1;
-  if (currentChannel > maxChannel) currentChannel = maxChannel; // Enforce maximum channel number
+  if (currentChannel > maxChannel) currentChannel = maxChannel; // Enforce max channel number
   emitNet('switchChannel', currentChannel);
   playCustomSound('button');
-  updateRadioUI(); // Update the radio UI
+  updateRadioUI();
 }
 
 RegisterCommand('switchChannelLeft', () => switchChannel(-1), false);
@@ -149,7 +162,7 @@ setTick(() => {
 
   // Panic button logic
   if (IsControlJustPressed(0, 249)) {
-    // N key
+    // N key for Panic
     panicPressCount++;
     if (panicPressCount === 1) {
       panicTimer = setTimeout(() => {
