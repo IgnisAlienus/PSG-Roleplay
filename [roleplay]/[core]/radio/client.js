@@ -15,19 +15,10 @@ on('onClientResourceStart', (resourceName) => {
 });
 
 function playCustomSound(soundName) {
-  console.log(`Attempting to play sound: ${soundName}`);
-  const soundId = GetSoundId();
-  if (soundId === -1) {
-    console.error('Failed to get sound ID');
-    return;
-  }
-  console.log(`Playing sound with ID: ${soundId}`);
-
-  // Play the sound, referencing the sound name directly
-  PlaySoundFrontend(-1, soundName, 'sounds', true); // The third parameter is empty for direct .wav usage
-
-  ReleaseSoundId(soundId);
-  console.log(`Sound ${soundName} played and released`);
+  SendNUIMessage({
+    type: 'playSound',
+    soundName: soundName,
+  });
 }
 
 // Listen for the server event to play the sound
