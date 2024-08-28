@@ -42,14 +42,7 @@ onNet('startTalking', (channel) => {
 // Listen for the panic activation to open mic
 onNet('openMicForPanic', () => {
   playCustomSound('panic'); // Play the panic sound
-  SendNUIMessage({ type: 'txStatus', status: true }); // Show TX indicator
   openMicForDuration(30); // Open the mic for 30 seconds
-
-  // After 30 seconds, the mic will automatically close and update the TX indicator
-  setTimeout(() => {
-    playCustomSound('outro'); // Play the outro sound
-    SendNUIMessage({ type: 'txStatus', status: false }); // Hide TX indicator
-  }, 30000); // 30 seconds in milliseconds
 });
 
 // Function to open mic for a specified duration
@@ -59,6 +52,7 @@ function openMicForDuration(seconds) {
 
   setTimeout(() => {
     NetworkSetTalkerProximity(-1.0); // Close the mic after the duration
+    playCustomSound('outro'); // Play the outro sound
     SendNUIMessage({ type: 'txStatus', status: false }); // Hide TX indicator
   }, seconds * 1000);
 }
