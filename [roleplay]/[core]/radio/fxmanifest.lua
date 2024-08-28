@@ -13,8 +13,5 @@ ui_page 'radio.html'
 
 files {
     'radio.html',
-    'sounds/button.wav',
-    'sounds/keyup.wav',
-    'sounds/outro.wav',
-    'sounds/panic.wav',
+    'sounds/*.wav',
 }

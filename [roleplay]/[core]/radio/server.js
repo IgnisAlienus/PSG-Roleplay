@@ -24,6 +24,12 @@ function broadcastVoiceChange(source, channelIdx, state) {
   }
 }
 
+// Listen for the event from any client
+onNet('panicPressed', () => {
+  // Broadcast the event to all players
+  emitNet('playPanicForAll', -1);
+});
+
 on('playerDropped', (reason) => {
   leaveAnyOldChannels(global.source);
 });

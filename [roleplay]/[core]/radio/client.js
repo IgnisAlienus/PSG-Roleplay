@@ -3,6 +3,17 @@ let panicPressCount = 0;
 let panicTimer = null;
 let pttPressStartTime = null;
 
+// Load the sound file when the resource starts
+on('onClientResourceStart', (resourceName) => {
+  if (GetCurrentResourceName() === resourceName) {
+    // Preload the sound file
+    RequestScriptAudioBank('sounds/button.wav', false);
+    RequestScriptAudioBank('sounds/keyup.wav', false);
+    RequestScriptAudioBank('sounds/outro.wav', false);
+    RequestScriptAudioBank('sounds/panic.wav', false);
+  }
+});
+
 function playCustomSound(soundName) {
   console.log(`Attempting to play sound: ${soundName}`);
   const soundId = GetSoundId();
@@ -13,17 +24,22 @@ function playCustomSound(soundName) {
   console.log(`Playing sound with ID: ${soundId}`);
 
   // Play the sound, referencing the sound name directly
-  PlaySoundFrontend(-1, soundName, '', true); // The third parameter is empty for direct .wav usage
+  PlaySoundFrontend(-1, soundName, 'sounds', true); // The third parameter is empty for direct .wav usage
 
   ReleaseSoundId(soundId);
   console.log(`Sound ${soundName} played and released`);
 }
 
+// Listen for the server event to play the sound
+onNet('playPanicForAll', () => {
+  playCustomSound('panic');
+});
+
 // Define the panic action
 function triggerPanic() {
   console.log('Panic button activated!');
   // Add any additional panic actions here, e.g., notify other players, send an alert, etc.
-  emitNet('playSoundForAll', 'panic');
+  emitNet('panicPressed', 'panic');
 }
 
 // Register event listener for "onPlayerChangeVoiceChannels"
