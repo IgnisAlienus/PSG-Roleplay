@@ -36,6 +36,7 @@ onNet('playPanicForAll', () => {
     NetworkSetTalkerProximity(-1.0); // Close the mic after the duration
     playCustomSound('outro'); // Play the outro sound
     SendNUIMessage({ type: 'txStatus', status: false }); // Hide TX indicator
+    isPttPressed = false;
   }, 30000);
 });
 
@@ -174,6 +175,7 @@ setTick(() => {
       clearTimeout(panicTimer);
       panicPressCount = 0;
       console.log('Panic button activated!');
+      isPttPressed = true;
       emitNet('panicPressed', 'panic');
       SendNUIMessage({ type: 'txStatus', status: true }); // Show TX indicator
     }
