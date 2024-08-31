@@ -31,6 +31,12 @@ onNet('playBusySound', () => {
 onNet('playPanicForAll', () => {
   playCustomSound('panic');
   NetworkSetTalkerProximity(0.0); // Set to 0.0 to talk to all players in the channel
+  // Close the mic after 30 seconds
+  setTimeout(() => {
+    NetworkSetTalkerProximity(-1.0); // Close the mic after the duration
+    playCustomSound('outro'); // Play the outro sound
+    SendNUIMessage({ type: 'txStatus', status: false }); // Hide TX indicator
+  }, 30000);
 });
 
 // Listen for server confirmation to start talking
