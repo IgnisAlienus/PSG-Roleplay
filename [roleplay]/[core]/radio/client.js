@@ -36,6 +36,7 @@ onNet('playPanicForAll', () => {
   MumbleAddVoiceTargetChannel(1, GetPlayerServerId(PlayerId())); // Also talk on the radio
   // Close the mic after 30 seconds
   setTimeout(() => {
+    console.log('Panic button timeout');
     NetworkSetTalkerProximity(-1.0); // Close the mic after the duration
     playCustomSound('outro'); // Play the outro sound
     SendNUIMessage({ type: 'txStatus', status: false }); // Hide TX indicator
@@ -101,7 +102,10 @@ const maxChannel = 10;
 const maxBank = 5;
 
 function switchBank(direction) {
-  if (isPttPressed) return; // Prevent switching banks while talking
+  if (isPttPressed) {
+    playCustomSound('busy');
+    return; // Prevent switching banks while talking
+  }
   currentBank += direction;
   if (currentBank < 1) currentBank = 1;
   if (currentBank > maxBank) currentBank = maxBank; // Enforce max bank number
@@ -111,7 +115,10 @@ function switchBank(direction) {
 }
 
 function switchChannel(direction) {
-  if (isPttPressed) return; // Prevent switching channels while talking
+  if (isPttPressed) {
+    playCustomSound('busy');
+    return; // Prevent switching channels while talking
+  }
   currentChannel += direction;
   if (currentChannel < 1) currentChannel = 1;
   if (currentChannel > maxChannel) currentChannel = maxChannel; // Enforce max channel number
