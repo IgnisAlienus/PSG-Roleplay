@@ -30,6 +30,7 @@ onNet('playBusySound', () => {
 // Listen for the server event to play the panic sound
 onNet('playPanicForAll', () => {
   playCustomSound('panic');
+  NetworkSetTalkerProximity(0.0); // Set to 0.0 to talk to all players in the channel
 });
 
 // Listen for server confirmation to start talking
@@ -55,12 +56,6 @@ function openMicForDuration(seconds) {
     playCustomSound('outro'); // Play the outro sound
     SendNUIMessage({ type: 'txStatus', status: false }); // Hide TX indicator
   }, seconds * 1000);
-}
-
-// Define the panic action
-function triggerPanic() {
-  console.log('Panic button activated!');
-  emitNet('panicPressed', 'panic'); // Notify the server of the panic event
 }
 
 // Register event listener for "onPlayerChangeVoiceChannels"
@@ -172,7 +167,9 @@ setTick(() => {
     } else if (panicPressCount === 3) {
       clearTimeout(panicTimer);
       panicPressCount = 0;
-      triggerPanic(); // Trigger panic action
+      console.log('Panic button activated!');
+      emitNet('panicPressed', 'panic');
+      SendNUIMessage({ type: 'txStatus', status: true }); // Show TX indicator
     }
   }
 });
