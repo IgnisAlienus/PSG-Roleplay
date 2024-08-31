@@ -101,6 +101,7 @@ const maxChannel = 10;
 const maxBank = 5;
 
 function switchBank(direction) {
+  if (isPttPressed) return; // Prevent switching banks while talking
   currentBank += direction;
   if (currentBank < 1) currentBank = 1;
   if (currentBank > maxBank) currentBank = maxBank; // Enforce max bank number
@@ -110,6 +111,7 @@ function switchBank(direction) {
 }
 
 function switchChannel(direction) {
+  if (isPttPressed) return; // Prevent switching channels while talking
   currentChannel += direction;
   if (currentChannel < 1) currentChannel = 1;
   if (currentChannel > maxChannel) currentChannel = maxChannel; // Enforce max channel number
@@ -188,8 +190,8 @@ setTick(() => {
       console.log('Panic button activated!');
       isPttPressed = true;
       isTalkingOnRadio = true;
-      emitNet('panicPressed', 'panic');
       SendNUIMessage({ type: 'txStatus', status: true }); // Show TX indicator
+      emitNet('panicPressed', 'panic');
     }
   }
 });
