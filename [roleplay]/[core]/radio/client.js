@@ -32,13 +32,15 @@ onNet('playBusySound', () => {
 // Listen for the server event to play the panic sound
 onNet('playPanicForAll', () => {
   playCustomSound('panic');
-  NetworkSetTalkerProximity(0.0); // Set to 0.0 to talk to all players in the channel
+  NetworkSetTalkerProximity(proximityRange); // Enable proximity voices
+  MumbleAddVoiceTargetChannel(1, GetPlayerServerId(PlayerId())); // Also talk on the radio
   // Close the mic after 30 seconds
   setTimeout(() => {
     NetworkSetTalkerProximity(-1.0); // Close the mic after the duration
     playCustomSound('outro'); // Play the outro sound
     SendNUIMessage({ type: 'txStatus', status: false }); // Hide TX indicator
     isPttPressed = false;
+    isTalkingOnRadio = false;
   }, 30000);
 });
 
@@ -47,15 +49,6 @@ onNet('startTalking', (channel) => {
   playCustomSound('keyup');
   NetworkSetTalkerProximity(0.0); // Set to 0.0 to talk to all players in the channel
   SendNUIMessage({ type: 'txStatus', status: true }); // Show TX indicator
-});
-
-// Listen for the panic activation to open mic
-onNet('openMicForPanic', () => {
-  playCustomSound('panic');
-  isTalkingOnRadio = true;
-  NetworkSetTalkerProximity(proximityRange); // Enable proximity voice
-  MumbleAddVoiceTargetChannel(1, GetPlayerServerId(PlayerId())); // Also talk on the radio
-  openMicForDuration(30);
 });
 
 // Function to open mic for a specified duration
@@ -179,6 +172,25 @@ setTick(() => {
       SendNUIMessage({ type: 'txStatus', status: false }); // Hide TX indicator
     }
     pttPressStartTime = null;
+  }
+
+  // Panic button logic
+  if (IsControlJustPressed(0, 249)) {
+    // N key for Panic
+    panicPressCount++;
+    if (panicPressCount === 1) {
+      panicTimer = setTimeout(() => {
+        panicPressCount = 0;
+      }, 1000); // Reset counter after 1 second
+    } else if (panicPressCount === 3) {
+      clearTimeout(panicTimer);
+      panicPressCount = 0;
+      console.log('Panic button activated!');
+      isPttPressed = true;
+      isTalkingOnRadio = true;
+      emitNet('panicPressed', 'panic');
+      SendNUIMessage({ type: 'txStatus', status: true }); // Show TX indicator
+    }
   }
 });
 
