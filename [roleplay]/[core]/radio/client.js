@@ -2,6 +2,8 @@ let isPttPressed = false;
 let panicPressCount = 0;
 let panicTimer = null;
 let pttPressStartTime = null;
+let proximityRange = 15.0; // Adjust as needed
+let isTalkingOnRadio = false;
 
 // Load the sound files when the resource starts
 on('onClientResourceStart', (resourceName) => {
@@ -49,8 +51,11 @@ onNet('startTalking', (channel) => {
 
 // Listen for the panic activation to open mic
 onNet('openMicForPanic', () => {
-  playCustomSound('panic'); // Play the panic sound
-  openMicForDuration(30); // Open the mic for 30 seconds
+  playCustomSound('panic');
+  isTalkingOnRadio = true;
+  NetworkSetTalkerProximity(proximityRange); // Enable proximity voice
+  MumbleAddVoiceTargetChannel(1, GetPlayerServerId(PlayerId())); // Also talk on the radio
+  openMicForDuration(30);
 });
 
 // Function to open mic for a specified duration
@@ -142,6 +147,10 @@ RegisterKeyMapping('switchBankDown', 'Switch Bank Down', 'keyboard', 'NUMPAD2');
 
 // PTT (Push-To-Talk) Implementation
 setTick(() => {
+  if (!isTalkingOnRadio && NetworkIsPlayerTalking(PlayerId())) {
+    NetworkSetTalkerProximity(proximityRange);
+  }
+
   if (IsControlPressed(0, 249)) {
     // N key for PTT
     if (!isPttPressed) {
@@ -149,36 +158,27 @@ setTick(() => {
         pttPressStartTime = Date.now();
       } else if (Date.now() - pttPressStartTime >= 500) {
         isPttPressed = true;
+        isTalkingOnRadio = true;
         emitNet('requestTalk', currentChannel); // Request to talk on the current channel
+
+        // Set proximity voice to talk to nearby players
+        NetworkSetTalkerProximity(proximityRange);
+        MumbleAddVoiceTargetChannel(1, GetPlayerServerId(PlayerId()));
       }
     }
   } else {
     if (isPttPressed) {
       isPttPressed = false;
+      isTalkingOnRadio = false;
       playCustomSound('outro');
       emitNet('stopTalking', currentChannel); // Notify the server that the player stopped talking
-      NetworkSetTalkerProximity(-1.0); // Set to -1.0 to disable talking
+
+      // Reset proximity voice to default
+      NetworkSetTalkerProximity(proximityRange);
+      MumbleClearVoiceTarget(1);
       SendNUIMessage({ type: 'txStatus', status: false }); // Hide TX indicator
     }
     pttPressStartTime = null;
-  }
-
-  // Panic button logic
-  if (IsControlJustPressed(0, 249)) {
-    // N key for Panic
-    panicPressCount++;
-    if (panicPressCount === 1) {
-      panicTimer = setTimeout(() => {
-        panicPressCount = 0;
-      }, 1000); // Reset counter after 1 second
-    } else if (panicPressCount === 3) {
-      clearTimeout(panicTimer);
-      panicPressCount = 0;
-      console.log('Panic button activated!');
-      isPttPressed = true;
-      emitNet('panicPressed', 'panic');
-      SendNUIMessage({ type: 'txStatus', status: true }); // Show TX indicator
-    }
   }
 });
 

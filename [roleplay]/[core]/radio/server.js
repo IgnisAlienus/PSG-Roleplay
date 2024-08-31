@@ -85,19 +85,32 @@ onNet('switchBank', (bank) => {
 onNet('requestTalk', (channel) => {
   let source = global.source;
   if (activeTalkers[channel]) {
-    // Channel is busy, notify the client
-    emitNet('playBusySound', source);
+    emitNet('playBusySound', source); // Channel is busy, notify the client
   } else {
-    // Allow the player to talk
     activeTalkers[channel] = source;
     emitNet('startTalking', source, channel);
+
+    // Also enable proximity voice
+    emitNet('setProximityVoice', source, true);
   }
 });
 
-// Handle end of PTT
 onNet('stopTalking', (channel) => {
   let source = global.source;
   if (activeTalkers[channel] === source) {
     delete activeTalkers[channel];
+    emitNet('setProximityVoice', source, false);
+  }
+});
+
+onNet('setProximityVoice', (source, enable) => {
+  emitNet('toggleProximityVoice', -1, source, enable);
+});
+
+onNet('toggleProximityVoice', (source, enable) => {
+  if (enable) {
+    NetworkSetTalkerProximity(proximityRange);
+  } else {
+    NetworkSetTalkerProximity(-1.0); // Reset to default
   }
 });
