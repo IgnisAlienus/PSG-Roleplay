@@ -9,10 +9,10 @@ client_scripts {
 server_scripts {
     'server.js'
 }
-ui_page 'radio.html'
+ui_page 'handheld.html'
 
 files {
-    'radio.html',
+    'handheld.html',
     'sounds/*.wav',
     'images/*.png'
 }
