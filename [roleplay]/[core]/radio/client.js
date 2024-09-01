@@ -52,18 +52,6 @@ onNet('startTalking', (channel) => {
   SendNUIMessage({ type: 'txStatus', status: true }); // Show TX indicator
 });
 
-// Function to open mic for a specified duration
-function openMicForDuration(seconds) {
-  NetworkSetTalkerProximity(0.0); // Open mic to talk to all players
-  SendNUIMessage({ type: 'txStatus', status: true }); // Show TX indicator
-
-  setTimeout(() => {
-    NetworkSetTalkerProximity(-1.0); // Close the mic after the duration
-    playCustomSound('outro'); // Play the outro sound
-    SendNUIMessage({ type: 'txStatus', status: false }); // Hide TX indicator
-  }, seconds * 1000);
-}
-
 // Register event listener for "onPlayerChangeVoiceChannels"
 onNet('onPlayerChangeVoiceChannels', (clients, channel, state) => {
   // Join the channel
