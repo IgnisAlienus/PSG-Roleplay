@@ -14,4 +14,5 @@ ui_page 'radio.html'
 files {
     'radio.html',
     'sounds/*.wav',
+    'images/*.png'
 }
