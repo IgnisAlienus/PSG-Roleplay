@@ -168,8 +168,8 @@ setTick(() => {
   }
 
   // Panic button logic
-  if (IsControlJustPressed(0, 249)) {
-    // N key for Panic
+  if (IsControlJustPressed(0, 199)) {
+    // P key for Panic
     panicPressCount++;
     if (panicPressCount === 1) {
       panicTimer = setTimeout(() => {
