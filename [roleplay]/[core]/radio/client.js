@@ -149,10 +149,6 @@ RegisterKeyMapping('switchBankDown', 'Switch Bank Down', 'keyboard', 'NUMPAD2');
 
 // PTT (Push-To-Talk) Implementation
 setTick(() => {
-  if (!isTalkingOnRadio && NetworkIsPlayerTalking(PlayerId())) {
-    NetworkSetTalkerProximity(proximityRange);
-  }
-
   if (IsControlPressed(0, 249)) {
     // N key for PTT
     if (!isPttPressed) {
@@ -200,6 +196,12 @@ setTick(() => {
       SendNUIMessage({ type: 'txStatus', status: true }); // Show TX indicator
       emitNet('panicPressed', 'panic');
     }
+  }
+});
+
+setTick(() => {
+  if (!isTalkingOnRadio && NetworkIsPlayerTalking(PlayerId())) {
+    NetworkSetTalkerProximity(proximityRange);
   }
 });
 
