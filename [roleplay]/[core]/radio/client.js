@@ -1,4 +1,5 @@
 let isPttPressed = false;
+let isPanicPressed = false;
 let panicPressCount = 0;
 let panicTimer = null;
 let pttPressStartTime = null;
@@ -40,7 +41,7 @@ onNet('playPanicForAll', () => {
     NetworkSetTalkerProximity(-1.0); // Close the mic after the duration
     playCustomSound('outro'); // Play the outro sound
     SendNUIMessage({ type: 'txStatus', status: false }); // Hide TX indicator
-    isPttPressed = false;
+    isPanicPressed = false;
     isTalkingOnRadio = false;
   }, 30000);
 });
@@ -90,7 +91,7 @@ const maxChannel = 10;
 const maxBank = 5;
 
 function switchBank(direction) {
-  if (isPttPressed) {
+  if (isPttPressed || isPanicPressed) {
     playCustomSound('busy');
     return; // Prevent switching banks while talking
   }
@@ -103,7 +104,7 @@ function switchBank(direction) {
 }
 
 function switchChannel(direction) {
-  if (isPttPressed) {
+  if (isPttPressed || isPanicPressed) {
     playCustomSound('busy');
     return; // Prevent switching channels while talking
   }
@@ -139,7 +140,7 @@ RegisterKeyMapping('switchBankDown', 'Switch Bank Down', 'keyboard', 'NUMPAD2');
 setTick(() => {
   if (IsControlPressed(0, 249)) {
     // N key for PTT
-    if (!isPttPressed) {
+    if (!isPttPressed && !isPanicPressed) {
       if (!pttPressStartTime) {
         pttPressStartTime = Date.now();
       } else if (Date.now() - pttPressStartTime >= 500) {
@@ -179,7 +180,7 @@ setTick(() => {
       clearTimeout(panicTimer);
       panicPressCount = 0;
       console.log('Panic button activated!');
-      isPttPressed = true;
+      isPanicPressed = true;
       isTalkingOnRadio = true;
       SendNUIMessage({ type: 'txStatus', status: true }); // Show TX indicator
       emitNet('panicPressed', 'panic');
