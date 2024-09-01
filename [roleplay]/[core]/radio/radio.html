@@ -19,7 +19,7 @@
         width: 150px;
         height: 300px;
         background: url('images/handheld.png') no-repeat center center;
-        background-size: cover;
+        background-size: contain;
         padding: 20px;
         pointer-events: none;
         display: flex;
@@ -30,16 +30,15 @@
 
       .overlay {
         position: absolute;
-        top: 50px;
-        left: 50px;
+        top: 212px;
+        left: 76px;
         color: #fff;
-        font-size: 16px;
-        font-weight: bold;
+        font-size: 0.5rem;
       }
 
       .circle {
-        width: 20px;
-        height: 20px;
+        width: 6px;
+        height: 6px;
         border-radius: 50%;
         margin: 5px;
         display: none;
@@ -55,10 +54,9 @@
 
       .indicator {
         display: flex;
-        justify-content: space-around;
-        width: 100%;
         position: absolute;
-        bottom: 10px;
+        top: 197px;
+        left: 68px;
       }
     </style>
   </head>
@@ -69,8 +67,7 @@
         <p>Bank: <span id="bank">1</span></p>
       </div>
       <div class="indicator">
-        <div id="tx" class="circle red"></div>
-        <div id="rx" class="circle green"></div>
+        <div id="status-circle" class="circle"></div>
       </div>
     </div>
 
@@ -87,13 +84,21 @@
           document.getElementById('channel').innerText = event.data.channel;
           document.getElementById('bank').innerText = event.data.bank;
         } else if (event.data.type === 'txStatus') {
-          document.getElementById('tx').style.display = event.data.status
-            ? 'block'
-            : 'none';
+          const statusCircle = document.getElementById('status-circle');
+          if (event.data.status) {
+            statusCircle.style.display = 'block';
+            statusCircle.className = 'circle red';
+          } else {
+            statusCircle.style.display = 'none';
+          }
         } else if (event.data.type === 'rxStatus') {
-          document.getElementById('rx').style.display = event.data.status
-            ? 'block'
-            : 'none';
+          const statusCircle = document.getElementById('status-circle');
+          if (event.data.status) {
+            statusCircle.style.display = 'block';
+            statusCircle.className = 'circle green';
+          } else {
+            statusCircle.style.display = 'none';
+          }
         } else if (event.data.type === 'playSound') {
           playSound(event.data.soundName);
         }
