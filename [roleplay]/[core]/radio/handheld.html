@@ -18,7 +18,7 @@
         right: 20px;
         width: 150px;
         height: 300px;
-        background: url('images/handheld.png') no-repeat center center;
+        background: url("images/handheld.png") no-repeat center center;
         background-size: contain;
         padding: 20px;
         pointer-events: none;
@@ -79,27 +79,27 @@
     <audio id="busy-sound" src="sounds/busy.wav"></audio>
 
     <script>
-      window.addEventListener('message', (event) => {
-        if (event.data.type === 'updateRadio') {
-          document.getElementById('channel').innerText = event.data.channel;
-          document.getElementById('bank').innerText = event.data.bank;
-        } else if (event.data.type === 'txStatus') {
-          const statusCircle = document.getElementById('status-circle');
+      window.addEventListener("message", (event) => {
+        if (event.data.type === "updateRadio") {
+          document.getElementById("channel").innerText = event.data.channel;
+          document.getElementById("bank").innerText = event.data.bank;
+        } else if (event.data.type === "txStatus") {
+          const statusCircle = document.getElementById("status-circle");
           if (event.data.status) {
-            statusCircle.style.display = 'block';
-            statusCircle.className = 'circle red';
+            statusCircle.style.display = "block";
+            statusCircle.className = "circle red";
           } else {
-            statusCircle.style.display = 'none';
+            statusCircle.style.display = "none";
           }
-        } else if (event.data.type === 'rxStatus') {
-          const statusCircle = document.getElementById('status-circle');
+        } else if (event.data.type === "rxStatus") {
+          const statusCircle = document.getElementById("status-circle");
           if (event.data.status) {
-            statusCircle.style.display = 'block';
-            statusCircle.className = 'circle green';
+            statusCircle.style.display = "block";
+            statusCircle.className = "circle green";
           } else {
-            statusCircle.style.display = 'none';
+            statusCircle.style.display = "none";
           }
-        } else if (event.data.type === 'playSound') {
+        } else if (event.data.type === "playSound") {
           playSound(event.data.soundName);
         }
       });
