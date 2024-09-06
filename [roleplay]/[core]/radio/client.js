@@ -182,6 +182,7 @@ setTick(() => {
       console.log("Panic button activated!");
       isPanicPressed = true;
       isTalkingOnRadio = true;
+      playCustomSound("keyup");
       SendNUIMessage({ type: "txStatus", status: true }); // Show TX indicator
       emitNet("panicPressed", "panic");
     }
